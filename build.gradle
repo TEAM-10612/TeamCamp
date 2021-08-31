@@ -1,22 +1,99 @@
+buildscript {
+	dependencies {
+		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
+	}
+}
+
 plugins {
-	id 'org.springframework.boot' version '2.5.4'
+	id 'org.springframework.boot' version '2.4.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.asciidoctor.convert' version '1.5.9.2'
 	id 'java'
 }
 
-group = 'TeamCamp'
+group = 'demo'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+
+	// https://mvnrepository.com/artifact/org.webjars/bootstrap
+	implementation group: 'org.webjars', name: 'bootstrap', version: '5.1.0'
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	compileOnly 'org.springframework.boot:spring-boot-starter-data-redis:2.3.1.RELEASE'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'mysql:mysql-connector-java'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'com.querydsl:querydsl-jpa'
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation group: 'org.msgpack', name: 'jackson-dataformat-msgpack', version: '0.8.22'
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+	//querydsl 추가
+	implementation 'com.querydsl:querydsl-jpa'
+	//querydsl 추가
+	implementation 'com.querydsl:querydsl-apt'
+
+
+	/* Redis 사용을 위한 의존성 추가 */
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-json'
+	implementation group: 'org.msgpack', name: 'jackson-dataformat-msgpack', version: '0.8.18'
+
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.964'
+	runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-dependencies', version: 'Hoxton.SR10', ext: 'pom'
+
+	implementation group: 'org.apache.tika', name: 'tika-parsers', version: '1.25'
+
+	//이메일 발송
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+}
+ext{
+	snippetsDir = set('snippetDir',file("build/generated-snippets"))
 }
 
 test {
+	outputs.dir snippetsDir
 	useJUnitPlatform()
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	dependsOn Test
+}
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
 }
