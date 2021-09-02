@@ -12,6 +12,8 @@ import TeamCamp.demo.dto.ProductDto.SaveRequest;
 
 import javax.validation.Valid;
 
+import java.io.IOException;
+
 import static TeamCamp.demo.util.ResponseConstants.CREATED;
 import static TeamCamp.demo.util.ResponseConstants.OK;
 
@@ -24,7 +26,7 @@ public class ProductController {
 
     @LoginCheck
     @PostMapping
-    public ResponseEntity<Void>createProduct(@Valid@RequestBody SaveRequest request , @RequestPart MultipartFile productImage){
+    public ResponseEntity<Void>createProduct(@Valid@RequestBody SaveRequest request , @RequestPart MultipartFile productImage) throws IOException {
         productService.saveProduct(request,productImage);
         return CREATED;
     }

@@ -11,6 +11,8 @@ import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.ProductDto.ProductInfoResponse;
 import TeamCamp.demo.exception.product.ProductNotFoundException;
 
+import java.io.IOException;
+
 import static TeamCamp.demo.util.FilePathConstants.PRODUCT_IMAGES_DIR;
 
 @RequiredArgsConstructor
@@ -18,10 +20,10 @@ import static TeamCamp.demo.util.FilePathConstants.PRODUCT_IMAGES_DIR;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final AWSS3Service awsS3Service;
+    private final S3Service awsS3Service;
 
     @Transactional
-    public void saveProduct(ProductDto.SaveRequest request, MultipartFile productImage){
+    public void saveProduct(ProductDto.SaveRequest request, MultipartFile productImage) throws IOException {
         if (productImage != null){
             String imagePath = awsS3Service.upload(productImage,PRODUCT_IMAGES_DIR);
             request.setImagePath(imagePath);
