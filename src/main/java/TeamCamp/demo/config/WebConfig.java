@@ -11,14 +11,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    private final LoginCheckInterceptor loginCheckInterceptor;
+    //private final LoginCheckInterceptor loginCheckInterceptor;
     private final LoginUserArgumentResolver loginUserArgumentResolver;
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginCheckInterceptor);
-
-    }
+//
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(loginCheckInterceptor);
+//
+//    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

@@ -62,10 +62,10 @@ dependencies {
 	implementation group: 'org.msgpack', name: 'jackson-dataformat-msgpack', version: '0.8.18'
 
 	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.964'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
 	runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-dependencies', version: 'Hoxton.SR10', ext: 'pom'
 
 	implementation group: 'org.apache.tika', name: 'tika-parsers', version: '1.25'
-
 	//이메일 발송
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
