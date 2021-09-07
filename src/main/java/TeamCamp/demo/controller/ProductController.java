@@ -1,12 +1,12 @@
 package TeamCamp.demo.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import TeamCamp.demo.annotation.LoginCheck;
-import TeamCamp.demo.domain.service.ProductService;
+import TeamCamp.demo.common.annotation.LoginCheck;
+import TeamCamp.demo.service.ProductService;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.ProductDto.SaveRequest;
 
@@ -14,11 +14,8 @@ import javax.validation.Valid;
 
 import java.io.IOException;
 
-import static TeamCamp.demo.util.ResponseConstants.CREATED;
-import static TeamCamp.demo.util.ResponseConstants.OK;
-
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/products")
 public class ProductController {
 
@@ -26,9 +23,11 @@ public class ProductController {
 
     @LoginCheck
     @PostMapping
-    public ResponseEntity<Void>createProduct(@Valid@RequestBody SaveRequest request , @RequestPart MultipartFile productImage) throws IOException {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createProduct(@Valid@RequestBody SaveRequest request ,
+                              @RequestPart MultipartFile productImage) throws IOException {
         productService.saveProduct(request,productImage);
-        return CREATED;
+
     }
 
     @GetMapping("/{id}")
@@ -39,15 +38,16 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>deleteProduct(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
-        return OK;
+
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void>updateProduct(@PathVariable Long id,
-                                             @Valid@RequestBody SaveRequest request){
-        productService.updateProduct(id, request);
-        return OK;
+    @ResponseStatus(HttpStatus.OK)
+    public void updateProduct(@PathVariable Long id,
+                                             @Valid@RequestBody SaveRequest request,@RequestPart(required = false)MultipartFile productImage) {
+        productService.updateProduct(id, request,productImage);
     }
 }

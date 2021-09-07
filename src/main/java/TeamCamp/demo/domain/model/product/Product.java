@@ -35,14 +35,17 @@ public class Product extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ProductState productState;
 
-    private String imagePath;
+    private String originImagePath;
+    private String thumbnailImagePath;
+
 
     @Enumerated(EnumType.STRING)
     private TransactionMethod transactionMethod;
 
     @Builder
     public Product(Long id, String name, String salePrice,User user, String productDescription, String releasePrice,
-                   TransactionStatus transactionStatus, ProductState productState, TransactionMethod transactionMethod,String imagePath) {
+                   TransactionStatus transactionStatus, ProductState productState,
+                   TransactionMethod transactionMethod,String originImagePath,String thumbnailImagePath) {
         this.id = id;
         this.name = name;
         this.user = user;
@@ -52,7 +55,8 @@ public class Product extends BaseTimeEntity {
         this.transactionStatus = transactionStatus;
         this.productState = productState;
         this.transactionMethod = transactionMethod;
-        this.imagePath = imagePath;
+        this.originImagePath = originImagePath;
+        this.thumbnailImagePath = thumbnailImagePath;
     }
 
     public ProductInfoResponse toProductInfoResponse(){
@@ -65,7 +69,8 @@ public class Product extends BaseTimeEntity {
                 .releasePrice(this.releasePrice)
                 .transactionStatus(this.transactionStatus)
                 .productState(this.productState)
-                .imagePath(this.imagePath)
+                .originImagePath(this.originImagePath)
+                .thumbnailImagePath(this.thumbnailImagePath)
                 .transactionMethod(this.transactionMethod)
                 .build();
     }
@@ -77,6 +82,8 @@ public class Product extends BaseTimeEntity {
         this.releasePrice = releasePrice;
         this.transactionStatus = transactionStatus;
         this.productState = productState;
+        this.originImagePath = originImagePath;
+        this.thumbnailImagePath = thumbnailImagePath;
         this.transactionMethod = transactionMethod;
     }
 

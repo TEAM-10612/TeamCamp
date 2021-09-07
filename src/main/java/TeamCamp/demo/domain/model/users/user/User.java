@@ -1,5 +1,6 @@
 package TeamCamp.demo.domain.model.users.user;
 
+import TeamCamp.demo.domain.model.users.UserStatus;
 import lombok.*;
 import TeamCamp.demo.domain.model.users.UserBase;
 import TeamCamp.demo.domain.model.users.UserLevel;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import TeamCamp.demo.dto.UserDto.UserDetailResponse;
 import static TeamCamp.demo.dto.UserDto.*;
 
 @Getter
@@ -39,8 +41,7 @@ public class User extends UserBase {
     @Column(name = "USER_ACCOUNT")
     private Account account;
 
-
-
+    private UserStatus userStatus;
     public UserInfoDto toUserInfoDto() {
         return UserInfoDto.builder()
                 .email(this.getEmail())
@@ -90,13 +91,38 @@ public class User extends UserBase {
    }
 
     @Builder
-    public User(String email, String password, UserLevel userLevel,
-                String nickname, LocalDateTime nicknameModifiedDate, String phone,List<AddressBook>addressBooks) {
-        super( email, password, userLevel);
+    public User(Long id,String email, String password, UserLevel userLevel,
+                String nickname, LocalDateTime nicknameModifiedDate,
+                String phone,List<AddressBook>addressBooks,UserStatus userStatus) {
+        super( id, email, password, userLevel);
         this.nickname = nickname;
         this.nicknameModifiedDate = nicknameModifiedDate;
         this.phone = phone;
         this.userLevel = userLevel;
         this.addressBook = addressBooks;
+        this.userStatus = userStatus;
     }
+
+    public UserDetailResponse toUserDetailsDto() {
+        return UserDetailResponse.builder()
+                .id(this.getId())
+                .email(this.email)
+                .nickname(this.nickname)
+                .phoneNumber(this.phone)
+                .account(this.account)
+                .modifiedDate(this.getModifiedDate())
+                .createDate(this.getCreateDate())
+                .userLevel(this.userLevel)
+                .userStatus(this.userStatus)
+                .build();
+    }
+
+    public void updatedUserStatus(UserStatus userStatus){
+        this.userStatus = userStatus;
+    }
+
+    public boolean isBan(){
+        return this.userStatus == UserStatus.BAN;
+    }
+
 }

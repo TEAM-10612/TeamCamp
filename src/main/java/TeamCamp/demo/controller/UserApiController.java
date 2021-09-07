@@ -4,17 +4,16 @@ package TeamCamp.demo.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import TeamCamp.demo.domain.service.loginservice.userlogin.SessionLoginService;
+import TeamCamp.demo.service.loginservice.userlogin.SessionLoginService;
 import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.users.user.address.Address;
 import TeamCamp.demo.domain.model.users.user.address.AddressBook;
-import TeamCamp.demo.annotation.CurrentUser;
-import TeamCamp.demo.annotation.LoginCheck;
-import TeamCamp.demo.domain.service.UserService;
-import TeamCamp.demo.domain.service.email.EmailCertificationService;
-import TeamCamp.demo.domain.service.sms.SmsCertificationService;
+import TeamCamp.demo.common.annotation.CurrentUser;
+import TeamCamp.demo.common.annotation.LoginCheck;
+import TeamCamp.demo.service.UserService;
+import TeamCamp.demo.service.email.EmailCertificationService;
+import TeamCamp.demo.service.sms.SmsCertificationService;
 import TeamCamp.demo.dto.AddressBookDto;
 
 import javax.validation.Valid;
@@ -33,7 +32,7 @@ import static TeamCamp.demo.util.ResponseConstants.OK;
 
 @RequiredArgsConstructor
 @RequestMapping("/users")
-@Controller
+@RestController
 public class UserApiController {
 
     private final SessionLoginService sessionLoginService;
@@ -79,7 +78,7 @@ public class UserApiController {
 
     @GetMapping("/email-check-token")
     public void emailCheck(String token ,String email){
-        userService.updateEmailToken(token,email);
+        userService.updateEmailVerified(token,email);
     }
 
     /**

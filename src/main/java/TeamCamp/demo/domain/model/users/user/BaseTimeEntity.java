@@ -18,8 +18,8 @@ public abstract class BaseTimeEntity {
 
     @CreatedDate //생성시간
     @Column(updatable = false) //insertable=false는 insert 시점에 막는 것이고, updatable는 update 시점에 막는 기능입니다.
-    private LocalDateTime localDateTime;
+    private LocalDateTime createDate;
 
     @LastModifiedDate //변경시간
-    private LocalDateTime modifiedTime;
+    private LocalDateTime modifiedDate;
 }

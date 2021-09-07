@@ -1,11 +1,14 @@
 package TeamCamp.demo.dto;
 
+import TeamCamp.demo.domain.model.users.UserStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.users.user.User;
 import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.domain.model.users.user.address.AddressBook;
+
 import TeamCamp.demo.encrypt.EncryptionService;
 
 import javax.validation.constraints.Email;
@@ -57,6 +60,7 @@ public class UserDto {
                     .nickname(this.nickname)
                     .phone(this.phone)
                     .userLevel(UserLevel.UNAUTH)
+                    .userStatus(UserStatus.NORMAL)
                     .build();
         }
     }
@@ -66,7 +70,7 @@ public class UserDto {
     public static class SmsCertificationRequest {
         private String phone;
         private String certificationNumber;
-
+    @Builder
         public SmsCertificationRequest(String phone, String certificationNumber) {
             this.phone = phone;
             this.certificationNumber = certificationNumber;
@@ -203,6 +207,50 @@ public class UserDto {
             this.id = id;
             this.email = email;
             this.userLevel = userLevel;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class UserDetailResponse{
+        private Long id;
+        private String email;
+        private String nickname;
+        private String phoneNumber;
+        private Account account;
+        @JsonFormat
+        private LocalDateTime modifiedDate;
+        @JsonFormat
+        private LocalDateTime createDate;
+        private UserLevel userLevel;
+        private UserStatus userStatus;
+
+        @Builder
+        public UserDetailResponse(Long id, String email, String nickname, String phoneNumber,
+                                   Account account, LocalDateTime modifiedDate, LocalDateTime createDate,
+                                   UserLevel userLevel, UserStatus userStatus) {
+            this.id = id;
+            this.email = email;
+            this.nickname = nickname;
+            this.phoneNumber = phoneNumber;
+            this.account = account;
+            this.modifiedDate = modifiedDate;
+            this.createDate = createDate;
+            this.userLevel = userLevel;
+            this.userStatus = userStatus;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class UserBanRequest{
+        private Long id;
+        private UserStatus userStatus;
+
+        @Builder
+        public UserBanRequest(Long id, UserStatus userStatus) {
+            this.id = id;
+            this.userStatus = userStatus;
         }
     }
 

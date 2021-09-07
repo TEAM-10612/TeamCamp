@@ -1,5 +1,6 @@
 package TeamCamp.demo.util;
 
+import TeamCamp.demo.exception.product.ImageRoadFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -20,7 +21,7 @@ public class ResponseConstants {
 
     public static final ResponseEntity<String> USER_NOT_FOUND =
             new ResponseEntity<>(
-                    "ID 또는 PW를 확인하세요.", HttpStatus.BAD_REQUEST
+                    "ID 또는 PW를 확인하세요.", HttpStatus.NOT_FOUND
             );
 
     public static final ResponseEntity<String> UNAUTHORIZED_USER =
@@ -45,6 +46,14 @@ public class ResponseConstants {
 
     public static final ResponseEntity<String> ILLEGAL_MIME_TYPE =
             new ResponseEntity<>("첨부파일의 확장자가 올바르지 않습니다.",HttpStatus.BAD_REQUEST);
+
+    public static final ResponseEntity<String> IMAGE_ROAD_FAILED =
+            new ResponseEntity<>("이미지 로드에 실패하였습니다.",
+                    HttpStatus.BAD_REQUEST);
+
+    public static final ResponseEntity<String> IMAGE_TO_LARGE =
+            new ResponseEntity<>("허용된 용량을 초과한 이미지 입니다.",
+                    HttpStatus.PAYLOAD_TOO_LARGE);
 }
 
 

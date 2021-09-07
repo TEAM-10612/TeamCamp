@@ -38,11 +38,18 @@ public class ProductDto {
         @NotNull(message = "제품의 상태를 선택해주세요.")
         private ProductState productState;
 
-        private String imagePath;
+        private String originImagePath;
+        private String thumbnailImagePath;
 
-        public void setImagePath(String imagePath) {
-            this.imagePath = imagePath;
+        public void setImagePath(String originImagePath,String thumbnailImagePath){
+            this.originImagePath = originImagePath;
+            this.thumbnailImagePath = thumbnailImagePath;
         }
+
+        public void deleteImagePath(){
+            setImagePath(null,null);
+        }
+
 
         @NotNull(message = "제품 거래 방식을 선택해주세요.")
         private TransactionMethod transactionMethod;
@@ -56,7 +63,7 @@ public class ProductDto {
                     .transactionStatus(this.transactionStatus)
                     .productState(this.productState)
                     .transactionMethod(this.transactionMethod)
-                    .imagePath(this.imagePath)
+                    .originImagePath(this.originImagePath)
                     .build();
         }
 
@@ -75,7 +82,8 @@ public class ProductDto {
         //@JsonSerialize(using = LocalDateSerializer.class)
         private String releasePrice;
         private TransactionStatus transactionStatus;
-        private String imagePath;
+        private String originImagePath;
+        private String thumbnailImagePath;
         private ProductState productState;
         private TransactionMethod transactionMethod;
 
@@ -88,7 +96,7 @@ public class ProductDto {
                     .productDescription(this.productDescription)
                     .releasePrice(this.releasePrice)
                     .transactionMethod(this.transactionMethod)
-                    .imagePath(this.imagePath)
+                    .originImagePath(this.thumbnailImagePath)
                     .productState(this.productState)
                     .build();
         }

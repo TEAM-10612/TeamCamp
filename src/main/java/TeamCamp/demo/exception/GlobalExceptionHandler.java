@@ -1,5 +1,7 @@
 package TeamCamp.demo.exception;
 
+import TeamCamp.demo.exception.product.IllegalMineTypeException;
+import TeamCamp.demo.exception.product.ImageRoadFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,33 +12,24 @@ import org.springframework.web.context.request.WebRequest;
 import TeamCamp.demo.exception.certification.AuthenticationNumberMismatchException;
 import TeamCamp.demo.exception.product.ProductNotFoundException;
 import TeamCamp.demo.exception.user.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDateTime;
 
-import static TeamCamp.demo.util.ResponseConstants.BAD_REQUEST;
-import static TeamCamp.demo.util.ResponseConstants.DUPLICATION_EMAIL;
-import static TeamCamp.demo.util.ResponseConstants.DUPLICATION_NICKNAME;
-import static TeamCamp.demo.util.ResponseConstants.FAIL_TO_CHANGE_NICKNAME;
-import static TeamCamp.demo.util.ResponseConstants.ILLEGAL_MIME_TYPE;
-import static TeamCamp.demo.util.ResponseConstants.NOT_AUTHORIZED;
-import static TeamCamp.demo.util.ResponseConstants.PRODUCT_NOT_FOUND;
-import static TeamCamp.demo.util.ResponseConstants.TOKEN_EXPIRED;
-import static TeamCamp.demo.util.ResponseConstants.UNAUTHORIZED_USER;
-import static TeamCamp.demo.util.ResponseConstants.USER_NOT_FOUND;
-import static TeamCamp.demo.util.ResponseConstants.WRONG_PASSWORD;
+import static TeamCamp.demo.util.ResponseConstants.*;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateEmailException.class)
-    protected final ResponseEntity<String> duplicateEmailException(
+    protected final ResponseEntity<String> handleDuplicateEmailException(
             DuplicateEmailException ex, WebRequest request) {
         log.debug("Duplicate email :: {}, detection time = {}",request.getDescription(false));
         return DUPLICATION_EMAIL;
     }
 
     @ExceptionHandler(DuplicateNicknameException.class)
-    protected final ResponseEntity<String> duplicateNicknameException(
+    protected final ResponseEntity<String> handleDuplicateNicknameException(
             DuplicateNicknameException ex, WebRequest request) {
         log.debug("Duplicate nickname :: {}, detection time = {}",request.getDescription(false));
         return DUPLICATION_NICKNAME;
@@ -88,7 +81,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
-    public final ResponseEntity<String> productNotFoundException(
+    public final ResponseEntity<String> handleProductNotFoundException(
             ProductNotFoundException ex){
         log.debug("존재하지 않는 상품입니다.",ex);
         return PRODUCT_NOT_FOUND;
@@ -103,15 +96,28 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotAuthorizedException.class)
-    public final ResponseEntity handleNotAuthorized(NotAuthorizedException ex,WebRequest webRequest){
+    public final ResponseEntity handleNotAuthorized(
+            NotAuthorizedException ex,WebRequest webRequest){
         log.debug("Not Authorized :: {}, detection time ={}", webRequest.getDescription(false),
                 LocalDateTime.now(), ex);
         return NOT_AUTHORIZED;
     }
-
-    public final ResponseEntity<String>illegalMineTypeException(IllegalMineTypeException ex){
+    @ExceptionHandler(IllegalMineTypeException.class)
+    public final ResponseEntity<String>handleIllegalMineTypeException(IllegalMineTypeException ex){
         log.debug("올바르지 않은 확장자 입니다." ,ex );
         return ILLEGAL_MIME_TYPE;
     }
 
+    @ExceptionHandler(ImageRoadFailedException.class)
+    public static final ResponseEntity<String>handleImageRoadFailedException(
+            ImageRoadFailedException ex){
+        log.debug("이미지 로드 실패",ex);
+        return IMAGE_ROAD_FAILED;
+    }
+
+    public static final ResponseEntity<String> handleMaxUploadSizeExceedException(
+            MaxUploadSizeExceededException ex){
+        log.debug("하용된 용량을 초과한 이미지 입니다.",ex);
+        return IMAGE_TO_LARGE;
+    }
 }

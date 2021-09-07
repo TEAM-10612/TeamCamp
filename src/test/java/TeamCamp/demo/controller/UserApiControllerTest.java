@@ -1,22 +1,21 @@
 package TeamCamp.demo.controller;
 
-import TeamCamp.demo.domain.service.UserService;
-import TeamCamp.demo.domain.service.email.EmailCertificationService;
-import TeamCamp.demo.domain.service.loginservice.userlogin.SessionLoginService;
-import TeamCamp.demo.domain.service.sms.SmsCertificationService;
+import TeamCamp.demo.service.UserService;
+import TeamCamp.demo.service.email.EmailCertificationService;
+import TeamCamp.demo.service.loginservice.userlogin.SessionLoginService;
+import TeamCamp.demo.service.sms.SmsCertificationService;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.dto.UserDto.SaveRequest;
 import TeamCamp.demo.exception.certification.AuthenticationNumberMismatchException;
 import TeamCamp.demo.exception.user.DuplicateEmailException;
 import TeamCamp.demo.exception.user.TokenExpiredException;
-import com.amazonaws.Request;
+import TeamCamp.demo.exception.user.UserNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,7 +26,6 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -362,4 +360,63 @@ class UserApiControllerTest {
 
     }
 
+    @Test
+    @DisplayName("로그인 - 등록된 ID와 일치하는 패스워드 입력시 로그인에 성공한다.")
+    void login_successful() throws Exception{
+        UserDto.LoginRequest request = UserDto.LoginRequest.builder()
+                .email("test11@naver.com")
+                .password("test1234")
+                .build();
+
+        doNothing().when(sessionLoginService).login(request);
+
+
+        mockMvc.perform(post("/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/login/successful",requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING)
+                                .description("login ID(email)"),
+                        fieldWithPath("password").type(JsonFieldType.STRING).description("password")
+                )));
+    }
+    @Test
+    @DisplayName("로그인 - 존재하지 않는 id 또는 비밀번호 불일치시 로그인에 실패한다.")
+    void login_failure()throws Exception{
+        UserDto.LoginRequest request = UserDto.LoginRequest.builder()
+                .email("test11@naver.com")
+                .password("test1234")
+                .build();
+
+        doThrow(new UserNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다."))
+                .when(sessionLoginService).login(any());
+
+        mockMvc.perform(post("/users/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andDo(document("users/login/failure",requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING)
+                                .description("login ID(email)"),
+                        fieldWithPath("password").type(JsonFieldType.STRING).description("password")
+                )));
+    }
+
+    @Test
+    @DisplayName("로그아웃- 로그아웃에 성공한다.")
+    void logout()throws Exception{
+        //given
+        //when
+        doNothing().when(sessionLoginService).logout();
+
+        //then
+        mockMvc.perform(delete("/users/logout"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/logout"));
+
+    }
 }
