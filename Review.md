@@ -119,3 +119,9 @@ s3저장 방식 디렉토리에서 버킷으로 변경,
 ResponseStatus 적용,  
 Aws Properties 생성자 주입으로 변경    
 이미지 IOExcpetion 예외 전환 구현  
+
+9/9 ->
+---
+1.위시리스트 도메인 설계
+2.cart와 user 일대일 매핑 
+3.cart 와 product는 다대다 관계를 맺어야하므로 정규화를 위해 중간테이블인 productwishlist 생성 

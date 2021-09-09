@@ -1,6 +1,7 @@
 package TeamCamp.demo.domain.model.users.user;
 
 import TeamCamp.demo.domain.model.users.UserStatus;
+import TeamCamp.demo.domain.model.wishlist.Wishlist;
 import lombok.*;
 import TeamCamp.demo.domain.model.users.UserBase;
 import TeamCamp.demo.domain.model.users.UserLevel;
@@ -40,6 +41,10 @@ public class User extends UserBase {
     @Embedded
     @Column(name = "USER_ACCOUNT")
     private Account account;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WISHLIST_ID")
+    private Wishlist wishlist;
 
     private UserStatus userStatus;
     public UserInfoDto toUserInfoDto() {
