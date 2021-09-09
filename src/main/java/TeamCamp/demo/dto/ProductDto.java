@@ -101,5 +101,30 @@ public class ProductDto {
                     .build();
         }
     }
+    @Getter
+    @NoArgsConstructor
+    public static class IdRequest{
+        private Long id;
+
+        @Builder
+        public IdRequest(Long id) {
+            this.id = id;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class WishProductResponse{
+        private Long id;
+        private Long productId;
+        private String name;
+
+        @Builder
+        public WishProductResponse(Long id, Long productId, String name) {
+            this.id = id;
+            this.productId = productId;
+            this.name = name;
+        }
+    }
 
 }

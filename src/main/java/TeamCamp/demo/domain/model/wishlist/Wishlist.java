@@ -22,4 +22,8 @@ public class Wishlist {
 
     @OneToMany(mappedBy = "wishlist")
     private Set<ProductWishList> wishLists  = new HashSet<>();
+
+    public void addWishListProduct(ProductWishList productWishList){
+        wishLists.add(productWishList);
+    }
 }

@@ -1,5 +1,6 @@
 package TeamCamp.demo.exception;
 
+import TeamCamp.demo.exception.product.DulicateProductWishListException;
 import TeamCamp.demo.exception.product.IllegalMineTypeException;
 import TeamCamp.demo.exception.product.ImageRoadFailedException;
 import lombok.extern.slf4j.Slf4j;
@@ -114,10 +115,17 @@ public class GlobalExceptionHandler {
         log.debug("이미지 로드 실패",ex);
         return IMAGE_ROAD_FAILED;
     }
-
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
     public static final ResponseEntity<String> handleMaxUploadSizeExceedException(
             MaxUploadSizeExceededException ex){
         log.debug("하용된 용량을 초과한 이미지 입니다.",ex);
         return IMAGE_TO_LARGE;
+    }
+
+
+    @ExceptionHandler(DulicateProductWishListException.class)
+    public final ResponseEntity<String> handleDuplicateCartItemException(DulicateProductWishListException ex){
+        log.debug("이미 위시리스트에 있는 상품입니다.", ex);
+        return DUPLICATION_WISHLIST_PRODUCT;
     }
 }

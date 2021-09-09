@@ -1,7 +1,9 @@
 package TeamCamp.demo.domain.model.users.user;
 
 import TeamCamp.demo.domain.model.users.UserStatus;
+import TeamCamp.demo.domain.model.wishlist.ProductWishList;
 import TeamCamp.demo.domain.model.wishlist.Wishlist;
+import TeamCamp.demo.dto.ProductDto;
 import lombok.*;
 import TeamCamp.demo.domain.model.users.UserBase;
 import TeamCamp.demo.domain.model.users.UserLevel;
@@ -14,6 +16,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import TeamCamp.demo.dto.UserDto.UserDetailResponse;
 import static TeamCamp.demo.dto.UserDto.*;
@@ -130,4 +134,26 @@ public class User extends UserBase {
         return this.userStatus == UserStatus.BAN;
     }
 
+    public void createWishList(Wishlist wishlist){
+        this.wishlist = wishlist;
+    }
+
+    public void addWishListProduct(ProductWishList productWishList){
+        wishlist.addWishListProduct(productWishList);
+    }
+
+    public Set<ProductDto.WishProductResponse> getWishList(){
+        return wishlist.getWishLists()
+                .stream()
+                .map(ProductWishList :: toWishProductDto)
+                .collect(Collectors.toSet());
+
+    }
+
+    public boolean checkProductDuplicate(ProductWishList productWishList){
+        return wishlist.getWishLists()
+                .stream()
+                .map(ProductWishList :: getProduct)
+                .anyMatch(v -> v.getId() == productWishList.getProductId());
+    }
 }

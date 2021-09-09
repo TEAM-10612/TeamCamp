@@ -1,11 +1,14 @@
 package TeamCamp.demo.domain.model.wishlist;
 
 import TeamCamp.demo.domain.model.product.Product;
+import TeamCamp.demo.dto.ProductDto;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -28,4 +31,22 @@ public class ProductWishList {
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
+
+    @Builder
+    public ProductWishList(Wishlist wishlist, Product product) {
+        this.wishlist = wishlist;
+        this.product = product;
+    }
+
+    public Long getProductId(){
+        return product.getId();
+    }
+
+    public ProductDto.WishProductResponse toWishProductDto(){
+        return ProductDto.WishProductResponse.builder()
+                .id(this.id)
+                .productId(product.getId())
+                .name(product.getName())
+                .build();
+    }
 }

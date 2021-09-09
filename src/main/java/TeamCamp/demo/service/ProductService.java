@@ -15,6 +15,7 @@ import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.ProductDto.ProductInfoResponse;
 import TeamCamp.demo.exception.product.ProductNotFoundException;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -57,11 +58,17 @@ public class ProductService {
 
     @Cacheable(value = "product",key = "#id")
     @Transactional
-    public void updateProduct(Long id, ProductDto.SaveRequest updateProduct,MultipartFile productImage){
+    public void updateProduct(Long id, ProductDto.SaveRequest updateProduct,@Nullable MultipartFile productImage){
         Product saveProduct = productRepository.findById(id)
                 .orElseThrow(()-> new ProductNotFoundException());
-        String saveImagePath = saveProduct.getOriginImagePath();
+        String savedImagePath = saveProduct.getOriginImagePath();
+        String updateImagePath = updateProduct.getOriginImagePath();
 
+        if (isDeleteSavedImage(savedImagePath,updateImagePath,productImage)){
+            String key = FileService.getFileName(savedImagePath);
+            awsS3Service.deleteProductImage(key);
+            updateProduct.deleteImagePath();
+        }
         if((productImage != null)){
             String originImagePath = awsS3Service.uploadProductImage(productImage);
             String thunmbnailImagePath = FileService.toThumbnail(originImagePath);
@@ -70,12 +77,9 @@ public class ProductService {
         saveProduct.update(updateProduct);
     }
 
-    private boolean isDeleteImage(boolean imageDeleteCheck,MultipartFile productImage,String savedImagePath){
-        if(imageDeleteCheck || ((productImage != null)&& (savedImagePath != null))){
-            return true;
-        }else {
-            return false;
-        }
+    private boolean isDeleteSavedImage(String savedImagePath, String updatedImagePath,
+                                       MultipartFile brandImage) {
+        return ((updatedImagePath == null && savedImagePath != null) ||
+                (updatedImagePath != null && brandImage != null));
     }
-
 }

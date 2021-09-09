@@ -1,5 +1,13 @@
 package TeamCamp.demo.service;
 
+import TeamCamp.demo.domain.model.product.Product;
+import TeamCamp.demo.domain.model.wishlist.ProductWishList;
+import TeamCamp.demo.domain.model.wishlist.Wishlist;
+import TeamCamp.demo.domain.repository.ProductRepository;
+import TeamCamp.demo.domain.repository.ProductWishListRepository;
+import TeamCamp.demo.domain.repository.WishListRepository;
+import TeamCamp.demo.dto.ProductDto;
+import TeamCamp.demo.exception.product.DulicateProductWishListException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +29,7 @@ import TeamCamp.demo.exception.user.UserNotFoundException;
 
 
 import java.util.List;
+import java.util.Set;
 
 import static TeamCamp.demo.dto.UserDto.*;
 
@@ -34,6 +43,9 @@ public class UserService {
     private final EncryptionService encryptionService;
     private final AddressBookRepository addressBookRepository;
     private final EmailCertificationService emailCertificationService;
+    private final ProductRepository productRepository;
+    private final WishListRepository wishListRepository;
+    private final ProductWishListRepository productWishListRepository;
 
     //데이터 조회용. 추후 삭제
     public List<User> findAll() {
@@ -185,5 +197,42 @@ public class UserService {
         }
         user.updateNickname(request);
     }
+
+
+    public Set<ProductDto.WishProductResponse> getWishList(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자 입니다."));
+
+        if(user.getWishList() == null){
+            Wishlist wishlist = wishListRepository.save(new Wishlist());
+            user.createWishList(wishlist);
+        }
+        return user.getWishList();
+    }
+
+    @Transactional
+    public void addWishList(String email, ProductDto.IdRequest idRequest) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
+        if(user.getWishList() == null){
+            Wishlist wishlist = wishListRepository.save(new Wishlist());
+            user.createWishList(wishlist);
+        }
+
+        Product product = productRepository.findById(idRequest.getId()).orElseThrow();
+        ProductWishList productWishList  = productWishListRepository.save(new ProductWishList((Wishlist) user.getWishList(),product));
+
+        if(user.checkProductDuplicate(productWishList)){
+            throw new DulicateProductWishListException("장바구니 중복");
+        }
+        user.addWishListProduct(productWishList);
+    }
+
+    @Transactional
+    public void deleteWishList(ProductDto.IdRequest idRequest) {
+        productWishListRepository.deleteById(idRequest.getId());
+    }
+
+
 
 }

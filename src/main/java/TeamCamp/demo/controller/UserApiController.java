@@ -2,6 +2,7 @@ package TeamCamp.demo.controller;
 
 
 
+import TeamCamp.demo.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import TeamCamp.demo.dto.AddressBookDto;
 import javax.validation.Valid;
 
 import java.util.List;
+import java.util.Set;
 
 import static TeamCamp.demo.dto.UserDto.*;
 import static TeamCamp.demo.util.ResponseConstants.CREATED;
@@ -235,4 +237,24 @@ public class UserApiController {
         userService.updateNickname(email,request);
 
     }
+
+    @GetMapping("/wishlists")
+    @LoginCheck
+    public Set<ProductDto.WishProductResponse> getWish(@CurrentUser String email){
+        return userService.getWishList(email);
+    }
+
+    @LoginCheck
+    @PostMapping("/wishlists")
+    public void addWishList(@CurrentUser String email, @RequestBody ProductDto.IdRequest idRequest){
+        userService.addWishList(email,idRequest);
+    }
+
+    @LoginCheck
+    @DeleteMapping("/wishLists")
+    public void deleteWishList(@RequestBody ProductDto.IdRequest idRequest){
+        userService.deleteWishList(idRequest);
+    }
+
+
 }

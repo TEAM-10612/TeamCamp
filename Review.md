@@ -124,4 +124,11 @@ Aws Properties 생성자 주입으로 변경
 ---
 1.위시리스트 도메인 설계
 2.cart와 user 일대일 매핑 
-3.cart 와 product는 다대다 관계를 맺어야하므로 정규화를 위해 중간테이블인 productwishlist 생성 
+3.cart 와 product는 다대다 관계를 맺어야하므로 정규화를 위해 중간테이블인 productwishlist 생성
+
+9/10 ->
+---
+1.위시리스트 CRUD 구현  
+2.위시리스트 중복 예외처리   
+3.이미지 삭제 여부를 DTO 의 imagepath 필드로 검사하도록 변경   
+4.파라미터로 받는 이미지에 @nullable로 가시성 확보 
