@@ -45,7 +45,7 @@ public class UserDto {
             this.password = encryptionService.encrypt(password);
         }
         @Builder
-        public SaveRequest(String email,String password,String confirmPassword,String nickname, String phone) {
+        public SaveRequest(String email,String password,String nickname, String phone) {
             this.email = email;
             this.password = password;
             this.nickname = nickname;

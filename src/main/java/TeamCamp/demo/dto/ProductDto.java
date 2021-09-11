@@ -19,7 +19,10 @@ public class ProductDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class SaveRequest{
+
         @NotBlank(message = "제품명을 입력해주세요.")
         private String name;
 
@@ -30,10 +33,9 @@ public class ProductDto {
         @Size(max = 200,message = "200자 이내로 입력해주세요.")
         private String productDescription;
 
-        private String releasePrice;
+        private User user;
 
-        @NotNull(message = "")
-        private TransactionStatus transactionStatus;
+        private String releasePrice;
 
         @NotNull(message = "제품의 상태를 선택해주세요.")
         private ProductState productState;
@@ -60,10 +62,10 @@ public class ProductDto {
                     .salePrice(this.salePrice)
                     .productDescription(this.productDescription)
                     .releasePrice(this.releasePrice)
-                    .transactionStatus(this.transactionStatus)
                     .productState(this.productState)
                     .transactionMethod(this.transactionMethod)
                     .originImagePath(this.originImagePath)
+                    .thumbnailImagePath(this.thumbnailImagePath)
                     .build();
         }
 
