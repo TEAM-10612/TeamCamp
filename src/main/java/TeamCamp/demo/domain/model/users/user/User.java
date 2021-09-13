@@ -48,7 +48,6 @@ public class User extends UserBase {
     private AddressBook addressBook;
 
     @Embedded
-    @Column(name = "USER_ACCOUNT")
     private Account account;
 
     @OneToOne(fetch = FetchType.LAZY)

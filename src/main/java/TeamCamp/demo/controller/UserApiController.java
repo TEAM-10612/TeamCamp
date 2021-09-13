@@ -3,6 +3,7 @@ package TeamCamp.demo.controller;
 
 
 import TeamCamp.demo.dto.ProductDto;
+import TeamCamp.demo.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,11 +39,8 @@ import static TeamCamp.demo.util.ResponseConstants.OK;
 public class UserApiController {
 
     private final SessionLoginService sessionLoginService;
-
     private final UserService userService;
-
     private final SmsCertificationService smsCertificationService;
-
     private final EmailCertificationService emailCertificationService;
 
 
@@ -134,7 +132,7 @@ public class UserApiController {
     }
 
     //비밀번호 변경(로그인 안한 상태)
-    @PatchMapping("/forgot/password")
+    @PatchMapping("/forget/password")
     public void changePassword(
             @Valid @RequestBody ChangePasswordRequest request){
         userService.updatePasswordByForget(request);
@@ -204,31 +202,31 @@ public class UserApiController {
     @GetMapping("/account")
     public ResponseEntity<Account> getAccountResource(@CurrentUser String email){
         Account account = userService.getAccount(email);
-        return OK;
+        return ResponseEntity.ok(account);
     }
 
     @LoginCheck
     @PostMapping("/addressBook")
-    public void addAddressBook(@CurrentUser String email, @RequestBody Address address){
-        userService.addAddressBook(email,address);
+    public void addAddressBook(@CurrentUser String email, @RequestBody AddressBookDto.SaveRequest saveRequest){
+        userService.addAddress(email,saveRequest);
     }
 
     @LoginCheck
     @GetMapping("/addressBook")
-    public ResponseEntity<List<AddressBook>> getAddressBookResource(@CurrentUser String email){
-        List<AddressBook> addressBook = userService.getAddressBook(email);
-        return OK;
+    public ResponseEntity<List<Address>> getAddressBookResource(@CurrentUser String email){
+        List<Address> addressBook = userService.getAddressBook(email);
+        return ResponseEntity.ok(addressBook);
     }
 
     @LoginCheck
     @DeleteMapping("/addressBook")
-    public void deleteAddressBook(@RequestBody AddressBookDto request){
-        userService.deleteAddressBook(request);
+    public void deleteAddressBook(@CurrentUser String email,@RequestBody AddressBookDto.IdRequest request){
+        userService.deleteAddressBook(email,request);
     }
 
     @LoginCheck
     @PatchMapping("/addressBook")
-    public void updateAddressBook(@RequestBody AddressBookDto request){
+    public void updateAddressBook(@RequestBody AddressBookDto.SaveRequest request){
         userService.updateAddressBook(request);
     }
 
@@ -238,23 +236,7 @@ public class UserApiController {
 
     }
 
-    @GetMapping("/wishlists")
-    @LoginCheck
-    public Set<ProductDto.WishProductResponse> getWish(@CurrentUser String email){
-        return userService.getWishList(email);
-    }
 
-    @LoginCheck
-    @PostMapping("/wishlists")
-    public void addWishList(@CurrentUser String email, @RequestBody ProductDto.IdRequest idRequest){
-        userService.addWishList(email,idRequest);
-    }
-
-    @LoginCheck
-    @DeleteMapping("/wishLists")
-    public void deleteWishList(@RequestBody ProductDto.IdRequest idRequest){
-        userService.deleteWishList(idRequest);
-    }
 
 
 }

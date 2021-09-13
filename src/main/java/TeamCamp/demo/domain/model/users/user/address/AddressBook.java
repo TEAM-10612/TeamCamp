@@ -13,17 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 public class AddressBook {
 
-    @Id@GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "ADDRESSBOOK_ID")
     private List<Address> addressList = new ArrayList<>();
-
-    public AddressBook(Address address) {
-
-    }
-
 
     public void addAddress(Address address) {
         addressList.add(address);

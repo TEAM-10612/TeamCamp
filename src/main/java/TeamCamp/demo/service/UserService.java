@@ -169,10 +169,9 @@ public class UserService {
     }
 
     @Transactional
-    public void addAddressBook(String email, AddressBookDto.SaveRequest request) {
+    public void addAddress(String email, AddressBookDto.SaveRequest request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
-
         user.addAddress(request.toEntity());
     }
 

@@ -288,7 +288,7 @@ class UserServiceTest {
                 .build();
 
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-        userService.addAddressBook(user.getEmail(),request);
+        userService.addAddress(user.getEmail(),request);
 
         assertThat(user.getAddressBook().getAddressList().size()).isEqualTo(1);
     }

@@ -1,5 +1,17 @@
 package TeamCamp.demo.controller;
 
+import TeamCamp.demo.domain.model.product.Product;
+import TeamCamp.demo.domain.model.product.ProductState;
+import TeamCamp.demo.domain.model.product.TransactionMethod;
+import TeamCamp.demo.domain.model.users.UserLevel;
+import TeamCamp.demo.domain.model.users.UserStatus;
+import TeamCamp.demo.domain.model.users.user.Account;
+import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.user.address.Address;
+import TeamCamp.demo.domain.model.users.user.address.AddressBook;
+import TeamCamp.demo.dto.AddressBookDto;
+import TeamCamp.demo.dto.ProductDto;
+import TeamCamp.demo.exception.user.*;
 import TeamCamp.demo.service.UserService;
 import TeamCamp.demo.service.email.EmailCertificationService;
 import TeamCamp.demo.service.loginservice.userlogin.SessionLoginService;
@@ -7,9 +19,7 @@ import TeamCamp.demo.service.sms.SmsCertificationService;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.dto.UserDto.SaveRequest;
 import TeamCamp.demo.exception.certification.AuthenticationNumberMismatchException;
-import TeamCamp.demo.exception.user.DuplicateEmailException;
-import TeamCamp.demo.exception.user.TokenExpiredException;
-import TeamCamp.demo.exception.user.UserNotFoundException;
+import com.ctc.wstx.shaded.msv_core.reader.trex.ng.ListState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,15 +41,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static TeamCamp.demo.util.UserConstants.USER_ID;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -77,7 +87,49 @@ class UserApiControllerTest {
                 .apply(sharedHttpSession())
                 .build();
     }
+    public User toEntity() {
+        return User.builder()
+                .email("rddd@naver.com")
+                .password("12222333")
+                .nicknameModifiedDate(LocalDateTime.now())
+                .nickname("ryu")
+                .phone("01022334455")
+                .userLevel(UserLevel.UNAUTH)
+                .userStatus(UserStatus.NORMAL)
+                .build();
+    }
+    User user = toEntity();
 
+    private String ProductOriginImagePath = "https://TremCamp-product-origin.s3.ap-northeast-2.amazonaws.com/sample.png";
+    private String ProductThumbnailImagePath = "https://TremCamp-product-thumbnail.s3.ap-northeast-2.amazonaws.com/sample.png";
+
+    private Product createProduct(){
+        return Product.builder()
+                .id(1L)
+                .name("텐트")
+                .user(user)
+                .salePrice("230000")
+                .productDescription("good")
+                .releasePrice("300000")
+                .productState(ProductState.BEST)
+                .transactionMethod(TransactionMethod.NON_CONTACT)
+                .originImagePath(ProductOriginImagePath)
+                .thumbnailImagePath(ProductThumbnailImagePath)
+                .build();
+    }
+
+    private Set<ProductDto.WishProductResponse> createWishList(){
+        Set<ProductDto.WishProductResponse> set = new HashSet<>();
+
+        ProductDto.WishProductResponse wishProductResponse = ProductDto.WishProductResponse.builder()
+                .id(1L)
+                .productId(createProduct().getId())
+                .name(createProduct().getName())
+                .build();
+        set.add(wishProductResponse);
+
+        return set;
+    }
 
     @Test
     @DisplayName("회원가입 - 유효성 검사를 통과했다면 회원가입에 성공한다.")
@@ -418,5 +470,523 @@ class UserApiControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("users/logout"));
 
+    }
+
+    @Test
+    @DisplayName("마이페이지 조회")
+    void myPage()throws Exception{
+        //given
+        UserDto.UserInfoDto userInfoDto = UserDto.UserInfoDto.builder()
+                .email("rdj1022@naver.com")
+                .nickname("121212")
+                .phone("01012345678")
+                .userLevel(UserLevel.UNAUTH)
+                .build();
+        //when
+        given(sessionLoginService.getCurrentUser(any())).willReturn(userInfoDto);
+
+        //then
+
+        mockMvc.perform(get("/users/my-infos")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/my-infos",
+                        responseFields(
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일 "),
+                                fieldWithPath("nickname").type(JsonFieldType.STRING).description("회원 닉네임 "),
+                                fieldWithPath("phone").type(JsonFieldType.STRING).description("회원 전화번호 "),
+                                fieldWithPath("userLevel").type(JsonFieldType.STRING)
+                                        .description("이메일 인증 여부")
+
+                        )));
+
+
+    }
+
+    @Test
+    @DisplayName("비밀번호 찾기 - 존재하는 email 입력시 비밀번호를 찾기 위한 리소스(email.phone)을 리턴한다.")
+    void getUserResource_successful()throws Exception{
+        //given
+        UserDto.FindUserResponse response = UserDto.FindUserResponse.builder()
+                .email("test123@test.com")
+                .phone("01012334444")
+                .build();
+
+        String email = "test123@test.com";
+        //when
+        given(userService.getUserResource(any())).willReturn(response);
+
+        //then
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/users/find/{email}", email))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/forgetPassword/resource/successful", responseFields(
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일"),
+                                fieldWithPath("phone").type(JsonFieldType.STRING).description("회원 휴대폰 번호")
+                        ),
+                        pathParameters(
+                                parameterWithName("email").description("이메일")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("비밀번호 찾기 - 존재하지 않는 email 입력시 비밀번호를 찾기 위한 리소스(email,phone) 리턴에 실패한다.")
+    void getUserResource_failure()throws Exception{
+        //given
+        String email = "test123@test.com";
+
+        //when
+        doThrow(new UserNotFoundException("존재하지 않는 이메일입니다.")).when(userService)
+                .getUserResource(any());
+
+        //then
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/users/find/{email}",email))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andDo(document("users/forgetPassword/resource/failure", pathParameters(
+                        parameterWithName("email").description("이메일")
+                )));
+
+
+    }
+    @Test
+    @DisplayName("비밀번호 찾기 - 비밀번호 찾기에서 email 인증을 선택하면 이메일로 인증번호가 발송된다.")
+    void sendEmailCertification()throws Exception{
+        //given
+        UserDto.EmailCertificationRequest request = UserDto.EmailCertificationRequest.builder()
+                .certificationNumber(null)
+                .email("rdj1014@naver.com")
+                .build();
+        String email = request.getEmail();
+
+        //when
+        doNothing().when(emailCertificationService).sendEmailForCertification(email);
+
+        //then
+        mockMvc.perform(post("/users/email-certification/sends")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andDo(document("users/certification/email/send", requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("인증받을 이메일"),
+                        fieldWithPath("certificationNumber").type(JsonFieldType.NULL).description("null: 인증 이메일 발송시 사용하지 않는 값")
+                )));
+
+    }
+
+    @Test
+    @DisplayName("비밀번호 찾기 - 인증번호가 일치하면 이메일 인증에 성공한다.")
+    void emailCertification_successful()throws Exception{
+        //given
+        UserDto.EmailCertificationRequest request = UserDto.EmailCertificationRequest.builder()
+                .certificationNumber("12345")
+                .email("rdj1014@naver.com")
+                .build();
+
+        //when
+        doNothing().when(emailCertificationService).verifyEmail(request);
+
+        //then
+        mockMvc.perform(post("/users/email-certification/confirms")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/certification/email/successful",requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING)
+                                .description("비밀번호를 찾기를 원하는 이메일"),
+                        fieldWithPath("certificationNumber").type(JsonFieldType.STRING)
+                                .description("사용자가 입력한 인증번호")
+
+                )));
+
+
+    }
+    @Test
+    @DisplayName("비밀번호 찾기 - 인증번호가 일치하지 않으면 이메일 인증에 실패한다.")
+    void  emailCertification_failure()throws Exception{
+        //given
+        UserDto.EmailCertificationRequest request = UserDto.EmailCertificationRequest.builder()
+                .certificationNumber("12345")
+                .email("rdj1014@naver.com")
+                .build();
+
+        //when
+        doThrow(new AuthenticationNumberMismatchException("인증번호가 일치하지 않습니다."))
+                .when(emailCertificationService).verifyEmail(any());
+
+        //then
+        mockMvc.perform(post("/users/email-certification/confirms")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andDo(document("users/certification/email/failure",requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING)
+                                .description("비밀번호를 찾기를 원하는 이메일"),
+                        fieldWithPath("certificationNumber").type(JsonFieldType.STRING)
+                                .description("사용자가 입력한 인증번호")
+                )));
+    
+    }
+    @Test
+    @DisplayName("비밀번호 찾기 - 인증이 완료되면 비밀번호를 변경한다.")
+    void changePasswordByForget()throws Exception{
+        //given
+        UserDto.ChangePasswordRequest request = UserDto.ChangePasswordRequest.builder()
+                .email("rdj1014@naver.com")
+                .passwordAfter("test1231")
+                .passwordBefore(null)
+                .build();
+
+        //when
+        doNothing().when(userService).updatePasswordByForget(request);
+
+        //then
+
+        mockMvc.perform(patch("/users/forget/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/forgetPassword/updatePassword", requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING)
+                                .description("비밀번호를 변경할 회원 ID(email)"),
+                        fieldWithPath("passwordAfter").type(JsonFieldType.STRING).description("변경할 비밀번호"),
+                        fieldWithPath("passwordBefore").type(JsonFieldType.NULL)
+                                .description("null : 비밀번호 찾기에서는 이전 비밀번호를 알 수 없음")
+                )))
+                ;
+    }
+    
+    @Test
+    @DisplayName("회원 탈퇴 - 비밀번호가 일치하면 회원 탈퇴가 성공한다.")
+    void UserWithdrawal_successful()throws Exception{
+        //given
+        UserDto.PasswordRequest request = UserDto.PasswordRequest.builder()
+                .password("test121213")
+                .build();
+        String email = "rdj1014@naver.com";
+        String password = request.getPassword();
+
+        //when
+        doNothing().when(userService).delete(email,password);
+        doNothing().when(sessionLoginService).logout();
+
+        //then
+        mockMvc.perform(delete("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/withdrawal/successful",requestFields(
+                        fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호")
+                )));
+    
+    }
+
+    @Test
+    @DisplayName("회원 탈퇴 - 비밀번호가 일치 하지 않으면 회원 탈퇴에 실패한다.")
+    void UserWithdrawal_failure()throws Exception{
+        //given
+        UserDto.PasswordRequest request = UserDto.PasswordRequest.builder()
+                .password("test121213")
+                .build();
+        
+        //when
+        doThrow(new WrongPasswordException()).when(userService).delete(any(),any());
+        doNothing().when(sessionLoginService).logout();
+
+        //then
+        mockMvc.perform(delete("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+                .andDo(document("users/withdrawal/failure",requestFields(
+                        fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호")
+                )));
+    
+    }
+    @Test
+    @DisplayName("비밀번호 변경 - 이전 비밀번호가 일치하면 비밀번호 변경에 성공한다.")
+    void changePassword_successful() throws Exception {
+        //given
+        UserDto.ChangePasswordRequest request = UserDto.ChangePasswordRequest.builder()
+                .email("rdj1014@naver.com")
+                .passwordAfter("12213132")
+                .passwordBefore("10000000")
+                .build();
+        String currentUser = "rdj1014@naver.com";
+
+        //when
+        doNothing().when(userService).updatePassword(currentUser,request);
+
+        //then
+        mockMvc.perform(patch("/users/password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/changeUserInfo/password/successful",requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("비밀번호를 변경을 원하는 회원 ID"),
+                        fieldWithPath("passwordAfter").type(JsonFieldType.STRING).description("변경할 비밀번호"),
+                        fieldWithPath("passwordBefore").type(JsonFieldType.STRING).description("이전 비밀번호")
+                )));
+
+    }
+    @Test
+    @DisplayName("비밀번호 변경 - 이전 비밀번호가 일치하지 않으면 비밀번호 변경에 실패한다.")
+    void changePassword_failure()throws Exception{
+        //given
+        UserDto.ChangePasswordRequest request = UserDto.ChangePasswordRequest.builder()
+                .email("rdj1014@naver.com")
+                .passwordAfter("12213132")
+                .passwordBefore("newPassword")
+                .build();
+
+        //when
+        doThrow(new WrongPasswordException()).when(userService)
+                .updatePassword(any(),any());
+
+        //then
+        mockMvc.perform(patch("/users/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+                .andDo(document("users/changeUserInfo/password/failure",requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("비밀번호를 변경을 원하는 회원 ID"),
+                        fieldWithPath("passwordAfter").type(JsonFieldType.STRING).description("변경할 비밀번호"),
+                        fieldWithPath("passwordBefore").type(JsonFieldType.STRING).description("이전 비밀번호")
+                )));
+    
+    }
+
+    @Test
+    @DisplayName("환급 계좌 - 환급 계좌를 설정/변경한다.")
+    void changeAccount() throws Exception {
+        //given
+        Account account = new Account("SC","12121212","류동재");
+        String currentUser = "rdj1014@naver.com";
+
+        //when
+        doNothing().when(userService).updateAccount(currentUser,account);
+
+        //then
+
+        mockMvc.perform(patch("/users/account")
+                .content(objectMapper.writeValueAsString(account))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/changeUserInfo/account/change",requestFields(
+                        fieldWithPath("bankName").type(JsonFieldType.STRING).description("은행명"),
+                        fieldWithPath("accountNumber").type(JsonFieldType.STRING).description("계좌 번호"),
+                        fieldWithPath("depositor").type(JsonFieldType.STRING).description("예금주")
+                )));
+
+
+    }
+
+
+    @Test
+    @DisplayName("환급 계좌 - USER의 환급 계좌 정보를 리턴한다.")
+    void getAccountResource() throws Exception {
+        //given
+        Account account = new Account("SC","12121212","류동재");
+
+        //when
+        given(userService.getAccount(any())).willReturn(account);
+
+        //then
+        mockMvc.perform(get("/users/account")
+                        .content(objectMapper.writeValueAsString(account))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/changeUserInfo/account/Resource",responseFields(
+                        fieldWithPath("bankName").type(JsonFieldType.STRING).description("은행명"),
+                        fieldWithPath("accountNumber").type(JsonFieldType.STRING).description("계좌 번호"),
+                        fieldWithPath("depositor").type(JsonFieldType.STRING).description("예금주")
+                )));
+    }
+
+
+    @Test
+    @DisplayName("닉네임 변경 - 닉네임을 변경한지 7일이 초과되었고, 닉네임 중복 검사에 통과하면 닉네임 변경에 성공한다.")
+    void changeNickname_successful() throws Exception{
+        //given
+        SaveRequest request = SaveRequest.builder()
+                .email(null)
+                .password(null)
+                .phone(null)
+                .nickname("newNickname")
+                .build();
+        String currentUser = "rdj1014@naver.com";
+
+        //when
+        doNothing().when(userService).updateNickname(currentUser,request);
+
+        //then
+        mockMvc.perform(patch("/users/nickname")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/changeUserInfo/nickname/changeSuccessful", requestFields(
+                        fieldWithPath("email").type(JsonFieldType.NULL)
+                                .description("null : 닉네임 변경시 사용되지 않는 값"),
+                        fieldWithPath("password").type(JsonFieldType.NULL)
+                                .description("null : 닉네임 변경시 사용되지 않는 값"),
+                        fieldWithPath("phone").type(JsonFieldType.NULL)
+                                .description("null : 닉네임 변경시 사용되지 않는 값"),
+                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("새로운 닉네임")
+                )));
+    }
+
+    @Test
+    @DisplayName("닉네임 변경 - 닉네임을 변경한지 7일이 초과되지 않았다면 닉네임 변경에 실패한다.")
+    void changeNickname_failure() throws Exception {
+        //given
+        SaveRequest request = SaveRequest.builder()
+                .email(null)
+                .password(null)
+                .phone(null)
+                .nickname("newNickname")
+                .build();
+
+        //when
+        doThrow(new UnableToChangeNicknameException("닉네임은 7일에 한번만 변경가능합니다."))
+                .when(userService).updateNickname(any(),any());
+
+        //then
+        mockMvc.perform(patch("/users/nickname")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andDo(document("users/changeUserInfo/nickname/changeFailure", requestFields(
+                        fieldWithPath("email").type(JsonFieldType.NULL)
+                                .description("null : 닉네임 변경시 사용되지 않는 값"),
+                        fieldWithPath("password").type(JsonFieldType.NULL)
+                                .description("null : 닉네임 변경시 사용되지 않는 값"),
+                        fieldWithPath("phone").type(JsonFieldType.NULL)
+                                .description("null : 닉네임 변경시 사용되지 않는 값"),
+                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("새로운 닉네임")
+                )));
+    }
+
+    @Test
+    @DisplayName("주소록 - 주소록에 주소를 추가한다.")
+    void addAddressBook() throws Exception {
+        //given
+        AddressBookDto.SaveRequest requestDto = AddressBookDto.SaveRequest.builder()
+                .id(1L)
+                .addressName("새 집")
+                .roadAddress("새집로 123")
+                .detailAddress("789동 123호")
+                .postalCode("23456")
+                .build();
+        String currentUser = "rdj1014@naver.com";
+
+        //when
+        doNothing().when(userService).addAddress(currentUser,requestDto);
+
+        //then
+        mockMvc.perform(post("/users/addressBook")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/changeUserInfo/addressBook/add/successful", requestFields(
+                        fieldWithPath("id").ignored(),
+                        fieldWithPath("addressName").type(JsonFieldType.STRING).description("주소록 이름"),
+                        fieldWithPath("roadAddress").type(JsonFieldType.STRING).description("도로명 주소"),
+                        fieldWithPath("detailAddress").type(JsonFieldType.STRING).description("상세 주소"),
+                        fieldWithPath("postalCode").type(JsonFieldType.STRING).description("우편번호")
+                )));
+    }
+
+    @Test
+    @DisplayName("주소록 - 회원의 주소록 정보를 가져온다.")
+    void getAddressBook() throws Exception {
+        //given
+        List<Address>addressList = new ArrayList<>();
+        Address address = new Address(1L,"집","어디로","123","12345");
+        addressList.add(address);
+
+        //when
+        given(userService.getAddressBook(any())).willReturn(addressList);
+
+        //then
+        mockMvc.perform(get("/users/addressBook")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/changeUserInfo/addressBook/Resource", responseFields(
+                        fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("주소 ID[PK]"),
+                        fieldWithPath("[].addressName").type(JsonFieldType.STRING).description("주소 이름"),
+                        fieldWithPath("[].roadAddress").type(JsonFieldType.STRING)
+                                .description("도로명 주소"),
+                        fieldWithPath("[].detailAddress").type(JsonFieldType.STRING).description("상세 주소"),
+                        fieldWithPath("[].postalCode").type(JsonFieldType.STRING).description("우편 번호")
+                )));
+
+    }
+
+    @Test
+    @DisplayName("주소록 - 주소록을 삭제한다.")
+    void deleteAddressBook() throws Exception {
+        //given
+        String currentUser = "rdj1014@naver.com";
+        AddressBookDto.IdRequest idRequest = AddressBookDto.IdRequest.builder()
+                .id(2L)
+                .build();
+
+        //when
+        doNothing().when(userService).deleteAddressBook(currentUser,idRequest);
+
+        //then
+        mockMvc.perform(delete("/users/addressBook")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(idRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/changeUserInfo/addressBook/delete", requestFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 주소의 ID[PK]")
+                )));
+    }
+
+    @Test
+    @DisplayName("주소록 - 주소록에 있는 주소 중 하나를 수정한다.")
+    void updateAddressBook() throws Exception {
+        //given
+        AddressBookDto.SaveRequest saveRequest = AddressBookDto.SaveRequest.builder()
+                .id(1L)
+                .addressName("새 집")
+                .roadAddress("새집로 123")
+                .detailAddress("789동 123호")
+                .postalCode("23456")
+                .build();
+        //when
+        doNothing().when(userService).updateAddressBook(saveRequest);
+
+        //then
+        mockMvc.perform(patch("/users/addressBook")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(saveRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("users/changeUserInfo/addressBook/update",requestFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
+                        fieldWithPath("addressName").type(JsonFieldType.STRING).description("주소록 이름"),
+                        fieldWithPath("roadAddress").type(JsonFieldType.STRING).description("도로명 주소"),
+                        fieldWithPath("detailAddress").type(JsonFieldType.STRING).description("상세 주소"),
+                        fieldWithPath("postalCode").type(JsonFieldType.STRING).description("우편번호")
+                )));
     }
 }

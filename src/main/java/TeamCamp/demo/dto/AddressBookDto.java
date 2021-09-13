@@ -6,7 +6,6 @@ import lombok.*;
 
 public class AddressBookDto {
 
-
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class SaveRequest {
