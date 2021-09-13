@@ -17,7 +17,8 @@ public class Wishlist {
     @Id@GeneratedValue
     private Long id;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @OneToMany(mappedBy = "wishlist")

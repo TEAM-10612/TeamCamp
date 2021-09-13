@@ -3,11 +3,9 @@ package TeamCamp.demo.service;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.wishlist.ProductWishList;
 import TeamCamp.demo.domain.model.wishlist.Wishlist;
-import TeamCamp.demo.domain.repository.ProductRepository;
-import TeamCamp.demo.domain.repository.ProductWishListRepository;
-import TeamCamp.demo.domain.repository.WishListRepository;
+import TeamCamp.demo.domain.repository.*;
 import TeamCamp.demo.dto.ProductDto;
-import TeamCamp.demo.exception.product.DulicateProductWishListException;
+import TeamCamp.demo.exception.product.DuplicateProductWishListException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,8 +14,7 @@ import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.users.user.User;
 import TeamCamp.demo.domain.model.users.user.address.Address;
 import TeamCamp.demo.domain.model.users.user.address.AddressBook;
-import TeamCamp.demo.domain.model.users.user.address.AddressBookRepository;
-import TeamCamp.demo.domain.repository.UserRepository;
+import TeamCamp.demo.domain.repository.AddressBookRepository;
 import TeamCamp.demo.service.email.EmailCertificationService;
 import TeamCamp.demo.dto.AddressBookDto;
 import TeamCamp.demo.encrypt.EncryptionService;
@@ -46,6 +43,7 @@ public class UserService {
     private final ProductRepository productRepository;
     private final WishListRepository wishListRepository;
     private final ProductWishListRepository productWishListRepository;
+    private final AddressRepository addressRepository;
 
     //데이터 조회용. 추후 삭제
     public List<User> findAll() {
@@ -123,6 +121,8 @@ public class UserService {
 
     @Transactional
     public void delete(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자 입니다."));
         if(!userRepository.existsByEmailAndPassword(email,encryptionService.encrypt(password))){
             throw new WrongPasswordException();
         }
@@ -151,7 +151,7 @@ public class UserService {
         user.updateAccount(account);
     }
 
-
+    @Transactional(readOnly = true)
     public Account getAccount(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(()-> new UserNotFoundException("존재하지 않는 사용자입니다."));
@@ -159,33 +159,37 @@ public class UserService {
         return user.getAccount();
     }
 
-    public List<AddressBook> getAddressBook(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
-        return user.getAddressBook();
-    }
-
-    @Transactional
-    public void addAddressBook(String email, Address address) {
+    @Transactional(readOnly = true)
+    public List<Address> getAddressBook(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
 
-        user.addAddressBook(address);
+        AddressBook addressBook = user.getAddressBook();
+        return addressBook.getAddressList();
     }
 
     @Transactional
-    public void deleteAddressBook(AddressBookDto request) {
+    public void addAddressBook(String email, AddressBookDto.SaveRequest request) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
+
+        user.addAddress(request.toEntity());
+    }
+
+    @Transactional
+    public void deleteAddressBook(String email,AddressBookDto.IdRequest request) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
         Long addressBookId = request.getId();
         addressBookRepository.deleteById(addressBookId);
     }
 
     @Transactional
-    public void updateAddressBook(AddressBookDto request) {
-        Long addressBookId = request.getId();
-        AddressBook addressBook = addressBookRepository.findById(addressBookId)
-                .orElseThrow();
+    public void updateAddressBook(AddressBookDto.SaveRequest request) {
 
-        addressBook.updateAddressBook(request);
+        Long addressId = request.getId();
+        Address address = addressRepository.findById(addressId).orElseThrow();
+        address.updateAddress(request);
     }
     @Transactional
     public void updateNickname(String email, SaveRequest request) {
@@ -197,42 +201,5 @@ public class UserService {
         }
         user.updateNickname(request);
     }
-
-
-    public Set<ProductDto.WishProductResponse> getWishList(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자 입니다."));
-
-        if(user.getWishList() == null){
-            Wishlist wishlist = wishListRepository.save(new Wishlist());
-            user.createWishList(wishlist);
-        }
-        return user.getWishList();
-    }
-
-    @Transactional
-    public void addWishList(String email, ProductDto.IdRequest idRequest) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
-        if(user.getWishList() == null){
-            Wishlist wishlist = wishListRepository.save(new Wishlist());
-            user.createWishList(wishlist);
-        }
-
-        Product product = productRepository.findById(idRequest.getId()).orElseThrow();
-        ProductWishList productWishList  = productWishListRepository.save(new ProductWishList((Wishlist) user.getWishList(),product));
-
-        if(user.checkProductDuplicate(productWishList)){
-            throw new DulicateProductWishListException("장바구니 중복");
-        }
-        user.addWishListProduct(productWishList);
-    }
-
-    @Transactional
-    public void deleteWishList(ProductDto.IdRequest idRequest) {
-        productWishListRepository.deleteById(idRequest.getId());
-    }
-
-
 
 }

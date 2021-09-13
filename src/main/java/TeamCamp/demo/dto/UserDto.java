@@ -93,16 +93,13 @@ public class UserDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class LoginRequest {
 
         private String email;
         private String password;
-
-        @Builder
-        public LoginRequest(String email, String password) {
-            this.email = email;
-            this.password = password;
-        }
+        private String token;
 
         public void passwordEncryption(EncryptionService encryptionService) {
             this.password = encryptionService.encrypt(password);
@@ -110,23 +107,19 @@ public class UserDto {
     }
     @Getter
     @NoArgsConstructor
-    @Builder
     public static class UserInfoDto {
 
         private String email;
         private String nickname;
         private String phone;
-        private List<AddressBook> addressBooks;
         private Account account;
         private UserLevel userLevel;
 
         @Builder
-        public UserInfoDto(String email, String nickname, String phone, List<AddressBook> addressBooks, Account account, UserLevel userLevel) {
+        public UserInfoDto(String email, String nickname, String phone,UserLevel userLevel) {
             this.email = email;
             this.nickname = nickname;
             this.phone = phone;
-            this.addressBooks = addressBooks;
-            this.account = account;
             this.userLevel = userLevel;
         }
     }
@@ -211,16 +204,13 @@ public class UserDto {
     }
 
     @Getter
-    @NoArgsConstructor
     public static class UserDetailResponse{
         private Long id;
         private String email;
         private String nickname;
         private String phoneNumber;
         private Account account;
-        @JsonFormat
         private LocalDateTime modifiedDate;
-        @JsonFormat
         private LocalDateTime createDate;
         private UserLevel userLevel;
         private UserStatus userStatus;

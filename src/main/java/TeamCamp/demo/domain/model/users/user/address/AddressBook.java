@@ -1,31 +1,42 @@
 package TeamCamp.demo.domain.model.users.user.address;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import TeamCamp.demo.dto.AddressBookDto;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class AddressBook {
 
     @Id@GeneratedValue
     private Long id;
 
-    @Embedded
-    private Address address;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "ADDRESSBOOK_ID")
+    private List<Address> addressList = new ArrayList<>();
 
-    @Builder
     public AddressBook(Address address) {
-        this.address = address;
+
     }
 
-    public void updateAddressBook(AddressBookDto request){
-        address.updateAddress(request);
+
+    public void addAddress(Address address) {
+        addressList.add(address);
+    }
+
+    public void deleteAddress(Address address) {
+        addressList.remove(address);
+    }
+
+    public Address findAddress(Long addressId) {
+        return addressList.stream()
+                .filter(address -> address.getId().equals(addressId))
+                .findAny()
+                .orElseThrow();
     }
 }

@@ -16,6 +16,7 @@ import javax.persistence.*;
 public class Product extends BaseTimeEntity {
 
     @Id@GeneratedValue
+    @Column(name = "PRODUCT_ID")
     private Long id;
 
     private String name;
@@ -23,6 +24,7 @@ public class Product extends BaseTimeEntity {
     private String salePrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     private String productDescription;

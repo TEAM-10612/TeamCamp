@@ -1,9 +1,11 @@
 package TeamCamp.demo.domain.model.users.user;
 
+import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.users.UserStatus;
 import TeamCamp.demo.domain.model.wishlist.ProductWishList;
 import TeamCamp.demo.domain.model.wishlist.Wishlist;
 import TeamCamp.demo.dto.ProductDto;
+import TeamCamp.demo.dto.ProductDto.WishProductResponse;
 import lombok.*;
 import TeamCamp.demo.domain.model.users.UserBase;
 import TeamCamp.demo.domain.model.users.UserLevel;
@@ -29,6 +31,7 @@ import static TeamCamp.demo.dto.UserDto.*;
 public class User extends UserBase {
 
 
+
     @Column(name = "USER_NICKNAME")
     private String nickname;
 
@@ -37,10 +40,12 @@ public class User extends UserBase {
     @Column(name = "USER_PHONENUMBER")
     private String phone;
 
+    @OneToMany(mappedBy = "user")
+    private List<Product> products = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "USER_ID")
-    private List<AddressBook> addressBook = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "ADDRESSBOOK_ID")
+    private AddressBook addressBook;
 
     @Embedded
     @Column(name = "USER_ACCOUNT")
@@ -56,7 +61,6 @@ public class User extends UserBase {
                 .email(this.getEmail())
                 .nickname(this.getNickname())
                 .phone(this.getPhone())
-                .account(this.getAccount())
                 .userLevel(this.userLevel)
                 .build();
     }
@@ -77,8 +81,8 @@ public class User extends UserBase {
         this.account = account;
     }
 
-    public void addAddressBook(Address address){
-        this.addressBook.add(new AddressBook(address));
+    public void addAddress(Address address){
+        this.addressBook.addAddress(address);
     }
 
 
@@ -102,12 +106,11 @@ public class User extends UserBase {
     @Builder
     public User(Long id,String email, String password, UserLevel userLevel,
                 String nickname, LocalDateTime nicknameModifiedDate,
-                String phone,List<AddressBook>addressBooks,UserStatus userStatus) {
+                String phone,AddressBook addressBooks,UserStatus userStatus) {
         super( id, email, password, userLevel);
         this.nickname = nickname;
         this.nicknameModifiedDate = nicknameModifiedDate;
         this.phone = phone;
-        this.userLevel = userLevel;
         this.addressBook = addressBooks;
         this.userStatus = userStatus;
     }
@@ -142,7 +145,7 @@ public class User extends UserBase {
         wishlist.addWishListProduct(productWishList);
     }
 
-    public Set<ProductDto.WishProductResponse> getWishList(){
+    public Set<WishProductResponse> getWishLists(){
         return wishlist.getWishLists()
                 .stream()
                 .map(ProductWishList :: toWishProductDto)

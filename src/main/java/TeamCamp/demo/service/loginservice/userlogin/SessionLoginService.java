@@ -1,5 +1,6 @@
 package TeamCamp.demo.service.loginservice.userlogin;
 
+import TeamCamp.demo.exception.user.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import TeamCamp.demo.domain.model.users.UserLevel;
@@ -71,6 +72,9 @@ public class SessionLoginService {
     }
 
     private void banCheck(User user) {
+        if(user.isBan()){
+            throw new NotAuthorizedException("관리자에 의해 이용이 정지된 회원입니다.");
+        }
     }
 
 

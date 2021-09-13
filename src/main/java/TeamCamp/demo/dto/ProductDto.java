@@ -120,11 +120,13 @@ public class ProductDto {
         private Long id;
         private Long productId;
         private String name;
+        private Product product;
 
         @Builder
-        public WishProductResponse(Long id, Long productId, String name) {
+        public WishProductResponse(Long id, Long productId, String name,Product product) {
             this.id = id;
             this.productId = productId;
+            this.product = product;
             this.name = name;
         }
     }

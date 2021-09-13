@@ -1,6 +1,6 @@
 package TeamCamp.demo.exception;
 
-import TeamCamp.demo.exception.product.DulicateProductWishListException;
+import TeamCamp.demo.exception.product.DuplicateProductWishListException;
 import TeamCamp.demo.exception.product.IllegalMineTypeException;
 import TeamCamp.demo.exception.product.ImageRoadFailedException;
 import lombok.extern.slf4j.Slf4j;
@@ -123,8 +123,8 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(DulicateProductWishListException.class)
-    public final ResponseEntity<String> handleDuplicateCartItemException(DulicateProductWishListException ex){
+    @ExceptionHandler(DuplicateProductWishListException.class)
+    public final ResponseEntity<String> handleDuplicateCartItemException(DuplicateProductWishListException ex){
         log.debug("이미 위시리스트에 있는 상품입니다.", ex);
         return DUPLICATION_WISHLIST_PRODUCT;
     }
