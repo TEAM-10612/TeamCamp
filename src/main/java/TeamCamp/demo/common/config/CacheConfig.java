@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -39,9 +42,21 @@ import java.util.Map.Entry;
 public class CacheConfig {
 
 
-    private final RedisConnectionFactory redisConnectionFactory;
+
     private final CacheProperties cacheProperties;
 
+    @Value("${spring.redis.cache.host}")
+    private String redisHost;
+
+    @Value("${spring.redis.cache.port}")
+    private int redisPort;
+
+
+    @Bean(name = "redisCacheConnectionFactory")
+    public RedisConnectionFactory redisConnectionFactory(){
+        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisHost,redisPort);
+        return lettuceConnectionFactory;
+    }
 
     /*
      * Jackson2는 Java8의 LocalDate의 타입을 알지못해서적절하게 직렬화해주지 않는다.
@@ -52,7 +67,6 @@ public class CacheConfig {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS);
         mapper.registerModule(new JavaTimeModule());
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
         return mapper;
     }
 
@@ -93,7 +107,7 @@ public class CacheConfig {
     }
 
     @Bean
-    public CacheManager redisCacheManager() {
+    public CacheManager redisCacheManager(@Qualifier("redisCacheConnectionFactory")RedisConnectionFactory redisConnectionFactory) {
         RedisCacheManager redisCacheManager = RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)
                 .cacheDefaults(redisCacheDefaultConfiguration())
