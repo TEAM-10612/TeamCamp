@@ -1,17 +1,12 @@
 package TeamCamp.demo.service;
 
-import TeamCamp.demo.domain.model.product.Product;
-import TeamCamp.demo.domain.model.wishlist.ProductWishList;
-import TeamCamp.demo.domain.model.wishlist.Wishlist;
 import TeamCamp.demo.domain.repository.*;
-import TeamCamp.demo.dto.ProductDto;
-import TeamCamp.demo.exception.product.DuplicateProductWishListException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import TeamCamp.demo.domain.model.users.user.Account;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.user.address.Address;
 import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 import TeamCamp.demo.domain.repository.AddressBookRepository;
@@ -26,7 +21,6 @@ import TeamCamp.demo.exception.user.UserNotFoundException;
 
 
 import java.util.List;
-import java.util.Set;
 
 import static TeamCamp.demo.dto.UserDto.*;
 
@@ -172,6 +166,12 @@ public class UserService {
     public void addAddress(String email, AddressBookDto.SaveRequest request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
+
+        if(user.getAddressBook() == null){
+            AddressBook addressBook = addressBookRepository.save(new AddressBook());
+
+            user.createAddressBook(addressBook);
+        }
         user.addAddress(request.toEntity());
     }
 

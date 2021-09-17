@@ -1,8 +1,8 @@
 package TeamCamp.demo.domain.model.product;
 
 import lombok.*;
-import TeamCamp.demo.domain.model.users.user.BaseTimeEntity;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.BaseTimeEntity;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.dto.ProductDto.ProductInfoResponse;
 import TeamCamp.demo.dto.ProductDto.SaveRequest;
 
@@ -39,8 +39,7 @@ public class Product extends BaseTimeEntity {
     private String thumbnailImagePath;
 
 
-    @Enumerated(EnumType.STRING)
-    private TransactionMethod transactionMethod;
+
 
 
     public ProductInfoResponse toProductInfoResponse(){
@@ -54,7 +53,6 @@ public class Product extends BaseTimeEntity {
                 .productState(this.productState)
                 .originImagePath(this.originImagePath)
                 .thumbnailImagePath(this.thumbnailImagePath)
-                .transactionMethod(this.transactionMethod)
                 .build();
     }
 
@@ -66,7 +64,6 @@ public class Product extends BaseTimeEntity {
         this.productState = request.getProductState();
         this.originImagePath = request.getOriginImagePath();
         this.thumbnailImagePath = request.getThumbnailImagePath();
-        this.transactionMethod = request.getTransactionMethod();
     }
 
 }

@@ -1,9 +1,11 @@
-package TeamCamp.demo.domain.model.users.user;
+package TeamCamp.demo.domain.model.users;
 
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.users.UserStatus;
+import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.wishlist.ProductWishList;
 import TeamCamp.demo.domain.model.wishlist.Wishlist;
+import TeamCamp.demo.dto.AddressBookDto;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.ProductDto.WishProductResponse;
 import lombok.*;
@@ -43,7 +45,7 @@ public class User extends UserBase {
     @OneToMany(mappedBy = "user")
     private List<Product> products = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL/*orphanRemoval = true*/)
     @JoinColumn(name = "ADDRESSBOOK_ID")
     private AddressBook addressBook;
 
@@ -126,6 +128,14 @@ public class User extends UserBase {
                 .userLevel(this.userLevel)
                 .userStatus(this.userStatus)
                 .build();
+    }
+
+    public void createAddressBook(AddressBook addressBook){
+        this.addressBook = addressBook;
+    }
+
+    public void deleteAddress(Address address){
+        this.addressBook.deleteAddress(address);
     }
 
     public void updatedUserStatus(UserStatus userStatus){

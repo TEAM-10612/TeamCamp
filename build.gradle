@@ -37,6 +37,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.webjars/bootstrap
 	implementation group: 'org.webjars', name: 'bootstrap', version: '5.1.0'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	implementation 'org.springframework.session:spring-session-data-redis'
 	compileOnly 'org.springframework.boot:spring-boot-starter-data-redis:2.3.1.RELEASE'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'

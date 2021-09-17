@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import TeamCamp.demo.dto.UserDto;
 
 
-public interface UserRepositoryCustom  {
+public interface AdminRepositoryCustom {
 
     Page<UserDto.UserListResponse> searchByUsers(UserDto.UserSearchCondition searchRequest, Pageable pageable);
 }

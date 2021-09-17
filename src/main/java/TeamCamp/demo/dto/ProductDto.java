@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
 import TeamCamp.demo.domain.model.product.TransactionMethod;
-import TeamCamp.demo.domain.model.product.TransactionStatus;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 
 
 import javax.validation.constraints.NotBlank;
@@ -63,7 +62,6 @@ public class ProductDto {
                     .productDescription(this.productDescription)
                     .releasePrice(this.releasePrice)
                     .productState(this.productState)
-                    .transactionMethod(this.transactionMethod)
                     .originImagePath(this.originImagePath)
                     .thumbnailImagePath(this.thumbnailImagePath)
                     .build();
@@ -83,11 +81,9 @@ public class ProductDto {
         //@JsonDeserialize(using = LocalDateDeserializer.class)
         //@JsonSerialize(using = LocalDateSerializer.class)
         private String releasePrice;
-        private TransactionStatus transactionStatus;
         private String originImagePath;
         private String thumbnailImagePath;
         private ProductState productState;
-        private TransactionMethod transactionMethod;
 
         public Product toEntity(){
             return Product.builder()
@@ -97,7 +93,6 @@ public class ProductDto {
                     .salePrice(this.salePrice)
                     .productDescription(this.productDescription)
                     .releasePrice(this.releasePrice)
-                    .transactionMethod(this.transactionMethod)
                     .originImagePath(this.thumbnailImagePath)
                     .productState(this.productState)
                     .build();

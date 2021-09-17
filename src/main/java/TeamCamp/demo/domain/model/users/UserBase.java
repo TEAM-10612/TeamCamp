@@ -3,7 +3,6 @@ package TeamCamp.demo.domain.model.users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import TeamCamp.demo.domain.model.users.user.BaseTimeEntity;
 
 import javax.persistence.*;
 

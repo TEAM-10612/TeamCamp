@@ -1,15 +1,12 @@
 package TeamCamp.demo.service;
 
 import TeamCamp.demo.domain.model.product.Product;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.wishlist.ProductWishList;
-import TeamCamp.demo.domain.model.wishlist.Wishlist;
 import TeamCamp.demo.domain.repository.ProductRepository;
 import TeamCamp.demo.domain.repository.ProductWishListRepository;
 import TeamCamp.demo.domain.repository.UserRepository;
-import TeamCamp.demo.domain.repository.WishListRepository;
 import TeamCamp.demo.dto.ProductDto;
-import TeamCamp.demo.exception.product.DuplicateProductWishListException;
 import TeamCamp.demo.exception.product.DuplicateProductWishListException;
 import TeamCamp.demo.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;

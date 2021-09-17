@@ -1,13 +1,11 @@
 package TeamCamp.demo.dto;
 
 import TeamCamp.demo.domain.model.users.UserStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import TeamCamp.demo.domain.model.users.user.Account;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.UserLevel;
-import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 
 import TeamCamp.demo.encrypt.EncryptionService;
 
@@ -16,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
@@ -59,7 +56,7 @@ public class UserDto {
                     .nicknameModifiedDate(LocalDateTime.now())
                     .nickname(this.nickname)
                     .phone(this.phone)
-                    .userLevel(UserLevel.UNAUTH)
+                    .userLevel(UserLevel.ADMIN)
                     .userStatus(UserStatus.NORMAL)
                     .build();
         }

@@ -37,7 +37,6 @@ public class ProductService {
         productRepository.save(request.toEntity());
     }
 
-
     @Cacheable(value = "product",key = "#id")
     public ProductInfoResponse getProductInfo(Long id){
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException())
@@ -50,6 +49,7 @@ public class ProductService {
                 .map(Product::toProductInfoResponse)
                 .collect(Collectors.toList());
     }
+
     @Cacheable(value = "product",key = "#id")
     @Transactional
     public void deleteProduct(Long id){

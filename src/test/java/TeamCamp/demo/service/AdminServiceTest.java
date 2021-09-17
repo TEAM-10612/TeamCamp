@@ -2,7 +2,7 @@ package TeamCamp.demo.service;
 
 import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.domain.model.users.UserStatus;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.repository.UserRepository;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.dto.UserDto.UserListResponse;

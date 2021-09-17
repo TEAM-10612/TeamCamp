@@ -2,24 +2,21 @@ package TeamCamp.demo.controller;
 
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
-import TeamCamp.demo.domain.model.product.TransactionMethod;
 import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.domain.model.users.UserStatus;
 import TeamCamp.demo.domain.model.users.user.Account;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.user.address.Address;
-import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 import TeamCamp.demo.dto.AddressBookDto;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.exception.user.*;
 import TeamCamp.demo.service.UserService;
 import TeamCamp.demo.service.email.EmailCertificationService;
-import TeamCamp.demo.service.loginservice.userlogin.SessionLoginService;
+import TeamCamp.demo.service.loginservice.SessionLoginService;
 import TeamCamp.demo.service.sms.SmsCertificationService;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.dto.UserDto.SaveRequest;
 import TeamCamp.demo.exception.certification.AuthenticationNumberMismatchException;
-import com.ctc.wstx.shaded.msv_core.reader.trex.ng.ListState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -112,7 +109,6 @@ class UserApiControllerTest {
                 .productDescription("good")
                 .releasePrice("300000")
                 .productState(ProductState.BEST)
-                .transactionMethod(TransactionMethod.NON_CONTACT)
                 .originImagePath(ProductOriginImagePath)
                 .thumbnailImagePath(ProductThumbnailImagePath)
                 .build();

@@ -1,7 +1,7 @@
 package TeamCamp.demo.service;
 
 import TeamCamp.demo.domain.model.users.UserStatus;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.dto.UserDto.UserDetailResponse;
 import TeamCamp.demo.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;

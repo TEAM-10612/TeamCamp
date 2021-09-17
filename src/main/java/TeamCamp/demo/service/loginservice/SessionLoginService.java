@@ -1,10 +1,10 @@
-package TeamCamp.demo.service.loginservice.userlogin;
+package TeamCamp.demo.service.loginservice;
 
 import TeamCamp.demo.exception.user.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import TeamCamp.demo.domain.model.users.UserLevel;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.domain.repository.UserRepository;
 import TeamCamp.demo.encrypt.EncryptionService;

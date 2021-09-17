@@ -1,4 +1,4 @@
-package TeamCamp.demo.domain.model.users.user;
+package TeamCamp.demo.domain.model.users;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

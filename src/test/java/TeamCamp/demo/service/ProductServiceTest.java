@@ -7,17 +7,13 @@ import TeamCamp.demo.domain.model.product.ProductState;
 import TeamCamp.demo.domain.model.product.TransactionMethod;
 import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.domain.model.users.UserStatus;
-import TeamCamp.demo.domain.model.users.user.Account;
-import TeamCamp.demo.domain.model.users.user.User;
-import TeamCamp.demo.domain.model.users.user.address.Address;
-import TeamCamp.demo.domain.model.users.user.address.AddressBook;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.repository.ProductRepository;
 import TeamCamp.demo.domain.repository.UserRepository;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.ProductDto.SaveRequest;
 import TeamCamp.demo.exception.product.ImageRoadFailedException;
 import TeamCamp.demo.exception.product.ProductNotFoundException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -84,7 +80,6 @@ class ProductServiceTest {
                 .productDescription("good")
                 .releasePrice("300000")
                 .productState(ProductState.BEST)
-                .transactionMethod(TransactionMethod.NON_CONTACT)
                 .originImagePath(ProductOriginImagePath)
                 .thumbnailImagePath(ProductThumbnailImagePath)
                 .build();
@@ -98,7 +93,6 @@ class ProductServiceTest {
                 .productDescription("good")
                 .releasePrice("300000")
                 .productState(ProductState.BEST)
-                .transactionMethod(TransactionMethod.NON_CONTACT)
                 .build();
     }
 
@@ -133,7 +127,6 @@ class ProductServiceTest {
                 .productDescription("good")
                 .releasePrice("300000")
                 .productState(ProductState.BEST)
-                .transactionMethod(TransactionMethod.NON_CONTACT)
                 .build();
     }
 
@@ -145,7 +138,6 @@ class ProductServiceTest {
                 .productDescription("good")
                 .releasePrice("300000")
                 .productState(ProductState.BEST)
-                .transactionMethod(TransactionMethod.NON_CONTACT)
                 .build();
     }
     private MultipartFile createImageFile() {
@@ -173,7 +165,6 @@ class ProductServiceTest {
         assertThat(productInfoResponse.getProductDescription()).isEqualTo(product.getProductDescription());
         assertThat(productInfoResponse.getReleasePrice()).isEqualTo(product.getReleasePrice());
         assertThat(productInfoResponse.getProductState()).isEqualTo(product.getProductState());
-        assertThat(productInfoResponse.getTransactionMethod()).isEqualTo(product.getTransactionMethod());
         assertThat(productInfoResponse.getOriginImagePath()).isEqualTo(product.getOriginImagePath());
         assertThat(productInfoResponse.getThumbnailImagePath()).isEqualTo(product.getThumbnailImagePath());
         Mockito.verify(productRepository,Mockito.times(1)).findById(id);

@@ -2,34 +2,25 @@ package TeamCamp.demo.service;
 
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
-import TeamCamp.demo.domain.model.product.TransactionMethod;
-import TeamCamp.demo.domain.model.users.UserLevel;
-import TeamCamp.demo.domain.model.users.UserStatus;
 import TeamCamp.demo.domain.model.users.user.Account;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.user.address.Address;
 import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 import TeamCamp.demo.domain.repository.*;
 import TeamCamp.demo.dto.AddressBookDto;
-import TeamCamp.demo.dto.AddressBookDto.SaveRequest;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.encrypt.EncryptionService;
 import TeamCamp.demo.exception.user.*;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.inject.Inject;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +81,6 @@ class UserServiceTest {
                 .productDescription("good")
                 .releasePrice("300000")
                 .productState(ProductState.BEST)
-                .transactionMethod(TransactionMethod.NON_CONTACT)
                 .originImagePath(ProductOriginImagePath)
                 .thumbnailImagePath(ProductThumbnailImagePath)
                 .build();

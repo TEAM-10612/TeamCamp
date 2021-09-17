@@ -1,29 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
-import {useState,useEffect} from "react";
+import './index.css'
+import {useState, useEffect, Component} from "react";
+import {Button} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 
 
-function App() {
-    const [message,setMessage] = useState("");
-
-    useEffect(() => {
-      fetch('/api/version1')
-          .then(response => response.text())
-          .then(message => {
-              setMessage(message);
-        });
-    },[])
-    return (
-        <div className={"App"}>
-          <header className={"App-header"}>
-            <h1 className={"App-title"}>{message}</h1>
-          </header>
-          <p className={"App-intro"}>
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
-        </div>
-    )
+class App extends Component{
+    render() {
+        return(
+            <div className="App">
+                <Button><Link to = "/api/version1">CAMPING_GO</Link></Button>
+            </div>
+        )
+    }
 }
 
 export default App;

@@ -17,7 +17,7 @@ public class AddressBook {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL /*, orphanRemoval = true*/)
     @JoinColumn(name = "ADDRESSBOOK_ID")
     private List<Address> addressList = new ArrayList<>();
 

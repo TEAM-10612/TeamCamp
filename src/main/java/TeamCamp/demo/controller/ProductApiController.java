@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/products")
-public class ProductController {
+public class ProductApiController {
 
     private final ProductService productService;
 
@@ -25,7 +25,7 @@ public class ProductController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createProduct(@Valid@RequestBody SaveRequest request ,
-                              @RequestPart MultipartFile productImage) throws IOException {
+                              @RequestBody MultipartFile productImage) throws IOException {
         productService.saveProduct(request,productImage);
 
     }

@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import TeamCamp.demo.domain.model.users.UserLevel;
-import TeamCamp.demo.domain.repository.UserRepositoryCustom;
+import TeamCamp.demo.domain.repository.AdminRepositoryCustom;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.dto.UserDto.UserListResponse;
 
@@ -22,7 +22,7 @@ import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
 @Repository
-public class UserRepositoryImpl implements UserRepositoryCustom {
+public class AdminRepositoryImpl implements AdminRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 

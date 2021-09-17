@@ -15,8 +15,8 @@ import TeamCamp.demo.util.certification.sms.SmsMessageTemplate;
 
 import java.util.HashMap;
 
-import static TeamCamp.demo.apikey.CoolSmsConstants.APP_VERSION;
-import static TeamCamp.demo.apikey.CoolSmsConstants.SMS_TYPE;
+import static TeamCamp.demo.util.CoolSmsConstants.APP_VERSION;
+import static TeamCamp.demo.util.CoolSmsConstants.SMS_TYPE;
 import static TeamCamp.demo.util.RandomNumberGeneration.makeRandomNumber;
 
 @RequiredArgsConstructor

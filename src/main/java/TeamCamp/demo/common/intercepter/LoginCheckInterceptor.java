@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import TeamCamp.demo.domain.model.users.UserLevel;
-import TeamCamp.demo.service.loginservice.userlogin.SessionLoginService;
+import TeamCamp.demo.service.loginservice.SessionLoginService;
 import TeamCamp.demo.common.annotation.LoginCheck;
 import TeamCamp.demo.exception.user.NotAuthorizedException;
 import TeamCamp.demo.exception.user.UnauthenticatedUserException;
@@ -25,6 +25,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Inject
     private Environment environment;
 
+
+    //컨트롤러 메서드 실행되기전
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler)
@@ -37,6 +39,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             LoginCheck loginCheck = handlerMethod.getMethodAnnotation(LoginCheck.class);
+
 
             if (loginCheck == null) {
                 return true;

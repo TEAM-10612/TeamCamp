@@ -2,8 +2,7 @@ package TeamCamp.demo.service;
 
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
-import TeamCamp.demo.domain.model.product.TransactionMethod;
-import TeamCamp.demo.domain.model.users.user.User;
+import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.wishlist.ProductWishList;
 import TeamCamp.demo.domain.model.wishlist.Wishlist;
 import TeamCamp.demo.domain.repository.ProductRepository;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -66,7 +64,6 @@ class WishListServiceTest {
                 .productDescription("good")
                 .releasePrice("300000")
                 .productState(ProductState.BEST)
-                .transactionMethod(TransactionMethod.NON_CONTACT)
                 .originImagePath(ProductOriginImagePath)
                 .thumbnailImagePath(ProductThumbnailImagePath)
                 .build();

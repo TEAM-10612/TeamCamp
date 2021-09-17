@@ -2,15 +2,12 @@ package TeamCamp.demo.controller;
 
 
 
-import TeamCamp.demo.dto.ProductDto;
-import TeamCamp.demo.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import TeamCamp.demo.service.loginservice.userlogin.SessionLoginService;
+import TeamCamp.demo.service.loginservice.SessionLoginService;
 import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.users.user.address.Address;
-import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 import TeamCamp.demo.common.annotation.CurrentUser;
 import TeamCamp.demo.common.annotation.LoginCheck;
 import TeamCamp.demo.service.UserService;
@@ -21,7 +18,6 @@ import TeamCamp.demo.dto.AddressBookDto;
 import javax.validation.Valid;
 
 import java.util.List;
-import java.util.Set;
 
 import static TeamCamp.demo.dto.UserDto.*;
 import static TeamCamp.demo.util.ResponseConstants.CREATED;
@@ -230,6 +226,7 @@ public class UserApiController {
         userService.updateAddressBook(request);
     }
 
+    @LoginCheck
     @PatchMapping("/nickname")
     public void updateNickname(@CurrentUser String email,@RequestBody SaveRequest request){
         userService.updateNickname(email,request);
