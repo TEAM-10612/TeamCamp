@@ -78,7 +78,6 @@ class ProductServiceTest {
                 .user(user)
                 .salePrice("230000")
                 .productDescription("good")
-                .releasePrice("300000")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)
                 .thumbnailImagePath(ProductThumbnailImagePath)
@@ -91,7 +90,6 @@ class ProductServiceTest {
                 .user(user)
                 .salePrice("230000")
                 .productDescription("good")
-                .releasePrice("300000")
                 .productState(ProductState.BEST)
                 .build();
     }
@@ -163,7 +161,7 @@ class ProductServiceTest {
         assertThat(productInfoResponse.getUser()).isEqualTo(product.getUser());
         assertThat(productInfoResponse.getSalePrice()).isEqualTo(product.getSalePrice());
         assertThat(productInfoResponse.getProductDescription()).isEqualTo(product.getProductDescription());
-        assertThat(productInfoResponse.getReleasePrice()).isEqualTo(product.getReleasePrice());
+
         assertThat(productInfoResponse.getProductState()).isEqualTo(product.getProductState());
         assertThat(productInfoResponse.getOriginImagePath()).isEqualTo(product.getOriginImagePath());
         assertThat(productInfoResponse.getThumbnailImagePath()).isEqualTo(product.getThumbnailImagePath());

@@ -1,6 +1,7 @@
 package TeamCamp.demo.dto;
 
 import TeamCamp.demo.domain.model.users.UserStatus;
+import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import TeamCamp.demo.domain.model.users.user.Account;
@@ -240,6 +241,23 @@ public class UserDto {
             this.userStatus = userStatus;
         }
     }
+
+
+
+
+    @Getter
+    @NoArgsConstructor
+    public static class TradeUserInfo{
+        private AddressBook addressBook;
+        private Account account;
+
+        @Builder
+        public TradeUserInfo(AddressBook addressBook, Account account) {
+            this.addressBook = addressBook;
+            this.account = account;
+        }
+    }
+
 
 
 

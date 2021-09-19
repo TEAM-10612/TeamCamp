@@ -56,6 +56,8 @@ dependencies {
 	//querydsl 추가
 	implementation 'com.querydsl:querydsl-apt'
 
+	implementation "org.springframework.boot:spring-boot-starter-websocket"
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.11.4'
 
 	/* Redis 사용을 위한 의존성 추가 */
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'

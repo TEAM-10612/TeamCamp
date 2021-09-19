@@ -1,4 +1,4 @@
 package TeamCamp.demo.domain.model.trade;
 
-public class Trade {
+public interface TradeRepository {
 }

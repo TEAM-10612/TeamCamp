@@ -29,7 +29,8 @@ public class Product extends BaseTimeEntity {
 
     private String productDescription;
 
-    private String releasePrice;
+    @Enumerated(EnumType.STRING)
+    private TradeStatus tradeStatus;
 
 
     @Enumerated(EnumType.STRING)
@@ -49,7 +50,7 @@ public class Product extends BaseTimeEntity {
                 .user(this.user)
                 .salePrice(this.salePrice)
                 .productDescription(this.productDescription)
-                .releasePrice(this.releasePrice)
+                .tradeStatus(this.tradeStatus)
                 .productState(this.productState)
                 .originImagePath(this.originImagePath)
                 .thumbnailImagePath(this.thumbnailImagePath)
@@ -60,7 +61,6 @@ public class Product extends BaseTimeEntity {
         this.name =request.getName();
         this.salePrice = request.getSalePrice();
         this.productDescription = request.getProductDescription();
-        this.releasePrice = request.getReleasePrice();
         this.productState = request.getProductState();
         this.originImagePath = request.getOriginImagePath();
         this.thumbnailImagePath = request.getThumbnailImagePath();

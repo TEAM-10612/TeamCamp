@@ -1,5 +1,6 @@
 package TeamCamp.demo.dto;
 
+import TeamCamp.demo.domain.model.product.TradeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +35,8 @@ public class ProductDto {
 
         private User user;
 
-        private String releasePrice;
+
+        private TradeStatus tradeStatus;
 
         @NotNull(message = "제품의 상태를 선택해주세요.")
         private ProductState productState;
@@ -60,7 +62,7 @@ public class ProductDto {
                     .name(this.name)
                     .salePrice(this.salePrice)
                     .productDescription(this.productDescription)
-                    .releasePrice(this.releasePrice)
+                    .tradeStatus(this.tradeStatus)
                     .productState(this.productState)
                     .originImagePath(this.originImagePath)
                     .thumbnailImagePath(this.thumbnailImagePath)
@@ -77,10 +79,8 @@ public class ProductDto {
         private String name;
         private User user;
         private String salePrice;
+        private TradeStatus tradeStatus;
         private String productDescription;
-        //@JsonDeserialize(using = LocalDateDeserializer.class)
-        //@JsonSerialize(using = LocalDateSerializer.class)
-        private String releasePrice;
         private String originImagePath;
         private String thumbnailImagePath;
         private ProductState productState;
@@ -91,8 +91,8 @@ public class ProductDto {
                     .name(this.name)
                     .user(this.user)
                     .salePrice(this.salePrice)
+                    .tradeStatus(this.tradeStatus)
                     .productDescription(this.productDescription)
-                    .releasePrice(this.releasePrice)
                     .originImagePath(this.thumbnailImagePath)
                     .productState(this.productState)
                     .build();

@@ -107,7 +107,6 @@ class UserApiControllerTest {
                 .user(user)
                 .salePrice("230000")
                 .productDescription("good")
-                .releasePrice("300000")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)
                 .thumbnailImagePath(ProductThumbnailImagePath)

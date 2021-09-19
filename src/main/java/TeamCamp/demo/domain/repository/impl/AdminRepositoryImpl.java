@@ -17,7 +17,7 @@ import TeamCamp.demo.dto.UserDto.UserListResponse;
 import java.util.List;
 
 
-import static TeamCamp.demo.domain.model.users.user.QUser.user;
+import static TeamCamp.demo.domain.model.users.QUser.user;
 import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
