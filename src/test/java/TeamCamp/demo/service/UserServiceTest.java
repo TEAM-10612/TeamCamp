@@ -7,7 +7,7 @@ import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.user.address.Address;
 import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 import TeamCamp.demo.domain.repository.*;
-import TeamCamp.demo.dto.AddressBookDto;
+import TeamCamp.demo.dto.AddressDto;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.encrypt.EncryptionService;
 import TeamCamp.demo.exception.user.*;
@@ -237,7 +237,7 @@ class UserServiceTest {
     void updateAddressBook() {
         Address address =
                 new Address("우리집","하늘로12","122-2033","12234");
-        AddressBookDto.SaveRequest request = AddressBookDto.SaveRequest.builder()
+        AddressDto.SaveRequest request = AddressDto.SaveRequest.builder()
                 .id(1L)
                 .addressName("new House")
                 .roadAddress("가나로 123")
@@ -246,7 +246,7 @@ class UserServiceTest {
                 .build();
         when(addressRepository.findById(request.getId()))
                 .thenReturn(Optional.of(address));
-        userService.updateAddressBook(request);
+        userService.updateAddress(request);
 
         assertThat(address.getAddressName()).isEqualTo(request.getAddressName());
         assertThat(address.getRoadAddress()).isEqualTo(request.getRoadAddress());
@@ -268,7 +268,7 @@ class UserServiceTest {
                 .addressBooks(addressBooks)
                 .build();
 
-        AddressBookDto.SaveRequest request = AddressBookDto.SaveRequest.builder()
+        AddressDto.SaveRequest request = AddressDto.SaveRequest.builder()
                 .id(1L)
                 .addressName("새집")
                 .roadAddress("김수로 123")
@@ -287,7 +287,7 @@ class UserServiceTest {
     void getAddressBook() {
         AddressBook addressBook = new AddressBook();
 
-        AddressBookDto.SaveRequest  request = AddressBookDto.SaveRequest.builder()
+        AddressDto.SaveRequest  request = AddressDto.SaveRequest.builder()
                 .id(1L)
                 .addressName("새 집")
                 .roadAddress("새집로 123")

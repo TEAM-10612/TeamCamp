@@ -7,7 +7,7 @@ import TeamCamp.demo.domain.model.users.UserStatus;
 import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.user.address.Address;
-import TeamCamp.demo.dto.AddressBookDto;
+import TeamCamp.demo.dto.AddressDto;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.exception.user.*;
 import TeamCamp.demo.service.UserService;
@@ -879,7 +879,7 @@ class UserApiControllerTest {
     @DisplayName("주소록 - 주소록에 주소를 추가한다.")
     void addAddressBook() throws Exception {
         //given
-        AddressBookDto.SaveRequest requestDto = AddressBookDto.SaveRequest.builder()
+        AddressDto.SaveRequest requestDto = AddressDto.SaveRequest.builder()
                 .id(1L)
                 .addressName("새 집")
                 .roadAddress("새집로 123")
@@ -938,12 +938,12 @@ class UserApiControllerTest {
     void deleteAddressBook() throws Exception {
         //given
         String currentUser = "rdj1014@naver.com";
-        AddressBookDto.IdRequest idRequest = AddressBookDto.IdRequest.builder()
+        AddressDto.IdRequest idRequest = AddressDto.IdRequest.builder()
                 .id(2L)
                 .build();
 
         //when
-        doNothing().when(userService).deleteAddressBook(currentUser,idRequest);
+        doNothing().when(userService).deleteAddress(currentUser,idRequest);
 
         //then
         mockMvc.perform(delete("/users/addressBook")
@@ -960,7 +960,7 @@ class UserApiControllerTest {
     @DisplayName("주소록 - 주소록에 있는 주소 중 하나를 수정한다.")
     void updateAddressBook() throws Exception {
         //given
-        AddressBookDto.SaveRequest saveRequest = AddressBookDto.SaveRequest.builder()
+        AddressDto.SaveRequest saveRequest = AddressDto.SaveRequest.builder()
                 .id(1L)
                 .addressName("새 집")
                 .roadAddress("새집로 123")
@@ -968,7 +968,7 @@ class UserApiControllerTest {
                 .postalCode("23456")
                 .build();
         //when
-        doNothing().when(userService).updateAddressBook(saveRequest);
+        doNothing().when(userService).updateAddress(saveRequest);
 
         //then
         mockMvc.perform(patch("/users/addressBook")

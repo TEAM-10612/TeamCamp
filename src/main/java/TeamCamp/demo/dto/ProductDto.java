@@ -36,8 +36,6 @@ public class ProductDto {
         private User user;
 
 
-        private TradeStatus tradeStatus;
-
         @NotNull(message = "제품의 상태를 선택해주세요.")
         private ProductState productState;
 
@@ -58,11 +56,10 @@ public class ProductDto {
         private TransactionMethod transactionMethod;
 
         public Product toEntity(){
-            return Product.builder()
+            return TeamCamp.demo.domain.model.product.Product.builder()
                     .name(this.name)
                     .salePrice(this.salePrice)
                     .productDescription(this.productDescription)
-                    .tradeStatus(this.tradeStatus)
                     .productState(this.productState)
                     .originImagePath(this.originImagePath)
                     .thumbnailImagePath(this.thumbnailImagePath)
@@ -79,24 +76,23 @@ public class ProductDto {
         private String name;
         private User user;
         private String salePrice;
-        private TradeStatus tradeStatus;
         private String productDescription;
         private String originImagePath;
         private String thumbnailImagePath;
         private ProductState productState;
+    }
 
-        public Product toEntity(){
-            return Product.builder()
-                    .id(this.id)
-                    .name(this.name)
-                    .user(this.user)
-                    .salePrice(this.salePrice)
-                    .tradeStatus(this.tradeStatus)
-                    .productDescription(this.productDescription)
-                    .originImagePath(this.thumbnailImagePath)
-                    .productState(this.productState)
-                    .build();
-        }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ProductInfoByTrade{
+        private Long id;
+        private String name;
+        private User user;
+        private String salePrice;
+        private String productDescription;
+        private ProductState productState;
     }
     @Getter
     @NoArgsConstructor
@@ -125,5 +121,7 @@ public class ProductDto {
             this.name = name;
         }
     }
+
+
 
 }

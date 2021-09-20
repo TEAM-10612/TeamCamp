@@ -1,5 +1,6 @@
 package TeamCamp.demo.domain.model.product;
 
+import TeamCamp.demo.dto.ProductDto;
 import lombok.*;
 import TeamCamp.demo.domain.model.users.BaseTimeEntity;
 import TeamCamp.demo.domain.model.users.User;
@@ -40,9 +41,6 @@ public class Product extends BaseTimeEntity {
     private String thumbnailImagePath;
 
 
-
-
-
     public ProductInfoResponse toProductInfoResponse(){
         return ProductInfoResponse.builder()
                 .id(this.id)
@@ -50,12 +48,22 @@ public class Product extends BaseTimeEntity {
                 .user(this.user)
                 .salePrice(this.salePrice)
                 .productDescription(this.productDescription)
-                .tradeStatus(this.tradeStatus)
                 .productState(this.productState)
                 .originImagePath(this.originImagePath)
-                .thumbnailImagePath(this.thumbnailImagePath)
                 .build();
     }
+
+
+   public ProductDto.ProductInfoByTrade toProductInfoByTrade(){
+        return ProductDto.ProductInfoByTrade.builder()
+                .id(this.id)
+                .name(this.name)
+                .user(this.user)
+                .salePrice(this.salePrice)
+                .productDescription(this.productDescription)
+                .productState(this.productState)
+                .build();
+   }
 
     public void update(SaveRequest request){
         this.name =request.getName();

@@ -110,7 +110,6 @@ public class UserDto {
         private String email;
         private String nickname;
         private String phone;
-        private Account account;
         private UserLevel userLevel;
 
         @Builder

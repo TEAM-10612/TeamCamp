@@ -4,7 +4,7 @@ import TeamCamp.demo.domain.model.users.user.address.Address;
 import lombok.*;
 
 
-public class AddressBookDto {
+public class AddressDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)

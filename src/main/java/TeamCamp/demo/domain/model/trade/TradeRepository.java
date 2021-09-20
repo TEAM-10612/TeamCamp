@@ -1,4 +1,6 @@
 package TeamCamp.demo.domain.model.trade;
 
-public interface TradeRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TradeRepository extends JpaRepository<Trade,Long> {
 }

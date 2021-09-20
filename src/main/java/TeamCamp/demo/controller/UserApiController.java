@@ -13,7 +13,7 @@ import TeamCamp.demo.common.annotation.LoginCheck;
 import TeamCamp.demo.service.UserService;
 import TeamCamp.demo.service.email.EmailCertificationService;
 import TeamCamp.demo.service.sms.SmsCertificationService;
-import TeamCamp.demo.dto.AddressBookDto;
+import TeamCamp.demo.dto.AddressDto;
 
 import javax.validation.Valid;
 
@@ -203,7 +203,7 @@ public class UserApiController {
 
     @LoginCheck
     @PostMapping("/addressBook")
-    public void addAddressBook(@CurrentUser String email, @RequestBody AddressBookDto.SaveRequest saveRequest){
+    public void addAddressBook(@CurrentUser String email, @RequestBody AddressDto.SaveRequest saveRequest){
         userService.addAddress(email,saveRequest);
     }
 
@@ -216,14 +216,14 @@ public class UserApiController {
 
     @LoginCheck
     @DeleteMapping("/addressBook")
-    public void deleteAddressBook(@CurrentUser String email,@RequestBody AddressBookDto.IdRequest request){
-        userService.deleteAddressBook(email,request);
+    public void deleteAddressBook(@CurrentUser String email,@RequestBody AddressDto.IdRequest request){
+        userService.deleteAddress(email,request);
     }
 
     @LoginCheck
     @PatchMapping("/addressBook")
-    public void updateAddressBook(@RequestBody AddressBookDto.SaveRequest request){
-        userService.updateAddressBook(request);
+    public void updateAddressBook(@RequestBody AddressDto.SaveRequest request){
+        userService.updateAddress(request);
     }
 
     @LoginCheck

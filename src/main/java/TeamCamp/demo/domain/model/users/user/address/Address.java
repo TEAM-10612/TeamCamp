@@ -1,10 +1,9 @@
 package TeamCamp.demo.domain.model.users.user.address;
 
 import lombok.*;
-import TeamCamp.demo.dto.AddressBookDto;
+import TeamCamp.demo.dto.AddressDto;
 
 
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,7 +22,7 @@ public class Address {
     private String detailAddress;
     private String postalCode;
 
-    public void updateAddress(AddressBookDto.SaveRequest requestDto) {
+    public void updateAddress(AddressDto.SaveRequest requestDto) {
         this.addressName = requestDto.getAddressName();
         this.roadAddress = requestDto.getRoadAddress();
         this.detailAddress = requestDto.getDetailAddress();

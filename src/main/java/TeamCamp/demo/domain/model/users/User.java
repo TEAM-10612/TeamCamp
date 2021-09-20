@@ -1,16 +1,11 @@
 package TeamCamp.demo.domain.model.users;
 
 import TeamCamp.demo.domain.model.product.Product;
-import TeamCamp.demo.domain.model.users.UserStatus;
 import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.wishlist.ProductWishList;
 import TeamCamp.demo.domain.model.wishlist.Wishlist;
-import TeamCamp.demo.dto.AddressBookDto;
-import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.ProductDto.WishProductResponse;
 import lombok.*;
-import TeamCamp.demo.domain.model.users.UserBase;
-import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.domain.model.users.user.address.Address;
 import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 import TeamCamp.demo.exception.user.UnableToChangeNicknameException;
@@ -57,6 +52,8 @@ public class User extends UserBase {
     private Wishlist wishlist;
 
     private UserStatus userStatus;
+
+
     public UserInfoDto toUserInfoDto() {
         return UserInfoDto.builder()
                 .email(this.getEmail())
@@ -167,5 +164,18 @@ public class User extends UserBase {
                 .stream()
                 .map(ProductWishList :: getProduct)
                 .anyMatch(v -> v.getId() == productWishList.getProductId());
+    }
+
+
+    public TradeUserInfo createTradeUserInfo(){
+        return TradeUserInfo.builder()
+                .account(this.account)
+                .addressBook(this.addressBook)
+                .build();
+    }
+
+
+    public Address findAddress(Long addressId){
+        return addressBook.findAddress(addressId);
     }
 }

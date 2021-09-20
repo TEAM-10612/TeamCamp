@@ -1,7 +1,6 @@
 package TeamCamp.demo.domain.model.users.user.address;
 
 import lombok.*;
-import TeamCamp.demo.dto.AddressBookDto;
 
 
 import javax.persistence.*;

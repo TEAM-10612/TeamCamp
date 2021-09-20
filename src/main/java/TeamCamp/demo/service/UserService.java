@@ -11,7 +11,7 @@ import TeamCamp.demo.domain.model.users.user.address.Address;
 import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 import TeamCamp.demo.domain.repository.AddressBookRepository;
 import TeamCamp.demo.service.email.EmailCertificationService;
-import TeamCamp.demo.dto.AddressBookDto;
+import TeamCamp.demo.dto.AddressDto;
 import TeamCamp.demo.encrypt.EncryptionService;
 import TeamCamp.demo.exception.user.WrongPasswordException;
 import TeamCamp.demo.exception.user.DuplicateEmailException;
@@ -163,7 +163,7 @@ public class UserService {
     }
 
     @Transactional
-    public void addAddress(String email, AddressBookDto.SaveRequest request) {
+    public void addAddress(String email, AddressDto.SaveRequest request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
 
@@ -176,15 +176,16 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteAddressBook(String email,AddressBookDto.IdRequest request) {
+    public void deleteAddress(String email, AddressDto.IdRequest request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
         Long addressBookId = request.getId();
-        addressBookRepository.deleteById(addressBookId);
+        Address address = addressRepository.findById(addressBookId).orElseThrow();
+        user.deleteAddress(address);
     }
 
     @Transactional
-    public void updateAddressBook(AddressBookDto.SaveRequest request) {
+    public void updateAddress(AddressDto.SaveRequest request) {
 
         Long addressId = request.getId();
         Address address = addressRepository.findById(addressId).orElseThrow();
