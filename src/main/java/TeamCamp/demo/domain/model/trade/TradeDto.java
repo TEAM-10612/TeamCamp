@@ -16,13 +16,13 @@ public class TradeDto {
     public static class TradeResource{
 
         private UserDto.TradeUserInfo tradeUserInfo;
-        private ProductDto.ProductInfoResponse productInfoResponse;
+        private ProductDto.ProductInfoByTrade productInfoByTrade;
 
         @Builder
         public TradeResource(UserDto.TradeUserInfo tradeUserInfo,
-                           ProductDto.ProductInfoResponse productInfoResponse) {
+                           ProductDto.ProductInfoByTrade productInfoByTrade) {
             this.tradeUserInfo = tradeUserInfo;
-            this.productInfoResponse = productInfoResponse;
+            this.productInfoByTrade = productInfoByTrade;
         }
     }
 

@@ -66,7 +66,7 @@ public class Trade extends BaseTimeEntity {
         this.tradeStatus = TradeStatus.PROGRESS;
     }
 
-    public void ImmediateSale(User seller,Address shippingAddress){
+    public void makeSale(User seller,Address shippingAddress){
         this.shippingAddress = shippingAddress;
         this.seller = seller;
         this.tradeStatus = TradeStatus.PROGRESS;

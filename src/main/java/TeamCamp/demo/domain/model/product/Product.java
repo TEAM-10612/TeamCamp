@@ -54,7 +54,7 @@ public class Product extends BaseTimeEntity {
     }
 
 
-   public ProductDto.ProductInfoByTrade toProductInfoByTrade(){
+   public ProductDto.ProductInfoByTrade toProductInfoByTrade(User currentUser){
         return ProductDto.ProductInfoByTrade.builder()
                 .id(this.id)
                 .name(this.name)

@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
 @SpringBootApplication
-
 @EnableConfigurationProperties(value = {AppProperties.class, CacheProperties.class})
 public class Application {
     public static final String APPLICATION_LOCATIONS =
