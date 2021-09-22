@@ -30,9 +30,6 @@ public class Product extends BaseTimeEntity {
 
     private String productDescription;
 
-    @Enumerated(EnumType.STRING)
-    private TradeStatus tradeStatus;
-
 
     @Enumerated(EnumType.STRING)
     private ProductState productState;

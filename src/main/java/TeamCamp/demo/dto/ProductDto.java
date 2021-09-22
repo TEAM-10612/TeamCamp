@@ -1,10 +1,8 @@
 package TeamCamp.demo.dto;
 
 import TeamCamp.demo.domain.model.product.TradeStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import TeamCamp.demo.domain.model.trade.OrderStandard;
+import lombok.*;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
 import TeamCamp.demo.domain.model.product.TransactionMethod;
@@ -120,6 +118,25 @@ public class ProductDto {
             this.product = product;
             this.name = name;
         }
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ThumbnailResponse{
+        private Long id;
+        private String productThumbnailImagePath;
+        private String name;
+        private int lowerPrice;
+    }
+
+    @Getter
+    @Setter
+    public static class SearchCondition{
+        private String keyword;
+        private Long productId;
+        private OrderStandard orderStandard;
     }
 
 

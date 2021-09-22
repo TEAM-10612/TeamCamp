@@ -4,6 +4,8 @@ import TeamCamp.demo.common.s3.AwsS3Service;
 import TeamCamp.demo.common.s3.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -89,4 +91,9 @@ public class ProductService {
         return ((updatedImagePath == null && savedImagePath != null) ||
                 (savedImagePath != null && productImage != null));
     }
+
+    public Page<ThumbnailResponse> findProducts(SearchCondition condition, Pageable pageable){
+        return  productRepository.findAllBySearchCondition(condition,pageable);
+    }
 }
+
