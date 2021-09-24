@@ -30,7 +30,7 @@ public class Trade extends BaseTimeEntity {
     @JoinColumn(name = "BUYER_ID")
     private User buyer;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 
@@ -48,16 +48,21 @@ public class Trade extends BaseTimeEntity {
     @JoinColumn(name = "SHIPPING_ID")
     private Address shippingAddress;
 
+    @Enumerated(EnumType.STRING)
+    private TransactionMethod transactionMethod;
+
     @Builder
     public Trade(User seller, User buyer,
                  Product product, TradeStatus tradeStatus,
-                 Address returnAddress, Address shippingAddress) {
+                 Address returnAddress, Address shippingAddress
+    ,TransactionMethod transactionMethod) {
         this.seller = seller;
         this.buyer = buyer;
         this.product = product;
         this.tradeStatus = tradeStatus;
         this.returnAddress = returnAddress;
         this.shippingAddress = shippingAddress;
+        this.transactionMethod = transactionMethod;
     }
 
     public void makePurchase(User buyer,Address shippingAddress){

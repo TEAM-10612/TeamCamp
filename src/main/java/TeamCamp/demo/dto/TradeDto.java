@@ -1,5 +1,6 @@
-package TeamCamp.demo.domain.model.trade;
+package TeamCamp.demo.dto;
 
+import TeamCamp.demo.domain.model.trade.TradeStatus;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.UserDto;
 import lombok.AccessLevel;

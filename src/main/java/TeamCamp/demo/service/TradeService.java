@@ -1,7 +1,9 @@
-package TeamCamp.demo.domain.model.trade;
+package TeamCamp.demo.service;
 
 
 import TeamCamp.demo.domain.model.product.Product;
+import TeamCamp.demo.domain.model.trade.Trade;
+import TeamCamp.demo.domain.model.trade.repository.TradeRepository;
 import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.user.address.Address;
 import TeamCamp.demo.domain.repository.AddressRepository;
@@ -15,7 +17,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static TeamCamp.demo.domain.model.trade.TradeDto.*;
+import static TeamCamp.demo.dto.TradeDto.*;
 
 @Service
 @RequiredArgsConstructor

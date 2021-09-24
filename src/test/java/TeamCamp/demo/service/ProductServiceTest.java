@@ -4,7 +4,6 @@ import TeamCamp.demo.common.s3.AwsS3Service;
 import TeamCamp.demo.common.s3.FileService;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
-import TeamCamp.demo.domain.model.product.TransactionMethod;
 import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.domain.model.users.UserStatus;
 import TeamCamp.demo.domain.model.users.User;
@@ -109,9 +108,7 @@ class ProductServiceTest {
                 .user(user)
                 .salePrice("230000")
                 .productDescription("good")
-                .releasePrice("300000")
                 .productState(ProductState.BEST)
-                .transactionMethod(TransactionMethod.NON_CONTACT)
                 .originImagePath(ProductOriginImagePath)
                 .thumbnailImagePath(ProductThumbnailImagePath)
                 .build();
@@ -123,7 +120,6 @@ class ProductServiceTest {
                 .user(user)
                 .salePrice("230000")
                 .productDescription("good")
-                .releasePrice("300000")
                 .productState(ProductState.BEST)
                 .build();
     }
@@ -134,7 +130,6 @@ class ProductServiceTest {
                 .user(user)
                 .salePrice("230000")
                 .productDescription("good")
-                .releasePrice("300000")
                 .productState(ProductState.BEST)
                 .build();
     }

@@ -1,11 +1,9 @@
 package TeamCamp.demo.dto;
 
-import TeamCamp.demo.domain.model.product.TradeStatus;
 import TeamCamp.demo.domain.model.trade.OrderStandard;
 import lombok.*;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
-import TeamCamp.demo.domain.model.product.TransactionMethod;
 import TeamCamp.demo.domain.model.users.User;
 
 
@@ -50,8 +48,6 @@ public class ProductDto {
         }
 
 
-        @NotNull(message = "제품 거래 방식을 선택해주세요.")
-        private TransactionMethod transactionMethod;
 
         public Product toEntity(){
             return TeamCamp.demo.domain.model.product.Product.builder()
@@ -128,7 +124,7 @@ public class ProductDto {
         private Long id;
         private String productThumbnailImagePath;
         private String name;
-        private int lowerPrice;
+        private Long lowerPrice;
     }
 
     @Getter

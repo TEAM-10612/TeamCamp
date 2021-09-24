@@ -1,13 +1,11 @@
-package TeamCamp.demo.domain.model.trade;
+package TeamCamp.demo.domain.model.trade.repository;
 
-import TeamCamp.demo.domain.model.product.QProduct;
-import TeamCamp.demo.domain.model.users.User;
+import TeamCamp.demo.domain.model.trade.OrderStandard;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.ProductDto.ThumbnailResponse;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,7 +21,7 @@ import static TeamCamp.demo.domain.model.trade.QTrade.trade;
 import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
-public class SearchTradeRepositoryImpl implements SearchTradeRepository{
+public class SearchTradeRepositoryImpl implements SearchTradeRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -33,11 +31,15 @@ public class SearchTradeRepositoryImpl implements SearchTradeRepository{
                 .select(Projections.fields(ThumbnailResponse.class,
                         product.id,
                         product.thumbnailImagePath.as("productThumbnailImagePath"),
-                        product.name)) //trade 구현 완료후 최저가 추가하기 
+                        product.name,
+                        product.salePrice.min().as("lowestPrice"))) //trade 구현 완료후 최저가 추가하기
                 .from(product)
+                .leftJoin(product.trades,trade)
+                .groupBy(product)
                 .where(
                         eqProductId(condition.getProductId()),
-                        containKeyword(condition.getKeyword())
+                        containKeyword(condition.getKeyword()),
+                        trade.buyer.isNull()
                 ).orderBy(
                         getOrderSpecifier(condition.getOrderStandard())
                 )

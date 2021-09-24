@@ -1,5 +1,6 @@
 package TeamCamp.demo.domain.model.product;
 
+import TeamCamp.demo.domain.model.trade.Trade;
 import TeamCamp.demo.dto.ProductDto;
 import lombok.*;
 import TeamCamp.demo.domain.model.users.BaseTimeEntity;
@@ -8,6 +9,8 @@ import TeamCamp.demo.dto.ProductDto.ProductInfoResponse;
 import TeamCamp.demo.dto.ProductDto.SaveRequest;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,6 +30,9 @@ public class Product extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    @OneToMany(mappedBy = "product")
+    private List<Trade> trades = new ArrayList<>();
 
     private String productDescription;
 

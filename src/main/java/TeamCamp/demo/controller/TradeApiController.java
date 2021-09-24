@@ -2,8 +2,8 @@ package TeamCamp.demo.controller;
 
 import TeamCamp.demo.common.annotation.CurrentUser;
 import TeamCamp.demo.common.annotation.LoginCheck;
-import TeamCamp.demo.domain.model.trade.TradeDto;
-import TeamCamp.demo.domain.model.trade.TradeService;
+import TeamCamp.demo.dto.TradeDto;
+import TeamCamp.demo.service.TradeService;
 import TeamCamp.demo.domain.model.users.UserLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
