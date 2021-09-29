@@ -128,7 +128,6 @@ public class ProductDto {
     }
 
     @Getter
-    @Setter
     public static class SearchCondition{
         private String keyword;
         private Long productId;

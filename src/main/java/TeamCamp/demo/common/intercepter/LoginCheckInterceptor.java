@@ -32,10 +32,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
                              Object handler)
             throws Exception {
 
-        String [] activeProfiles = environment.getActiveProfiles();
-        if(activeProfiles[0].equals("test")){
-            return true;
-        }
+//        String [] activeProfiles = environment.getActiveProfiles();
+//        if(activeProfiles[0].equals("test")){
+//            return true;
+//        }
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             LoginCheck loginCheck = handlerMethod.getMethodAnnotation(LoginCheck.class);

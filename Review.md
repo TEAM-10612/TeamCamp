@@ -160,4 +160,10 @@ Aws Properties 생성자 주입으로 변경
 ---
 1. ThumbnailResponse 작성  
 2. 상품 SearchCondition 구현   
-3. 키워드 검색  및 조건별 정렬 구현   
+3. 키워드 검색  및 조건별 정렬 구현  
+
+
+9/24->
+---
+1. 상품최저가 구현  
+2. 디렉토리 변경 

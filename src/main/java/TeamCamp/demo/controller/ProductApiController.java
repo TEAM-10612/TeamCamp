@@ -1,5 +1,6 @@
 package TeamCamp.demo.controller;
 
+import TeamCamp.demo.dto.ProductDto.ProductInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +33,8 @@ public class ProductApiController {
 
     @GetMapping("/{id}")
     @LoginCheck
-    public ResponseEntity<ProductDto.ProductInfoResponse>getProductInfo(@PathVariable Long id){
-        ProductDto.ProductInfoResponse response = productService.getProductInfo(id);
-        return ResponseEntity.ok(response);
+    public ProductInfoResponse getProductInfo(@PathVariable Long id){
+        return productService.getProductInfo(id);
     }
 
     @DeleteMapping("/{id}")

@@ -171,7 +171,8 @@ public class UserDto {
 
     @Getter
     @NoArgsConstructor
-    public static class UserListResponse{
+    public static class UserListResponse {
+
         private Long id;
         private String email;
         private UserLevel userLevel;
@@ -185,9 +186,8 @@ public class UserDto {
     }
 
     @Getter
-    @Setter
-    @NoArgsConstructor
-    public static class UserSearchCondition{
+    public static class UserSearchCondition {
+
         private Long id;
         private String email;
         private UserLevel userLevel;
@@ -199,6 +199,7 @@ public class UserDto {
             this.userLevel = userLevel;
         }
     }
+
 
     @Getter
     public static class UserDetailResponse{

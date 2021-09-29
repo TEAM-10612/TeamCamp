@@ -26,21 +26,17 @@ import static TeamCamp.demo.dto.UserDto.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User extends UserBase {
-
-
-
-    @Column(name = "USER_NICKNAME")
     private String nickname;
 
     private LocalDateTime nicknameModifiedDate;
 
-    @Column(name = "USER_PHONENUMBER")
+
     private String phone;
 
     @OneToMany(mappedBy = "user")
     private List<Product> products = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL/*orphanRemoval = true*/)
+    @OneToOne(fetch = FetchType.LAZY/*orphanRemoval = true*/)
     @JoinColumn(name = "ADDRESSBOOK_ID")
     private AddressBook addressBook;
 

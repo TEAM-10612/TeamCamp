@@ -17,18 +17,13 @@ public class UserBase extends BaseTimeEntity {
     @Column(name = "USER_ID")
     private Long id;
 
-    @Column(name = "USER_EMAIL")
+    @Column(unique = true)
     protected String email;
 
-    @Column(name = "USER_PASSWORD")
+
     protected String password;
 
     @Enumerated(EnumType.STRING)
     protected UserLevel userLevel;
 
-    public UserBase( String email, String password,UserLevel userLevel) {
-        this.email = email;
-        this.password = password;
-        this.userLevel = userLevel;
-    }
 }

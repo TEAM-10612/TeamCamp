@@ -20,7 +20,6 @@ import java.util.List;
 public class Product extends BaseTimeEntity {
 
     @Id@GeneratedValue
-    @Column(name = "PRODUCT_ID")
     private Long id;
 
     private String name;
@@ -31,7 +30,7 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
     private List<Trade> trades = new ArrayList<>();
 
     private String productDescription;
