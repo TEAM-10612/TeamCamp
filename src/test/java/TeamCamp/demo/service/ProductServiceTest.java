@@ -75,7 +75,6 @@ class ProductServiceTest {
         return Product.builder()
                 .name("텐트")
                 .user(user)
-                .salePrice("230000")
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)
@@ -87,7 +86,6 @@ class ProductServiceTest {
         return Product.builder()
                 .name("텐트")
                 .user(user)
-                .salePrice("230000")
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .build();
@@ -106,7 +104,6 @@ class ProductServiceTest {
         return SaveRequest .builder()
                 .name("텐트")
                 .user(user)
-                .salePrice("230000")
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)
@@ -118,7 +115,6 @@ class ProductServiceTest {
         return SaveRequest.builder()
                 .name("텐트")
                 .user(user)
-                .salePrice("230000")
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .build();
@@ -128,7 +124,6 @@ class ProductServiceTest {
         return SaveRequest.builder()
                 .name("화구")
                 .user(user)
-                .salePrice("230000")
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .build();
@@ -154,7 +149,6 @@ class ProductServiceTest {
         assertThat(productInfoResponse.getId()).isEqualTo(id);
         assertThat(productInfoResponse.getName()).isEqualTo(product.getName());
         assertThat(productInfoResponse.getUser()).isEqualTo(product.getUser());
-        assertThat(productInfoResponse.getSalePrice()).isEqualTo(product.getSalePrice());
         assertThat(productInfoResponse.getProductDescription()).isEqualTo(product.getProductDescription());
 
         assertThat(productInfoResponse.getProductState()).isEqualTo(product.getProductState());
@@ -304,7 +298,7 @@ class ProductServiceTest {
         productService.updateProduct(id,updateProductDto,null);
 
         //then
-        assertThat(product.getSalePrice()).isEqualTo(updateProductDto.getSalePrice());
+
         assertThat(updateProductDto.getOriginImagePath()).isNull();
 
 

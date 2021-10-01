@@ -105,7 +105,6 @@ class UserApiControllerTest {
                 .id(1L)
                 .name("텐트")
                 .user(user)
-                .salePrice("230000")
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)

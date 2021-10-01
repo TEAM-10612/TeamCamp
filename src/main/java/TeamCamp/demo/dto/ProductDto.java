@@ -22,9 +22,6 @@ public class ProductDto {
         @NotBlank(message = "제품명을 입력해주세요.")
         private String name;
 
-        @NotBlank(message = "판매 가격을 입력해주세요.")
-        private String salePrice;
-
         @NotBlank(message = "제품에 대한 설명을 입력해주세요.")
         @Size(max = 200,message = "200자 이내로 입력해주세요.")
         private String productDescription;
@@ -52,7 +49,6 @@ public class ProductDto {
         public Product toEntity(){
             return TeamCamp.demo.domain.model.product.Product.builder()
                     .name(this.name)
-                    .salePrice(this.salePrice)
                     .productDescription(this.productDescription)
                     .productState(this.productState)
                     .originImagePath(this.originImagePath)
@@ -69,7 +65,6 @@ public class ProductDto {
         private Long id;
         private String name;
         private User user;
-        private String salePrice;
         private String productDescription;
         private String originImagePath;
         private String thumbnailImagePath;
@@ -84,7 +79,7 @@ public class ProductDto {
         private Long id;
         private String name;
         private User user;
-        private String salePrice;
+        private String buyPrice;
         private String productDescription;
         private ProductState productState;
     }

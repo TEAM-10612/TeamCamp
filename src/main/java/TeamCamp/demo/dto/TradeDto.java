@@ -59,10 +59,10 @@ public class TradeDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     private static class ChangeRequest{
         private Long tradeId;
-        private Long price;
+        private String price;
 
         @Builder
-        public ChangeRequest(Long tradeId, Long price) {
+        public ChangeRequest(Long tradeId, String price) {
             this.tradeId = tradeId;
             this.price = price;
         }
@@ -71,12 +71,11 @@ public class TradeDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     private static class SaveRequest{
-        private Long price;
         private Long productId;
         private Long addressId;
-
+        private String price;
         @Builder
-        public SaveRequest(Long price, Long productId, Long addressId) {
+        public SaveRequest(String price, Long productId, Long addressId) {
             this.price = price;
             this.productId = productId;
             this.addressId = addressId;

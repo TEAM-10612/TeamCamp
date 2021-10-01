@@ -77,7 +77,6 @@ class UserServiceTest {
         return Product.builder()
                 .name("텐트")
                 .user(createUser())
-                .salePrice("230000")
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)

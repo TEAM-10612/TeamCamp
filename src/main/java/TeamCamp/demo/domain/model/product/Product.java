@@ -24,13 +24,12 @@ public class Product extends BaseTimeEntity {
 
     private String name;
 
-    private String salePrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Trade> trades = new ArrayList<>();
 
     private String productDescription;
@@ -48,7 +47,6 @@ public class Product extends BaseTimeEntity {
                 .id(this.id)
                 .name(this.name)
                 .user(this.user)
-                .salePrice(this.salePrice)
                 .productDescription(this.productDescription)
                 .productState(this.productState)
                 .originImagePath(this.originImagePath)
@@ -61,7 +59,6 @@ public class Product extends BaseTimeEntity {
                 .id(this.id)
                 .name(this.name)
                 .user(this.user)
-                .salePrice(this.salePrice)
                 .productDescription(this.productDescription)
                 .productState(this.productState)
                 .build();
@@ -69,7 +66,6 @@ public class Product extends BaseTimeEntity {
 
     public void update(SaveRequest request){
         this.name =request.getName();
-        this.salePrice = request.getSalePrice();
         this.productDescription = request.getProductDescription();
         this.productState = request.getProductState();
         this.originImagePath = request.getOriginImagePath();
