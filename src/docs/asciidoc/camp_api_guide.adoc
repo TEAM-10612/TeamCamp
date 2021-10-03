@@ -796,3 +796,43 @@ NOTE: 현재 로그인되어있는 사용자의 my-infos 리소스를 가져옵�
 //include::{snippets}/admin/get/findByEmail/http-response.adoc[]
 //
 //---
+
+//==== 회원 상세 조회
+//
+//**curl**
+//
+//include::{snippets}/admin/get/details/curl-request.adoc[]
+//
+//**path-parameters**
+//
+//include::{snippets}/admin/get/details/path-parameters.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/admin/get/details/response-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/admin/get/details/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/admin/get/details/http-response.adoc[]
+//
+//---
+//
+//==== 회원 정지
+//
+//**curl**
+//
+//include::{snippets}/admin/ban/curl-request.adoc[]
+//
+//**example request**
+//
+//include::{snippets}/admin/ban/http-request.adoc[]
+//
+//**example response**
+//
+//include::{snippets}/admin/ban/http-response.adoc[]
+//
+//== CART API
