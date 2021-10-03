@@ -53,21 +53,9 @@ public class Trade extends BaseTimeEntity {
     private TransactionMethod transactionMethod;
 
     @Builder
-    public Trade(User seller, User buyer,
-                 Product product, TradeStatus tradeStatus,
-                 Address returnAddress, Address shippingAddress
-    ,TransactionMethod transactionMethod) {
-        this.seller = seller;
-        this.buyer = buyer;
-        this.product = product;
-        this.tradeStatus = tradeStatus;
-        this.returnAddress = returnAddress;
-        this.shippingAddress = shippingAddress;
-        this.transactionMethod = transactionMethod;
-    }
-    @Builder
-    public Trade(User seller, User buyer, Product product, String price, TradeStatus tradeStatus,
+    public Trade(Long id,User seller, User buyer, Product product, String price, TradeStatus tradeStatus,
                  Address returnAddress, Address shippingAddress, TransactionMethod transactionMethod) {
+        this.id = id;
         this.seller = seller;
         this.buyer = buyer;
         this.product = product;
@@ -91,4 +79,7 @@ public class Trade extends BaseTimeEntity {
     }
 
 
+    public void updatePrice(String price) {
+        this.price = price;
+    }
 }

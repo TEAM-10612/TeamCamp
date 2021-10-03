@@ -57,7 +57,7 @@ public class TradeDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    private static class ChangeRequest{
+    public static class ChangeRequest{
         private Long tradeId;
         private String price;
 

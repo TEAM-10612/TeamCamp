@@ -10,6 +10,7 @@ import TeamCamp.demo.domain.repository.AddressRepository;
 import TeamCamp.demo.domain.repository.ProductRepository;
 import TeamCamp.demo.domain.repository.UserRepository;
 import TeamCamp.demo.dto.ProductDto;
+import TeamCamp.demo.dto.TradeDto;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -65,5 +66,16 @@ public class TradeService {
 
 
         trade.makeSale(seller,returnAddress);
+    }
+
+    @Transactional
+    public void updateTrade(ChangeRequest request) {
+        Trade trade = tradeRepository.findById(request.getTradeId()).orElseThrow();
+        trade.updatePrice(request.getPrice());
+    }
+
+    @Transactional
+    public void deleteTrade(ChangeRequest request) {
+        tradeRepository.deleteById(request.getTradeId());
     }
 }
