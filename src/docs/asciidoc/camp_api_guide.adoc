@@ -749,3 +749,50 @@ NOTE: 현재 로그인되어있는 사용자의 my-infos 리소스를 가져옵�
 //include::{snippets}/admin/get/findById/http-response.adoc[]
 //
 //---
+//==== 회원 조회(User Level)
+//
+//**curl**
+//
+//include::{snippets}/admin/get/findByUserLevel/curl-request.adoc[]
+//
+//**request-parameters**
+//
+//include::{snippets}/admin/get/findByUserLevel/request-parameters.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/admin/get/findByUserLevel/response-fields.adoc[]
+//
+//**example request**
+//
+//include::{snippets}/admin/get/findByUserLevel/http-request.adoc[]
+//
+//**example response**
+//
+//include::{snippets}/admin/get/findByUserLevel/http-response.adoc[]
+//
+//---
+//
+//==== 회원 조회(Email)
+//
+//**curl**
+//
+//include::{snippets}/admin/get/findByEmail/curl-request.adoc[]
+//
+//**request-parameters**
+//
+//include::{snippets}/admin/get/findByEmail/request-parameters.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/admin/get/findByEmail/response-fields.adoc[]
+//
+//**example request**
+//
+//include::{snippets}/admin/get/findByEmail/http-request.adoc[]
+//
+//**example response**
+//
+//include::{snippets}/admin/get/findByEmail/http-response.adoc[]
+//
+//---
