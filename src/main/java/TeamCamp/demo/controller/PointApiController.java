@@ -4,6 +4,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
 
-public class ChattingController {
+public class PointApiController {
 
 }

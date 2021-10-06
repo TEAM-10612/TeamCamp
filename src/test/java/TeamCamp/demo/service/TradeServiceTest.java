@@ -141,6 +141,7 @@ class TradeServiceTest {
         Product product = createProduct();
         Address address = new Address(1L,"내집","대정로1","101동1004호","56432");
          return Trade.builder()
+                 .id(11L)
                  .seller(user)
                  .buyer(null)
                  .product(product)
@@ -248,6 +249,36 @@ class TradeServiceTest {
         assertThat(purchaseTrade.getTradeStatus()).isEqualTo(TradeStatus.PROGRESS);
         assertThat(purchaseTrade.getBuyer().getId()).isEqualTo(user.getId());
         assertThat(purchaseTrade.getShippingAddress().getId()).isEqualTo(address.getId());
+
+    }
+    @Test
+    @DisplayName("거래 수정")
+    void updateTrade()throws Exception{
+        //given
+        Trade trade = createTrade();
+        TradeDto.ChangeRequest request = TradeDto.ChangeRequest.builder()
+                .tradeId(11L)
+                .price(250000L)
+                .build();
+        //when
+        when(tradeRepository.findById(request.getTradeId())).thenReturn(Optional.of(trade));
+        tradeService.updateTrade(request);
+        //then
+        assertThat(trade.getPrice()).isEqualTo(request.getPrice());
+
+    }
+
+    @Test
+    @DisplayName("거래내역 삭제")
+    void deleteTrade()throws Exception{
+        //given
+        TradeDto.ChangeRequest request = TradeDto.ChangeRequest.builder()
+                .tradeId(11L)
+                .build();
+        //when
+        tradeService.deleteTrade(request);
+        //then
+        verify(tradeRepository).deleteById(any());
 
     }
 }
