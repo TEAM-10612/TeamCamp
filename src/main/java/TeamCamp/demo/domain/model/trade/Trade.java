@@ -34,7 +34,7 @@ public class Trade extends BaseTimeEntity {
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 
-    private String price;
+    private Long price;
 
     @Enumerated(EnumType.STRING)
     private TradeStatus tradeStatus;
@@ -53,7 +53,7 @@ public class Trade extends BaseTimeEntity {
     private TransactionMethod transactionMethod;
 
     @Builder
-    public Trade(Long id,User seller, User buyer, Product product, String price, TradeStatus tradeStatus,
+    public Trade(Long id,User seller, User buyer, Product product, Long price, TradeStatus tradeStatus,
                  Address returnAddress, Address shippingAddress, TransactionMethod transactionMethod) {
         this.id = id;
         this.seller = seller;
@@ -79,7 +79,7 @@ public class Trade extends BaseTimeEntity {
     }
 
 
-    public void updatePrice(String price) {
+    public void updatePrice(Long price) {
         this.price = price;
     }
 }

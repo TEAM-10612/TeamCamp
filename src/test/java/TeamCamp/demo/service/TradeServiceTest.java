@@ -5,15 +5,19 @@ import TeamCamp.demo.domain.model.product.ProductState;
 import TeamCamp.demo.domain.model.trade.Trade;
 import TeamCamp.demo.domain.model.trade.TradeStatus;
 import TeamCamp.demo.domain.model.trade.TransactionMethod;
+import TeamCamp.demo.domain.model.trade.repository.TradeRepository;
 import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.domain.model.users.UserStatus;
 import TeamCamp.demo.domain.model.users.user.address.Address;
+import TeamCamp.demo.domain.repository.AddressRepository;
 import TeamCamp.demo.domain.repository.ProductRepository;
 import TeamCamp.demo.domain.repository.UserRepository;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.TradeDto;
+import TeamCamp.demo.dto.TradeDto.TradeResource;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,6 +42,11 @@ class TradeServiceTest {
 
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private AddressRepository addressRepository;
+
+    @Mock
+    private TradeRepository tradeRepository;
 
     @InjectMocks
     private TradeService tradeService;
@@ -99,12 +108,11 @@ class TradeServiceTest {
 
     private List<Trade>createTrades(){
         User user0 = user0();
-        User user1 = user1();
         Address address = new Address(1L,"내집","대정로1","101동1004호","56432");
         Product product = createProduct();
         List<Trade> list = new ArrayList<>();
 
-        Trade sale1 = Trade.builder()
+        Trade sale = Trade.builder()
                 .seller(user0)
                 .buyer(null)
                 .product(product)
@@ -113,9 +121,9 @@ class TradeServiceTest {
                 .transactionMethod(TransactionMethod.ALL)
                 .shippingAddress(null)
                 .build();
-        list.add(sale1);
+        list.add(sale);
 
-        Trade purchase1 = Trade.builder()
+        Trade purchase = Trade.builder()
                 .seller(null)
                 .buyer(user0)
                 .product(product)
@@ -124,34 +132,28 @@ class TradeServiceTest {
                 .transactionMethod(TransactionMethod.ALL)
                 .shippingAddress(null)
                 .build();
-        list.add(sale1);
-
-        Trade sale2 = Trade.builder()
-                .seller(user1)
-                .buyer(null)
-                .product(product)
-                .tradeStatus(TradeStatus.BID)
-                .returnAddress(address)
-                .transactionMethod(TransactionMethod.ALL)
-                .shippingAddress(null)
-                .build();
-        list.add(sale1);
-
-        Trade purchase2 = Trade.builder()
-                .buyer(user1)
-                .seller(null)
-                .product(product)
-                .tradeStatus(TradeStatus.BID)
-                .returnAddress(address)
-                .transactionMethod(TransactionMethod.ALL)
-                .shippingAddress(null)
-                .build();
-        list.add(sale1);
-
+        list.add(purchase);
         return list;
     }
 
+    private Trade createTrade(){
+        User user = user0();
+        Product product = createProduct();
+        Address address = new Address(1L,"내집","대정로1","101동1004호","56432");
+         return Trade.builder()
+                 .seller(user)
+                 .buyer(null)
+                 .product(product)
+                 .tradeStatus(TradeStatus.BID)
+                 .price(230000L)
+                 .returnAddress(address)
+                 .transactionMethod(TransactionMethod.ALL)
+                 .shippingAddress(null)
+                 .build();
+    }
+
     @Test
+    @DisplayName("리소스 반환")
     void getResourceForTrade()throws Exception{
         //given
         String email = "rdj1014@naver.com";
@@ -163,10 +165,89 @@ class TradeServiceTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
-        TradeDto.TradeResource tradeResource =  tradeService.makeTradeResource(user,product);
+        TradeResource tradeResource =  tradeService.getResource(email,productId);
+        //then
+        assertThat(tradeResource.getProductInfoByTrade().getBuyPrice()).isNull();
+        assertThat(tradeResource.getProductInfoByTrade().getSellPrice()).isNull();
+
+    }
+
+    @Test
+    @DisplayName("물품 구매")
+    void sales()throws Exception{
+        //given
+        Address address = new Address(2L,"내집","대정로1","101동1004호","56432");
+        String email = "rdj1014@naver.com";
+        User user = user0();
+        User anotherUser = user1();
+        Product product = createProduct();
+
+        Trade saleTrade = Trade.builder()
+                .seller(user)
+                .buyer(null)
+                .product(product)
+                .tradeStatus(TradeStatus.BID)
+                .price(230000L)
+                .returnAddress(address)
+                .transactionMethod(TransactionMethod.ALL)
+                .shippingAddress(null)
+                .build();
+
+        TradeDto.TradeRequest request = TradeDto.TradeRequest.builder()
+                .tradeId(5L)
+                .addressId(2L)
+                .productId(1L)
+                .build();
+        //when
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(addressRepository.findById(request.getAddressId())).thenReturn(Optional.of(address));
+        when(tradeRepository.findById(request.getTradeId())).thenReturn(Optional.of(saleTrade));
+        tradeService.sale(email,request);
+
         //then
 
-        //assertThat(tradeResource.getProductInfoByTrade().getBuyPrice()).isEqualTo();
+        assertThat(saleTrade.getTradeStatus()).isEqualTo(TradeStatus.PROGRESS);
+        assertThat(saleTrade.getSeller().getId()).isEqualTo(user.getId());
+        assertThat(saleTrade.getShippingAddress().getId()).isEqualTo(address.getId());
+
+    }
+
+    @Test
+    @DisplayName("물품 판매")
+    void purchase()throws Exception{
+        //given
+        Address address = new Address(2L,"내집","대정로1","101동1004호","56432");
+        String email = "rdj1014@naver.com";
+        User user = user0();
+        User anotherUser = user1();
+        Product product = createProduct();
+
+        Trade purchaseTrade = Trade.builder()
+                .seller(null)
+                .buyer(anotherUser)
+                .product(product)
+                .tradeStatus(TradeStatus.BID)
+                .price(230000L)
+                .returnAddress(address)
+                .transactionMethod(TransactionMethod.ALL)
+                .shippingAddress(null)
+                .build();
+
+        TradeDto.TradeRequest request = TradeDto.TradeRequest.builder()
+                .tradeId(5L)
+                .addressId(2L)
+                .productId(1L)
+                .build();
+        //when
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(addressRepository.findById(request.getAddressId())).thenReturn(Optional.of(address));
+        when(tradeRepository.findById(request.getTradeId())).thenReturn(Optional.of(purchaseTrade));
+        tradeService.purchase(email,request);
+
+        //then
+        assertThat(purchaseTrade.getTradeStatus()).isEqualTo(TradeStatus.PROGRESS);
+        assertThat(purchaseTrade.getBuyer().getId()).isEqualTo(user.getId());
+        assertThat(purchaseTrade.getShippingAddress().getId()).isEqualTo(address.getId());
 
     }
 }

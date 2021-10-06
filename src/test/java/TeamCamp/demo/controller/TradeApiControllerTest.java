@@ -168,7 +168,7 @@ class TradeApiControllerTest {
                 .buyer(null)
                 .product(product)
                 .tradeStatus(TradeStatus.BID)
-                .price("230000")
+                .price(230000L)
                 .returnAddress(address)
                 .shippingAddress(null)
                 .build();

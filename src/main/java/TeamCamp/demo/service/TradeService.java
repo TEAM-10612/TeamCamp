@@ -29,6 +29,16 @@ public class TradeService {
     private final TradeRepository tradeRepository;
     private final AddressRepository addressRepository;
 
+    @Transactional(readOnly = true)
+    public TradeResource getResource(String email,Long productId){
+        User user  = userRepository.findByEmail(email)
+                .orElseThrow(()->new UserNotFoundException("존재하지 않는 사용자입니다."));
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow();
+
+        return makeTradeResource(user,product);
+    }
     public TradeResource makeTradeResource(User user, Product product){
         ProductDto.ProductInfoByTrade productInfoByTrade = product.toProductInfoByTrade(user);
         UserDto.TradeUserInfo tradeUserInfo = user.createTradeUserInfo();

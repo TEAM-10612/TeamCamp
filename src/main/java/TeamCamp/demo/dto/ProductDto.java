@@ -79,7 +79,8 @@ public class ProductDto {
         private Long id;
         private String name;
         private User user;
-        private String buyPrice;
+        private Long buyPrice;
+        private Long sellPrice;
         private String productDescription;
         private ProductState productState;
     }
