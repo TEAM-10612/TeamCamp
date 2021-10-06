@@ -1,10 +1,14 @@
 package TeamCamp.demo.domain.model.users;
 
+import TeamCamp.demo.domain.model.point.Point;
+import TeamCamp.demo.domain.model.point.PointDivision;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.wishlist.ProductWishList;
 import TeamCamp.demo.domain.model.wishlist.Wishlist;
+import TeamCamp.demo.dto.PointDto;
 import TeamCamp.demo.dto.ProductDto.WishProductResponse;
+import TeamCamp.demo.exception.LowPointException;
 import lombok.*;
 import TeamCamp.demo.domain.model.users.user.address.Address;
 import TeamCamp.demo.domain.model.users.user.address.AddressBook;
@@ -43,12 +47,16 @@ public class User extends UserBase {
     @Embedded
     private Account account;
 
+    private Long point;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WISHLIST_ID")
     private Wishlist wishlist;
 
     private UserStatus userStatus;
 
+    @OneToMany(mappedBy = "user")
+    private List<Point> pointBreakdown = new ArrayList<>();
 
     public UserInfoDto toUserInfoDto() {
         return UserInfoDto.builder()
@@ -100,13 +108,14 @@ public class User extends UserBase {
     @Builder
     public User(Long id,String email, String password, UserLevel userLevel,
                 String nickname, LocalDateTime nicknameModifiedDate,
-                String phone,AddressBook addressBooks,UserStatus userStatus) {
+                String phone,AddressBook addressBooks,UserStatus userStatus,Long point) {
         super( id, email, password, userLevel);
         this.nickname = nickname;
         this.nicknameModifiedDate = nicknameModifiedDate;
         this.phone = phone;
         this.addressBook = addressBooks;
         this.userStatus = userStatus;
+        this.point = point;
     }
 
     public UserDetailResponse toUserDetailsDto() {
@@ -173,5 +182,42 @@ public class User extends UserBase {
 
     public Address findAddress(Long addressId){
         return addressBook.findAddress(addressId);
+    }
+
+    public void chargingPoint(Long chargeAmount) {
+        this.point += chargeAmount;
+    }
+
+    public boolean isCurrentEmail(String email){
+        return this.email.equals(email);
+    }
+
+    public void pointInspection(Long price){
+        if(this.point < price){
+            throw new LowPointException("포인트가 부족합니다.충전 후 이용해주세요");
+        }
+    }
+
+    public void deductionOfPoints(Long price){
+        this.point -= price;
+    }
+    public List<PointDto.PointHistoryDto> getDeductionHistory() {
+        return pointBreakdown.stream()
+                .filter(p -> p.getDivision().equals(PointDivision.WITHDRAW) || p.getDivision()
+                        .equals(PointDivision.PURCHASE_DEDUCTION))
+                .map(Point::toPointHistoryDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<PointDto.PointHistoryDto> getChargingHistory() {
+        return pointBreakdown.stream()
+                .filter(p -> p.getDivision().equals(PointDivision.CHARGE) || p.getDivision()
+                        .equals(PointDivision.SALES_REVENUE))
+                .map(Point::toPointHistoryDto)
+                .collect(Collectors.toList());
+    }
+
+    public boolean hasRemainPoints(){
+        return point > 0;
     }
 }
