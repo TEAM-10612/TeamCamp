@@ -29,48 +29,30 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
-
-	// https://mvnrepository.com/artifact/org.webjars/bootstrap
-	implementation group: 'org.webjars', name: 'bootstrap', version: '5.1.0'
-	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	implementation 'org.springframework.session:spring-session-data-redis'
-	compileOnly 'org.springframework.boot:spring-boot-starter-data-redis:2.3.1.RELEASE'
 	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
-	implementation 'com.querydsl:querydsl-jpa'
-	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	compileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	implementation 'com.querydsl:querydsl-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.session:spring-session-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-json'
 	implementation group: 'org.msgpack', name: 'jackson-dataformat-msgpack', version: '0.8.22'
 	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
-	//querydsl 추가
-	implementation 'com.querydsl:querydsl-jpa'
-	//querydsl 추가
-	implementation 'com.querydsl:querydsl-apt'
-
-	implementation "org.springframework.boot:spring-boot-starter-websocket"
-	compile 'com.fasterxml.jackson.core:jackson-databind:2.11.4'
-
-	/* Redis 사용을 위한 의존성 추가 */
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.springframework.boot:spring-boot-starter-json'
-	implementation group: 'org.msgpack', name: 'jackson-dataformat-msgpack', version: '0.8.18'
-
-	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.964'
-	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
-	runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-dependencies', version: 'Hoxton.SR10', ext: 'pom'
-
-	implementation group: 'org.apache.tika', name: 'tika-parsers', version: '1.25'
-	//이메일 발송
+	compile('org.springframework.boot:spring-boot-starter-mustache')
+	compile group: 'org.springframework.session', name: 'spring-session-data-redis', version: '2.4.2'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.964'
+	implementation group: 'org.apache.tika', name: 'tika-parsers', version: '1.25'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 }
 ext{
