@@ -11,14 +11,14 @@ import TeamCamp.demo.dto.AddressDto;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.encrypt.EncryptionService;
 import TeamCamp.demo.exception.user.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.thymeleaf.standard.expression.Each;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 /**
@@ -52,9 +53,17 @@ class UserServiceTest {
     @Mock
     WishListRepository wishListRepository;
 
+    @Mock
+    TradeService  tradeService;
+
     @InjectMocks
     UserService userService;
 
+
+    @AfterEach
+    public void delete(){
+        userRepository.deleteAll();
+    }
 
     public User createUser(){
         return createUserDto().toEntity();
@@ -65,7 +74,7 @@ class UserServiceTest {
                 .email("test123@test.com")
                 .password("test1234")
                 .phone("01011112222")
-                .nickname("17171771")
+                .nickname("123123123")
                 .build();
         return saveRequest;
     }
@@ -89,7 +98,7 @@ class UserServiceTest {
     void SignUp_success() throws Exception{
         UserDto.SaveRequest saveRequest = createUserDto();
 
-        when(userRepository.existsByNickname("17171771")).thenReturn(false);
+        when(userRepository.existsByNickname("123123123")).thenReturn(false);
         when(userRepository.existsByEmail("test123@test.com")).thenReturn(false);
 
          userService.saveUser(saveRequest);
@@ -116,11 +125,11 @@ class UserServiceTest {
     void nicknameDuplicateCheck() {
         UserDto.SaveRequest saveRequest = createUserDto();
 
-        when(userRepository.existsByNickname("17171771")).thenReturn(true);
+        when(userRepository.existsByNickname("123123123")).thenReturn(true);
 
         Assertions.assertThrows(DuplicateNicknameException.class, () -> userService.saveUser(saveRequest));
 
-        verify(userRepository,atLeastOnce()).existsByNickname("17171771");
+        verify(userRepository,atLeastOnce()).existsByNickname("123123123");
     }
 
     @Test
@@ -400,8 +409,10 @@ class UserServiceTest {
        String password = user.getPassword();
 
        //when
-       BDDMockito.given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
-       BDDMockito.given(userRepository.existsByEmailAndPassword(any(),any())).willReturn(true);
+       given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
+       given(userRepository.existsByEmailAndPassword(any(), any())).willReturn(true);
+       given(tradeService.hasUserProgressingTrade(user)).willReturn(false);
+
        userService.delete(email,password);
 
        //then
@@ -419,13 +430,55 @@ class UserServiceTest {
        String password = user.getPassword();
 
        //when
-       BDDMockito.given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
-       BDDMockito.given(userRepository.existsByEmailAndPassword(any(),any())).willReturn(false);
+       given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
+       given(userRepository.existsByEmailAndPassword(any(),any())).willReturn(false);
 
        //then
        assertThrows(WrongPasswordException.class,
                () -> userService.delete(email,password));
        verify(userRepository,never()).deleteByEmail(email);
    
+   }
+
+   @Test
+   @DisplayName("잔여 포인트가 존재하여 탈퇴 실패")
+   void failToWithdrawalIfRemainingPoint()throws Exception{
+       //given
+       User user  = createUser();
+       String email = user.getEmail();
+       String password = user.getPassword();
+       user.chargingPoint(100000L);
+
+       //when
+       given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
+       given(userRepository.existsByEmailAndPassword(any(), any())).willReturn(true);
+       given(tradeService.hasUserProgressingTrade(user)).willReturn(false);
+
+       //then
+       assertThrows(HasRemainingPointException.class,
+               ()-> userService.delete(email,password));
+       verify(userRepository,never()).deleteByEmail(email);
+
+   }
+
+
+   @Test
+   @DisplayName("진행중인 거래가 존재하여 탈퇴 실패")
+   void failToWithdrawalIfHasProgressingTrade()throws Exception{
+       //given
+       User user  = createUser();
+       String email = user.getEmail();
+       String password = user.getPassword();
+       //when
+
+       given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
+       given(userRepository.existsByEmailAndPassword(any(),any())).willReturn(true);
+       given(tradeService.hasUserProgressingTrade(user)).willReturn(true);
+
+       //then
+       assertThrows(HasProgressingTradeException.class,
+               ()->userService.delete(email,password));
+       verify(userRepository,never()).deleteByEmail(email);
+
    }
 }
