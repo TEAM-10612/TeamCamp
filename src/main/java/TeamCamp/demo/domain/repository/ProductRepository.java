@@ -1,6 +1,6 @@
 package TeamCamp.demo.domain.repository;
 
-import TeamCamp.demo.domain.model.trade.repository.SearchTradeRepository;
+import TeamCamp.demo.domain.model.product.repository.SearchProductRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product,Long> , SearchTradeRepository {
+public interface ProductRepository extends JpaRepository<Product,Long> , SearchProductRepository {
 
     @Override
     @EntityGraph(attributePaths = {"trades","user"})

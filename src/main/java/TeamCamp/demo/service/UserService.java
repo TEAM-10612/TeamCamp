@@ -1,6 +1,7 @@
 package TeamCamp.demo.service;
 
 import TeamCamp.demo.domain.repository.*;
+import TeamCamp.demo.exception.user.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,6 @@ import TeamCamp.demo.domain.repository.AddressBookRepository;
 import TeamCamp.demo.service.email.EmailCertificationService;
 import TeamCamp.demo.dto.AddressDto;
 import TeamCamp.demo.encrypt.EncryptionService;
-import TeamCamp.demo.exception.user.WrongPasswordException;
-import TeamCamp.demo.exception.user.DuplicateEmailException;
-import TeamCamp.demo.exception.user.DuplicateNicknameException;
-import TeamCamp.demo.exception.user.UnauthenticatedUserException;
-import TeamCamp.demo.exception.user.UserNotFoundException;
 
 
 import java.util.List;
@@ -38,7 +34,7 @@ public class UserService {
     private final WishListRepository wishListRepository;
     private final ProductWishListRepository productWishListRepository;
     private final AddressRepository addressRepository;
-
+    private final TradeService tradeService;
     //데이터 조회용. 추후 삭제
     public List<User> findAll() {
         return userRepository.findAll();
@@ -119,6 +115,13 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자 입니다."));
         if(!userRepository.existsByEmailAndPassword(email,encryptionService.encrypt(password))){
             throw new WrongPasswordException();
+        }
+        if(tradeService.hasUserProgressingTrade(user)){
+            throw new HasProgressingTradeException("진행중인 거래 완료 후 탈퇴가 가능합니다.");
+        }
+
+        if (user.hasRemainPoints()){
+            throw new HasRemainingPointException("남아있는 포인트가 존재하여 탈퇴가 불가능합니다.");
         }
 
         userRepository.deleteByEmail(email);

@@ -128,4 +128,22 @@ public class GlobalExceptionHandler {
         log.debug("이미 위시리스트에 있는 상품입니다.", ex);
         return DUPLICATION_WISHLIST_PRODUCT;
     }
+
+    @ExceptionHandler(HasRemainingPointException.class)
+    public final ResponseEntity<String>hasRemainingPointException(HasRemainingPointException ex,WebRequest request){
+        log.debug("Has Remaining Point :: {}, detection time ={}",
+                request.getDescription(false),
+                LocalDateTime.now(),ex );
+        return REMAINING_POINT;
+    }
+
+    @ExceptionHandler(HasProgressingTradeException.class)
+    public final ResponseEntity<String>hasProgressingTradeException(HasProgressingTradeException ex,
+                                                                    WebRequest request){
+        log.debug("Has Progressing Trade :: {},detection time = {}",
+                request.getDescription(false),
+                LocalDateTime.now(),ex);
+
+        return PROGRESSING_TRADE;
+    }
 }

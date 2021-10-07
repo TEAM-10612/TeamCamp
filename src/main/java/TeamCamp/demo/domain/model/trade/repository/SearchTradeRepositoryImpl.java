@@ -1,87 +1,38 @@
 package TeamCamp.demo.domain.model.trade.repository;
 
-import TeamCamp.demo.domain.model.trade.OrderStandard;
-import TeamCamp.demo.dto.ProductDto;
-import TeamCamp.demo.dto.ProductDto.ThumbnailResponse;
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
+import TeamCamp.demo.domain.model.trade.QTrade;
+import TeamCamp.demo.domain.model.trade.TradeStatus;
+import TeamCamp.demo.domain.model.users.User;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
-import static TeamCamp.demo.domain.model.product.QProduct.*;
 import static TeamCamp.demo.domain.model.trade.QTrade.trade;
-import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
-public class SearchTradeRepositoryImpl implements SearchTradeRepository {
+public class SearchTradeRepositoryImpl implements SearchTradeRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
 
+
     @Override
-    public Page<ThumbnailResponse> findAllBySearchCondition(ProductDto.SearchCondition condition, Pageable pageable) {
-        QueryResults<ThumbnailResponse> results = jpaQueryFactory
-                .select(Projections.fields(ThumbnailResponse.class,
-                        product.id,
-                        product.thumbnailImagePath.as("productThumbnailImagePath"),
-                        product.name,
-                        product.salePrice.min().as("lowestPrice"))) //trade 구현 완료후 최저가 추가하기
-                .from(product)
-                .leftJoin(product.trades,trade)
-                .groupBy(product)
-                .where(
-                        eqProductId(condition.getProductId()),
-                        containKeyword(condition.getKeyword()),
-                        trade.buyer.isNull()
-                ).orderBy(
-                        getOrderSpecifier(condition.getOrderStandard())
-                )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-
-        List<ThumbnailResponse>products = results.getResults();
-        long total = results.getTotal();
-
-        return new PageImpl<>(products,pageable,total);
+    public boolean existProgressingByUser(User user) {
+        Integer result = jpaQueryFactory
+                .selectOne()
+                .from(trade)
+                .where(isUserTrade(user),isProgressing())
+                .fetchFirst();
+        return result != null;
     }
 
-    private OrderSpecifier getOrderSpecifier(OrderStandard orderStandard) {
-        OrderSpecifier orderSpecifier =  null;
-
-        if(orderStandard == null ){
-            orderSpecifier = new OrderSpecifier(Order.DESC, product.createDate);
-        }else{
-            switch (orderStandard){
-                case LOW_PRICE:
-                    orderSpecifier = new OrderSpecifier(Order.ASC, product.createDate);
-                    break;
-                case HIGH_PRICE:
-                    orderSpecifier = new OrderSpecifier(Order.DESC, product.createDate);
-                    break;
-                case RELEASE_DATE:
-                    orderSpecifier = new OrderSpecifier(Order.DESC, product.createDate);
-                    break;
-                default:
-                    orderSpecifier = new OrderSpecifier(Order.DESC, product.createDate);
-            }
-        }
-
-        return  orderSpecifier;
+    private BooleanExpression isUserTrade(User user) {
+        return trade.buyer.eq(user)
+                .or(trade.seller.eq(user));
     }
 
-    private BooleanExpression containKeyword(String keyword) {
-        return (hasText(keyword)) ? product.name.containsIgnoreCase(keyword) : null;
-    }
-
-    private BooleanExpression eqProductId(Long productId) {
-        return (productId != null) ? product.id.eq(productId):null;
+    private BooleanExpression isProgressing() {
+        return trade.tradeStatus.ne(TradeStatus.CANCEL)
+                .and(trade.tradeStatus.ne(TradeStatus.END));
     }
 }

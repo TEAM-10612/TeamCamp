@@ -3,6 +3,7 @@ package TeamCamp.demo.service;
 
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.trade.Trade;
+import TeamCamp.demo.domain.model.trade.TradeStatus;
 import TeamCamp.demo.domain.model.trade.repository.TradeRepository;
 import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.user.address.Address;
@@ -12,6 +13,7 @@ import TeamCamp.demo.domain.repository.UserRepository;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.TradeDto;
 import TeamCamp.demo.dto.UserDto;
+import TeamCamp.demo.exception.user.NotAuthorizedException;
 import TeamCamp.demo.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,6 +30,7 @@ public class TradeService {
     private final ProductRepository productRepository;
     private final TradeRepository tradeRepository;
     private final AddressRepository addressRepository;
+    private final PointService pointService;
 
     @Transactional(readOnly = true)
     public TradeResource getResource(String email,Long productId){
@@ -60,6 +63,8 @@ public class TradeService {
         Trade trade = tradeRepository.findById(request.getTradeId())
                 .orElseThrow();
         trade.makePurchase(buyer,shippingAddress);
+        buyer.deductionOfPoints(trade.getPrice());
+        pointService.purchasePointPayment(buyer, trade.getPrice());
     }
 
     @Transactional
@@ -86,6 +91,27 @@ public class TradeService {
 
     @Transactional
     public void deleteTrade(ChangeRequest request) {
+        Trade trade = tradeRepository.findById(request.getTradeId()).orElseThrow();
         tradeRepository.deleteById(request.getTradeId());
+        pointService.purchasePointReturn(trade.getBuyer(),trade.getPrice());
+    }
+    @Transactional
+    public void updateReceivingTrackingNumber(Long tradeId,String email,String trackingNumber){
+        Trade trade = tradeRepository.findById(tradeId).orElseThrow();
+        User seller = userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException("존재하지 않는 사용자입니다."));
+        if (!trade.getSeller().getId().equals(seller.getId())){
+            throw new NotAuthorizedException("접근 권한이 없는 사용자입니다.");
+        }
+
+        trade.updateReceivingTrackingNumber(trackingNumber);
+
+        //거래 상태 다시 수정
+        trade.updateStatus(TradeStatus.PROGRESS);
+    }
+
+
+    @Transactional
+    public boolean hasUserProgressingTrade(User user){
+        return tradeRepository.existProgressingByUser(user);
     }
 }

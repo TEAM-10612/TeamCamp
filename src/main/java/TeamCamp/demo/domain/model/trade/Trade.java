@@ -52,6 +52,16 @@ public class Trade extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private TransactionMethod transactionMethod;
 
+    private String receivingTrackingNumber;
+
+    private String forwardingTrackingNumber;
+
+    private String returnTrackingNumber;
+
+    private String cancelReason;
+
+
+
     @Builder
     public Trade(Long id,User seller, User buyer, Product product, Long price, TradeStatus tradeStatus,
                  Address returnAddress, Address shippingAddress, TransactionMethod transactionMethod) {
@@ -80,6 +90,28 @@ public class Trade extends BaseTimeEntity {
 
 
     public void updatePrice(Long price) {
+
         this.price = price;
+    }
+
+    //입고 배송번호
+    public void updateReceivingTrackingNumber(String receivingTrackingNumber) {
+        this.receivingTrackingNumber = receivingTrackingNumber;
+    }
+    //출고 배송번호
+    public void updateForwardingTrackingNumber(String forwardingTrackingNumber) {
+        this.forwardingTrackingNumber = forwardingTrackingNumber;
+    }
+    //반송 배송번호
+    public void updateReturnTrackingNumber(String returnTrackingNumber) {
+        this.returnTrackingNumber = returnTrackingNumber;
+    }
+    //취소 사유
+    public void updateCancelReason(String cancelReason){
+        this.cancelReason = cancelReason;
+    }
+
+    public void updateStatus(TradeStatus tradeStatus) {
+        this.tradeStatus = tradeStatus;
     }
 }

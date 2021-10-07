@@ -29,6 +29,12 @@ public class ResponseConstants {
                     "Unauthenticated user", HttpStatus.UNAUTHORIZED
             );
 
+    public static final ResponseEntity<String>REMAINING_POINT=
+            new ResponseEntity<>("잔여 포인트 출금 후 탈퇴가 가능합니다.",HttpStatus.BAD_REQUEST);
+
+    public static final ResponseEntity<String>PROGRESSING_TRADE =
+            new ResponseEntity<>("진행중인 거래를 마친 후 탈퇴가 가능합니다.", HttpStatus.BAD_REQUEST);
+
     public static final ResponseEntity FAIL_TO_CHANGE_NICKNAME =
             new ResponseEntity("닉네임은 7일에 한번씩 변경이 가능합니다.",HttpStatus.BAD_REQUEST);
 
@@ -59,6 +65,12 @@ public class ResponseConstants {
     public static final ResponseEntity<String> IMAGE_TO_LARGE =
             new ResponseEntity<>("허용된 용량을 초과한 이미지 입니다.",
                     HttpStatus.PAYLOAD_TOO_LARGE);
+
+    public static final ResponseEntity<String>PURCHASE_FAILED =
+            new ResponseEntity<>("구매 포인트 부족으로, 구매가 불가능 합니다",
+                    HttpStatus.BAD_REQUEST);
+
+
 }
 
 
