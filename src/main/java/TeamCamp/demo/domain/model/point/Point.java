@@ -28,8 +28,7 @@ public class Point extends BaseTimeEntity {
     private Long amount;
 
     @Builder
-    public Point(Long id, User user, PointDivision division, Long amount) {
-        this.id = id;
+    public Point(User user, PointDivision division, Long amount) {
         this.user = user;
         this.division = division;
         this.amount = amount;
