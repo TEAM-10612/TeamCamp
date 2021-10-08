@@ -624,6 +624,169 @@ NOTE: 현재 로그인되어있는 사용자의 my-infos 리소스를 가져옵�
 //
 //---
 //
+//==== 조건 별 상품 전체 조회
+//
+//**curl**
+//
+//include::{snippets}/products/get/curl-request.adoc[]
+//
+//**request-parameters**
+//
+//include::{snippets}/products/get/request-parameters.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/products/get/response-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/products/get/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/products/get/http-response.adoc[]
+//
+//---
+//
+//==== 상품 통화 단위 목록 조회
+//
+//**curl**
+//
+//include::{snippets}/products/get/currencies/curl-request.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/products/get/currencies/response-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/products/get/currencies/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/products/get/currencies/http-response.adoc[]
+//
+//---
+//
+//==== 상품 사이즈 분류 목록 조회
+//
+//**curl**
+//
+//include::{snippets}/products/get/size-classifications/curl-request.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/products/get/size-classifications/response-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/products/get/size-classifications/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/products/get/size-classifications/http-response.adoc[]
+//
+//---
+//
+//==== 상품 사이즈 단위 목록 조회
+//
+//**curl**
+//
+//include::{snippets}/products/get/size-units/curl-request.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/products/get/size-units/response-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/products/get/size-units/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/products/get/size-units/http-response.adoc[]
+//
+//---
+//
+//==== 상품 정렬 기준 목록 조회
+//
+//**curl**
+//
+//include::{snippets}/products/get/order-standards/curl-request.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/products/get/order-standards/response-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/products/get/order-standards/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/products/get/order-standards/http-response.adoc[]
+//
+//---
+//
+//=== 2. 상품 추가
+//
+//**curl**
+//
+//include::{snippets}/products/create/curl-request.adoc[]
+//
+//**request-fields**
+//
+//include::{snippets}/products/create/request-part-requestDto-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/products/create/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/products/create/http-response.adoc[]
+//
+//---
+//
+//=== 3. 상품 정보 수정
+//
+//**curl**
+//
+//include::{snippets}/products/update/curl-request.adoc[]
+//
+//**request-fields**
+//
+//include::{snippets}/products/update/request-part-requestDto-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/products/update/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/products/update/http-response.adoc[]
+//
+//---
+//
+//=== 4. 상품 삭제
+//
+//**curl**
+//
+//include::{snippets}/products/delete/curl-request.adoc[]
+//
+//**path-parameters**
+//
+//include::{snippets}/products/delete/path-parameters.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/products/delete/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/products/delete/http-response.adoc[]
+//
+//
 //==== 즉시 판매
 //
 //**curl**
@@ -662,7 +825,28 @@ NOTE: 현재 로그인되어있는 사용자의 my-infos 리소스를 가져옵�
 //
 //include::{snippets}/trade/buy/immediately/http-response.adoc[]
 //
+//
 //---
+//==== 입찰 내역 삭제
+//
+//**curl**
+//
+//include::{snippets}/trade/delete/curl-request.adoc[]
+//
+//**request-fields**
+//
+//include::{snippets}/trade/delete/request-fields.adoc[]
+//
+//**example request**
+//
+//include::{snippets}/trade/delete/http-request.adoc[]
+//
+//**example response**
+//
+//include::{snippets}/trade/delete/http-response.adoc[]
+//
+//---
+//
 //==== 입고 운송장 번호 입력
 //
 //**curl**
@@ -704,135 +888,321 @@ NOTE: 현재 로그인되어있는 사용자의 my-infos 리소스를 가져옵�
 //**example response**
 //
 //include::{snippets}/trade/confirm/warehousing/http-response.adoc[]
-//
-//---
-//==== 회원 전체 조회
+//==== 출고 운송장 번호 입력
 //
 //**curl**
 //
-//include::{snippets}/admin/get/findAll/curl-request.adoc[]
-//
-//**response-fields**
-//
-//include::{snippets}/admin/get/findAll/response-fields.adoc[]
-//
-//**example request**
-//
-//include::{snippets}/admin/get/findAll/http-request.adoc[]
-//
-//**example response**
-//
-//include::{snippets}/admin/get/findAll/http-response.adoc[]
-//
-//---
-//
-//==== 회원 조회(IDX)
-//
-//**curl**
-//
-//include::{snippets}/admin/get/findById/curl-request.adoc[]
-//
-//**request-parameters**
-//
-//include::{snippets}/admin/get/findById/request-parameters.adoc[]
-//
-//**response-fields**
-//
-//include::{snippets}/admin/get/findById/response-fields.adoc[]
-//
-//**example request**
-//
-//include::{snippets}/admin/get/findById/http-request.adoc[]
-//
-//**example response**
-//
-//include::{snippets}/admin/get/findById/http-response.adoc[]
-//
-//---
-//==== 회원 조회(User Level)
-//
-//**curl**
-//
-//include::{snippets}/admin/get/findByUserLevel/curl-request.adoc[]
-//
-//**request-parameters**
-//
-//include::{snippets}/admin/get/findByUserLevel/request-parameters.adoc[]
-//
-//**response-fields**
-//
-//include::{snippets}/admin/get/findByUserLevel/response-fields.adoc[]
-//
-//**example request**
-//
-//include::{snippets}/admin/get/findByUserLevel/http-request.adoc[]
-//
-//**example response**
-//
-//include::{snippets}/admin/get/findByUserLevel/http-response.adoc[]
-//
-//---
-//
-//==== 회원 조회(Email)
-//
-//**curl**
-//
-//include::{snippets}/admin/get/findByEmail/curl-request.adoc[]
-//
-//**request-parameters**
-//
-//include::{snippets}/admin/get/findByEmail/request-parameters.adoc[]
-//
-//**response-fields**
-//
-//include::{snippets}/admin/get/findByEmail/response-fields.adoc[]
-//
-//**example request**
-//
-//include::{snippets}/admin/get/findByEmail/http-request.adoc[]
-//
-//**example response**
-//
-//include::{snippets}/admin/get/findByEmail/http-response.adoc[]
-//
-//---
-
-//==== 회원 상세 조회
-//
-//**curl**
-//
-//include::{snippets}/admin/get/details/curl-request.adoc[]
+//include::{snippets}/trade/update/forwarding-tracking-number/curl-request.adoc[]
 //
 //**path-parameters**
 //
-//include::{snippets}/admin/get/details/path-parameters.adoc[]
-//
-//**response-fields**
-//
-//include::{snippets}/admin/get/details/response-fields.adoc[]
-//
-//**Example request**
-//
-//include::{snippets}/admin/get/details/http-request.adoc[]
-//
-//**Example response**
-//
-//include::{snippets}/admin/get/details/http-response.adoc[]
-//
-//---
-//
-//==== 회원 정지
-//
-//**curl**
-//
-//include::{snippets}/admin/ban/curl-request.adoc[]
+//include::{snippets}/trade/update/forwarding-tracking-number/path-parameters.adoc[]
 //
 //**example request**
 //
-//include::{snippets}/admin/ban/http-request.adoc[]
+//include::{snippets}/trade/update/forwarding-tracking-number/http-request.adoc[]
 //
 //**example response**
 //
-//include::{snippets}/admin/ban/http-response.adoc[]
+//include::{snippets}/trade/update/forwarding-tracking-number/http-response.adoc[]
 //
+//---
+//
+//==== 거래 완료
+//
+//**curl**
+//
+//include::{snippets}/trade/confirm/purchase/curl-request.adoc[]
+//
+//**path-parameters**
+//
+//include::{snippets}/trade/confirm/purchase/path-parameters.adoc[]
+//
+//**example request**
+//
+//include::{snippets}/trade/confirm/purchase/http-request.adoc[]
+//
+//**example response**
+//
+//include::{snippets}/trade/confirm/purchase/http-response.adoc[]
+//
+//---
+//==== 거래 검색
+//
+//**curl**
+//
+//include::{snippets}/trade/search/curl-request.adoc[]
+//
+//**request-parameters**
+//
+//include::{snippets}/trade/search/request-parameters.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/trade/search/response-fields.adoc[]
+//
+//**example request**
+//
+//include::{snippets}/trade/search/http-request.adoc[]
+//
+//**example response**
+//
+//include::{snippets}/trade/search/http-response.adoc[]
+//
+//---
+//admin
+==== 회원 전체 조회
+
+**curl**
+
+include::{snippets}/admin/get/findAll/curl-request.adoc[]
+
+**response-fields**
+
+include::{snippets}/admin/get/findAll/response-fields.adoc[]
+
+**example request**
+
+include::{snippets}/admin/get/findAll/http-request.adoc[]
+
+**example response**
+
+include::{snippets}/admin/get/findAll/http-response.adoc[]
+
+---
+
+==== 회원 조회(IDX)
+
+**curl**
+
+include::{snippets}/admin/get/findById/curl-request.adoc[]
+
+**request-parameters**
+
+include::{snippets}/admin/get/findById/request-parameters.adoc[]
+
+**response-fields**
+
+include::{snippets}/admin/get/findById/response-fields.adoc[]
+
+**example request**
+
+include::{snippets}/admin/get/findById/http-request.adoc[]
+
+**example response**
+
+include::{snippets}/admin/get/findById/http-response.adoc[]
+
+---
+==== 회원 조회(User Level)
+
+**curl**
+
+include::{snippets}/admin/get/findByUserLevel/curl-request.adoc[]
+
+**request-parameters**
+
+include::{snippets}/admin/get/findByUserLevel/request-parameters.adoc[]
+
+**response-fields**
+
+include::{snippets}/admin/get/findByUserLevel/response-fields.adoc[]
+
+**example request**
+
+include::{snippets}/admin/get/findByUserLevel/http-request.adoc[]
+
+**example response**
+
+include::{snippets}/admin/get/findByUserLevel/http-response.adoc[]
+
+---
+
+==== 회원 조회(Email)
+
+**curl**
+
+include::{snippets}/admin/get/findByEmail/curl-request.adoc[]
+
+**request-parameters**
+
+include::{snippets}/admin/get/findByEmail/request-parameters.adoc[]
+
+**response-fields**
+
+include::{snippets}/admin/get/findByEmail/response-fields.adoc[]
+
+**example request**
+
+include::{snippets}/admin/get/findByEmail/http-request.adoc[]
+
+**example response**
+
+include::{snippets}/admin/get/findByEmail/http-response.adoc[]
+
+---
+
+==== 회원 상세 조회
+
+**curl**
+
+include::{snippets}/admin/get/details/curl-request.adoc[]
+
+**path-parameters**
+
+include::{snippets}/admin/get/details/path-parameters.adoc[]
+
+**response-fields**
+
+include::{snippets}/admin/get/details/response-fields.adoc[]
+
+**Example request**
+
+include::{snippets}/admin/get/details/http-request.adoc[]
+
+**Example response**
+
+include::{snippets}/admin/get/details/http-response.adoc[]
+
+---
+
+==== 회원 정지
+
+**curl**
+
+include::{snippets}/admin/ban/curl-request.adoc[]
+
+**example request**
+
+include::{snippets}/admin/ban/http-request.adoc[]
+
+**example response**
+
+include::{snippets}/admin/ban/http-response.adoc[]
+
 //== CART API
+//==== 장바구니 조회
+//**curl**
+//
+//include::{snippets}/users/carts/getWishList/curl-request.adoc[]
+//
+//**response-fields**
+//
+//include::{snippets}/users/carts/getWishList/response-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/users/carts/getWishList/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/users/carts/getWishList/http-response.adoc[]
+//
+//---
+//==== 장바구니 추가
+//**curl**
+//
+//include::{snippets}/users/carts/addWishList/curl-request.adoc[]
+//
+//**request-fields**
+//include::{snippets}/users/carts/addWishList/request-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/users/carts/addWishList/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/users/carts/addWishList/http-response.adoc[]
+//
+//---
+//==== 장바구니 삭제
+//**curl**
+//
+//include::{snippets}/users/carts/deleteWishList/curl-request.adoc[]
+//
+//**request-fields**
+//include::{snippets}/users/carts/deleteWishList/request-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/users/carts/deleteWishList/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/users/carts/deleteWishList/http-response.adoc[]
+//
+//
+//== POINT API
+//
+//==== 포인트 충전(AJAX)
+//**curl**
+//
+//include::{snippets}/points/charging/curl-request.adoc[]
+//
+//**request-fields**
+//include::{snippets}/points/charging/request-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/points/charging/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/points/charging/http-response.adoc[]
+//
+//---
+//
+//==== 포인트 출금
+//**curl**
+//
+//include::{snippets}/points/withdrawal/curl-request.adoc[]
+//
+//**request-fields**
+//include::{snippets}/points/withdrawal/request-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/points/withdrawal/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/points/withdrawal/http-response.adoc[]
+//
+//---
+//
+//==== 포인트 차감 내역 조회
+//**curl**
+//
+//include::{snippets}/points/history/deduction/curl-request.adoc[]
+//
+//**response-fields**
+//include::{snippets}/points/history/deduction/response-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/points/history/deduction/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/points/history/deduction/http-response.adoc[]
+//
+//---
+//
+//==== 포인트 충전(대금 수령) 내역 조회
+//**curl**
+//
+//include::{snippets}/points/history/charging/curl-request.adoc[]
+//
+//**response-fields**
+//include::{snippets}/points/history/charging/response-fields.adoc[]
+//
+//**Example request**
+//
+//include::{snippets}/points/history/charging/http-request.adoc[]
+//
+//**Example response**
+//
+//include::{snippets}/points/history/charging/http-response.adoc[]
+//
+//---
