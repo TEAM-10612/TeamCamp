@@ -59,6 +59,7 @@ public class UserDto {
                     .phone(this.phone)
                     .userLevel(UserLevel.ADMIN)
                     .userStatus(UserStatus.NORMAL)
+                    .point(0L)
                     .build();
         }
     }

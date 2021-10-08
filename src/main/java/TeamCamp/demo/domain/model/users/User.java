@@ -108,7 +108,7 @@ public class User extends UserBase {
     @Builder
     public User(Long id,String email, String password, UserLevel userLevel,
                 String nickname, LocalDateTime nicknameModifiedDate,
-                String phone,AddressBook addressBooks,UserStatus userStatus,Long point) {
+                String phone,AddressBook addressBooks,UserStatus userStatus,Long point, List<Point> pointBreakdown) {
         super( id, email, password, userLevel);
         this.nickname = nickname;
         this.nicknameModifiedDate = nicknameModifiedDate;
@@ -116,6 +116,7 @@ public class User extends UserBase {
         this.addressBook = addressBooks;
         this.userStatus = userStatus;
         this.point = point;
+        this.pointBreakdown = pointBreakdown;
     }
 
     public UserDetailResponse toUserDetailsDto() {
