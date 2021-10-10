@@ -61,6 +61,7 @@ public class UserService {
      * @param email
      * @return
      */
+    @Transactional(readOnly = true)
     public boolean emailDuplicateCheck(String email) {
         return userRepository.existsByEmail(email);
     }
@@ -70,11 +71,12 @@ public class UserService {
      * @param nickname
      * @return
      */
+    @Transactional(readOnly = true)
     public boolean nicknameDuplicateCheck(String nickname) {
         return userRepository.existsByNickname(nickname);
     }
 
-
+    @Transactional(readOnly = true)
     public FindUserResponse getUserResource(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 email 입니다.")).toFindUserDto();

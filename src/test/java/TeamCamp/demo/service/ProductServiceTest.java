@@ -11,6 +11,7 @@ import TeamCamp.demo.domain.repository.ProductRepository;
 import TeamCamp.demo.domain.repository.UserRepository;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.ProductDto.SaveRequest;
+import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.exception.product.ImageRoadFailedException;
 import TeamCamp.demo.exception.product.ProductNotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -63,6 +64,13 @@ class ProductServiceTest {
                 .userStatus(UserStatus.NORMAL)
                 .build();
     }
+    private UserDto.UserInfo userInfo = UserDto.UserInfo.builder()
+            .id(1L)
+            .phone("01022334455")
+            .nickname("ryu")
+            .email("rddd@naver.com")
+            .userLevel(UserLevel.UNAUTH)
+            .build();
     User user = toEntity();
 
 
@@ -103,7 +111,7 @@ class ProductServiceTest {
     private SaveRequest createProductRequest(){
         return SaveRequest .builder()
                 .name("텐트")
-                .user(user)
+                .user(userInfo)
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)
@@ -111,10 +119,11 @@ class ProductServiceTest {
                 .build();
     }
 
+
     private SaveRequest createProductWithOutImageRequest(){
         return SaveRequest.builder()
                 .name("텐트")
-                .user(user)
+                .user(userInfo)
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .build();
@@ -123,7 +132,7 @@ class ProductServiceTest {
     private SaveRequest updateProductWithOutImageRequest(){
         return SaveRequest.builder()
                 .name("화구")
-                .user(user)
+                .user(userInfo)
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .build();

@@ -121,6 +121,34 @@ public class UserDto {
             this.userLevel = userLevel;
         }
     }
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    public static class UserInfo {
+        private Long id;
+        private String email;
+        private String password;
+        private String nickname;
+        private String phone;
+        private UserLevel userLevel;
+        private LocalDateTime nicknameModifiedDate;
+        private UserStatus userStatus;
+        private Long point;
+
+       public User toEntity(){
+           return User.builder()
+                   .email(this.email)
+                   .password(this.password)
+                   .nicknameModifiedDate(LocalDateTime.now())
+                   .nickname(this.nickname)
+                   .phone(this.phone)
+                   .userLevel(UserLevel.ADMIN)
+                   .userStatus(UserStatus.NORMAL)
+                   .point(0L)
+                   .build();
+       }
+    }
 
     @Getter
     public static class FindUserResponse{

@@ -114,4 +114,21 @@ public class Trade extends BaseTimeEntity {
     public void updateStatus(TradeStatus tradeStatus) {
         this.tradeStatus = tradeStatus;
     }
+
+    public boolean isBuyersEmail(String email) {
+        return buyer.isCurrentEmail(email);
+    }
+
+    public boolean isSellersEmail(String email) {
+        return seller.isCurrentEmail(email);
+    }
+
+    public void endTrade() {
+        this.tradeStatus = TradeStatus.END;
+        seller.chargingPoint(this.price);
+    }
+    public void updateStatusShipping(String trackingNumber){
+        this.forwardingTrackingNumber = trackingNumber;
+        this.tradeStatus = TradeStatus.PROGRESS;
+    }
 }

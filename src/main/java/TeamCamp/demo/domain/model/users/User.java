@@ -49,7 +49,7 @@ public class User extends UserBase {
 
     private Long point;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name = "WISHLIST_ID")
     private Wishlist wishlist;
 
@@ -60,6 +60,16 @@ public class User extends UserBase {
 
     public UserInfoDto toUserInfoDto() {
         return UserInfoDto.builder()
+                .email(this.getEmail())
+                .nickname(this.getNickname())
+                .phone(this.getPhone())
+                .userLevel(this.userLevel)
+                .build();
+    }
+
+    public UserInfo toUserInfo() {
+        return UserInfo.builder()
+                .id(this.getId())
                 .email(this.getEmail())
                 .nickname(this.getNickname())
                 .phone(this.getPhone())

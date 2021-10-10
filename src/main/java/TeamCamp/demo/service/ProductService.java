@@ -40,12 +40,14 @@ public class ProductService {
     }
 
     @Cacheable(value = "product",key = "#id")
+    @Transactional(readOnly = true)
     public ProductInfoResponse getProductInfo(Long id){
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException())
                 .toProductInfoResponse();
     }
 
     @Cacheable(value = "product" , key = "#id")
+    @Transactional(readOnly = true)
     public List<ProductInfoResponse> getProductInfos(){
         return productRepository.findAll().stream()
                 .map(Product::toProductInfoResponse)
@@ -92,6 +94,7 @@ public class ProductService {
                 (savedImagePath != null && productImage != null));
     }
 
+    @Transactional(readOnly = true)
     public Page<ThumbnailResponse> findProducts(SearchCondition condition, Pageable pageable){
         return  productRepository.findAllBySearchCondition(condition,pageable);
     }

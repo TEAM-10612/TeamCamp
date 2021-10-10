@@ -92,8 +92,8 @@ public class TradeService {
     @Transactional
     public void deleteTrade(ChangeRequest request) {
         Trade trade = tradeRepository.findById(request.getTradeId()).orElseThrow();
-        tradeRepository.deleteById(request.getTradeId());
         pointService.purchasePointReturn(trade.getBuyer(),trade.getPrice());
+        tradeRepository.deleteById(request.getTradeId());
     }
     @Transactional
     public void updateReceivingTrackingNumber(Long tradeId,String email,String trackingNumber){
@@ -114,4 +114,24 @@ public class TradeService {
     public boolean hasUserProgressingTrade(User user){
         return tradeRepository.existProgressingByUser(user);
     }
+
+    @Transactional
+    public void confirmPurchase(Long tradeId, String email) {
+        Trade trade =  tradeRepository.findById(tradeId).orElseThrow();
+        if(!trade.isBuyersEmail(email)){
+            throw new NotAuthorizedException("해당 구매자만 접근이 가능합니다.");
+        }
+
+        trade.endTrade();
+        pointService.salesPointReceive(trade.getSeller(), trade.getPrice());
+    }
+
+    @Transactional
+    public void updateTrackingNumber(Long tradeId,String trackingNumber){
+        Trade trade = tradeRepository.findById(tradeId).orElseThrow();
+
+        trade.updateStatusShipping(trackingNumber);
+    }
+
+
 }
