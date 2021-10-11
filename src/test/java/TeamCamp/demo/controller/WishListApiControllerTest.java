@@ -29,6 +29,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -99,11 +100,11 @@ class WishListApiControllerTest {
         Set<WishProductResponse> set = new HashSet<>();
 
 
-        ProductDto.WishProductResponse wishProductResponse = ProductDto.WishProductResponse.builder()
+        ProductDto.WishProductResponse wishProductResponse = WishProductResponse.builder()
                 .id(1L)
                 .productId(2L)
                 .name("텐트")
-                .userInfoDto(userInfoDto)
+                .user(user)
                 .build();
         set.add(wishProductResponse);
 
@@ -193,7 +194,7 @@ class WishListApiControllerTest {
                         .content(objectMapper.writeValueAsString(idRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document("users/carts/addWishList",requestFields(
+                .andDo(document("users/carts/deleteWishList",requestFields(
                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("상품 ID")
                 )));
 

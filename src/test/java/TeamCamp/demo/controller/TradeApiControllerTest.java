@@ -123,7 +123,7 @@ class TradeApiControllerTest {
     private ProductDto.SaveRequest  createProduct(){
         return ProductDto.SaveRequest.builder()
                 .name("텐트")
-                .user(user1().toUserInfo())
+                .userInfo(user1().toUserInfo())
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)

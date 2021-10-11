@@ -38,7 +38,6 @@ public class SearchProductRepositoryImpl implements SearchProductRepository{
                 .leftJoin(product.trades,trade)
                 .groupBy(product)
                 .where(
-                        eqProductId(condition.getProductId()),
                         containsKeyword(condition.getKeyword()),
                         trade.buyer.isNull()
                 ).orderBy(

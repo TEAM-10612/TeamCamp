@@ -15,7 +15,7 @@ public class Wishlist {
     @Id@GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "wishlist")
+    @OneToMany(mappedBy = "wishlist",orphanRemoval = true)
     private Set<ProductWishList> wishLists  = new HashSet<>();
 
     public void addWishListProduct(ProductWishList productWishList){

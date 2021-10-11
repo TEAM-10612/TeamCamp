@@ -52,12 +52,12 @@ public class Product extends BaseTimeEntity {
         return ProductInfoResponse.builder()
                 .id(this.id)
                 .name(this.name)
-                .user(this.user)
+                .user(this.user.toUserInfo())
                 .productDescription(this.productDescription)
                 .productState(this.productState)
                 .originImagePath(this.originImagePath)
                 .thumbnailImagePath(this.thumbnailImagePath)
-     //           .tradeCompleteInfos(getT)
+                .tradeCompleteInfos(this.toProductInfoResponse().getTradeCompleteInfos())
                 .build();
     }
 
@@ -73,7 +73,7 @@ public class Product extends BaseTimeEntity {
         return ProductDto.ProductInfoByTrade.builder()
                 .id(this.id)
                 .name(this.name)
-                .user(this.user)
+                .user(this.user.toUserInfo())
                 .productDescription(this.productDescription)
                 .productState(this.productState)
                 .build();

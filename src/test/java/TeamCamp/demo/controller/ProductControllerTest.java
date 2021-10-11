@@ -5,6 +5,7 @@ import TeamCamp.demo.domain.model.trade.OrderStandard;
 import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.domain.model.users.UserStatus;
+import TeamCamp.demo.domain.model.users.user.address.AddressBook;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.TradeDto;
 import TeamCamp.demo.dto.UserDto;
@@ -105,13 +106,19 @@ class ProductControllerTest {
                 .build();
     }
 
-    private UserDto.UserInfo userInfo = UserDto.UserInfo.builder()
-            .id(1L)
-            .phone("01037734455")
-            .nickname("ryudd")
-            .email("rdj10149@naver.com")
-            .userLevel(UserLevel.AUTH)
-            .build();
+    private UserDto.UserInfo userInfo(){
+        return UserDto.UserInfo.builder()
+                .id(1L)
+                .phone("01037734455")
+                .nickname("ryudd")
+                .nicknameModifiedDate(LocalDateTime.now())
+                .password("1221122121")
+                .point(1L)
+                .email("rdj10149@naver.com")
+                .userStatus(UserStatus.NORMAL)
+                .userLevel(UserLevel.AUTH)
+                .build();
+    }
 
     private String productOriginImagePath = "https://cusproduct.s3.ap-northeast-2.amazonaws.com/product.png";
     private String productThumbnailImagePath = "https://cusproduct.s3.ap-northeast-2.amazonaws.com/product.png";
@@ -119,7 +126,7 @@ class ProductControllerTest {
     private ProductDto.SaveRequest createSaveRequest(){
         return ProductDto.SaveRequest.builder()
                 .name("텐트")
-                .userInfo(userInfo)
+                .userInfo(userInfo())
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath("https://cusproduct.s3.ap-northeast-2.amazonaws.com/product.png")
@@ -130,7 +137,7 @@ class ProductControllerTest {
         return ProductDto.ProductInfoResponse.builder()
                 .id(1L)
                 .name("화로")
-                .user(userInfo)
+                .user(userInfo())
                 .productState(ProductState.BEST)
                 .productDescription("good")
                 .thumbnailImagePath(productThumbnailImagePath)
@@ -210,15 +217,18 @@ class ProductControllerTest {
                 .andDo(document("products/create",
                         requestPartFields("requestDto",
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("제품 이름"),
-                                fieldWithPath("user").type(JsonFieldType.OBJECT).description("제품을 올린 유저"),
-                                fieldWithPath("user.id").ignored(),
-                                fieldWithPath("user.phone").ignored(),
-                                fieldWithPath("user.nickname").ignored(),
-                                fieldWithPath("user.email").ignored(),
-                                fieldWithPath("user.nicknameModifiedDate").ignored(),
-                                fieldWithPath("user.userLevel").ignored(),
+                                fieldWithPath("userInfo").type(JsonFieldType.OBJECT).description("제품을 올린 유저"),
+                                fieldWithPath("userInfo.id").ignored(),
+                                fieldWithPath("userInfo.phone").ignored(),
+                                fieldWithPath("userInfo.password").ignored(),
+                                fieldWithPath("userInfo.nickname").ignored(),
+                                fieldWithPath("userInfo.email").ignored(),
+                                fieldWithPath("userInfo.nicknameModifiedDate").ignored(),
+                                fieldWithPath("userInfo.userLevel").ignored(),
+                                fieldWithPath("userInfo.point").ignored(),
+                                fieldWithPath("userInfo.userStatus").ignored(),
                                 fieldWithPath("productDescription").type(JsonFieldType.STRING).description("제품 설명"),
-                                fieldWithPath("productStatus").type(JsonFieldType.STRING).description("제품 상태"),
+                                fieldWithPath("productState").type(JsonFieldType.STRING).description("제품 상태"),
                                 fieldWithPath("originImagePath").ignored(),
                                 fieldWithPath("thumbnailImagePath").ignored()),
                         requestParts(
@@ -300,16 +310,16 @@ class ProductControllerTest {
     void updateProduct()throws Exception{
         //given
         Long id = 1L;
-        ProductDto.SaveRequest request = createSaveRequest();
-        MockMultipartFile requestDto = convertMultipartFile(request);
+        ProductDto.SaveRequest updateRequest = createSaveRequest();
+        MockMultipartFile requestDto = convertMultipartFile(updateRequest);
         MockMultipartFile productImage = createImageFile();
 
         //when
         MockMultipartHttpServletRequestBuilder builder =
                 RestDocumentationRequestBuilders.fileUpload("/products/{id}",id);
-        builder.with(request1 -> {
-            request1.setMethod("PATCH");
-            return request1;
+        builder.with(request -> {
+            request.setMethod("PATCH");
+            return request;
         });
 
         //then
@@ -327,15 +337,18 @@ class ProductControllerTest {
                         ),
                         requestPartFields("requestDto",
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("제품 이름"),
-                                fieldWithPath("user").type(JsonFieldType.OBJECT).description("제품을 올린 유저"),
-                                fieldWithPath("user.id").ignored(),
-                                fieldWithPath("user.phone").ignored(),
-                                fieldWithPath("user.nickname").ignored(),
-                                fieldWithPath("user.email").ignored(),
-                                fieldWithPath("user.nicknameModifiedDate").ignored(),
-                                fieldWithPath("user.userLevel").ignored(),
+                                fieldWithPath("userInfo").type(JsonFieldType.OBJECT).description("제품을 올린 유저"),
+                                fieldWithPath("userInfo.id").ignored(),
+                                fieldWithPath("userInfo.phone").ignored(),
+                                fieldWithPath("userInfo.password").ignored(),
+                                fieldWithPath("userInfo.nickname").ignored(),
+                                fieldWithPath("userInfo.email").ignored(),
+                                fieldWithPath("userInfo.nicknameModifiedDate").ignored(),
+                                fieldWithPath("userInfo.userLevel").ignored(),
+                                fieldWithPath("userInfo.point").ignored(),
+                                fieldWithPath("userInfo.userStatus").ignored(),
                                 fieldWithPath("productDescription").type(JsonFieldType.STRING).description("제품 설명"),
-                                fieldWithPath("productStatus").type(JsonFieldType.STRING).description("제품 상태"),
+                                fieldWithPath("productState").type(JsonFieldType.STRING).description("제품 상태"),
                                 fieldWithPath("originImagePath").ignored(),
                                 fieldWithPath("thumbnailImagePath").ignored()),
                         requestParts(

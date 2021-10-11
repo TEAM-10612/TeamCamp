@@ -26,7 +26,7 @@ public class ProductApiController {
     @LoginCheck(authority = UserLevel.AUTH)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@Valid@RequestBody SaveRequest requestDto ,
+    public void createProduct(@Valid@RequestPart SaveRequest requestDto ,
                               @RequestBody(required = false) MultipartFile productImage){
         productService.saveProduct(requestDto,productImage);
 
@@ -48,7 +48,8 @@ public class ProductApiController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateProduct(@PathVariable Long id,
-                                             @Valid@RequestBody SaveRequest request,@RequestPart(required = false)MultipartFile productImage) {
-        productService.updateProduct(id, request,productImage);
+                              @Valid@RequestPart SaveRequest requestDto
+            ,@RequestPart(required = false)MultipartFile productImage) {
+        productService.updateProduct(id, requestDto,productImage);
     }
 }

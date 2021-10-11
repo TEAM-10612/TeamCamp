@@ -8,13 +8,12 @@ import TeamCamp.demo.service.PointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("point")
+@RequestMapping("points")
 public class PointApiController {
 
     private final PointService pointService;
@@ -24,7 +23,7 @@ public class PointApiController {
         return pointService.getUserPoint(email);
     }
 
-    @PostMapping("/payment")
+    @PostMapping("/charging")
     public void payment(@CurrentUser String email, @RequestBody ChargeRequest request){
         pointService.charging(email,request);
     }

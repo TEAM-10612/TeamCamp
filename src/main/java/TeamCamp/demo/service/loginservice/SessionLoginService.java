@@ -10,6 +10,7 @@ import TeamCamp.demo.domain.repository.UserRepository;
 import TeamCamp.demo.encrypt.EncryptionService;
 import TeamCamp.demo.exception.user.UnauthenticatedUserException;
 import TeamCamp.demo.exception.user.UserNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,6 +33,7 @@ public class SessionLoginService {
      * 아이디 비밀번호 일치 여부
      * @param loginRequest
      */
+    @Transactional(readOnly = true)
     public void existByEmailAndPassword(UserDto.LoginRequest loginRequest) {
         loginRequest.passwordEncryption(encryptionService);
         String email = loginRequest.getEmail();
@@ -40,7 +42,7 @@ public class SessionLoginService {
             throw new UserNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
     }
-
+    @Transactional(readOnly = true)
     public void login(UserDto.LoginRequest request) {
         existByEmailAndPassword(request);
         String email = request.getEmail();

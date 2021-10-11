@@ -117,7 +117,7 @@ class TradeServiceTest {
     private ProductDto.SaveRequest createProductDto(){
         return ProductDto.SaveRequest.builder()
                 .name("텐트")
-                .user(userInfo)
+                .userInfo(userInfo)
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)

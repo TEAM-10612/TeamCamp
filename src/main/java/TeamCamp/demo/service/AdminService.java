@@ -18,10 +18,12 @@ public class AdminService {
 
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public Page<UserDto.UserListResponse> findUsers(UserDto.UserSearchCondition request, Pageable pageable){
         return  userRepository.searchByUsers(request,pageable);
     }
 
+    @Transactional(readOnly = true)
     public UserDetailResponse getUser(Long  id){
         User user = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("존재하지 않는 회원입니다."));
         return user.toUserDetailsDto();

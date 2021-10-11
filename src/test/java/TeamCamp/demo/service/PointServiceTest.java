@@ -61,10 +61,20 @@ class PointServiceTest {
                 .pointBreakdown(createPointBreakDownMockData())
                 .build();
     }
-    
-    private List<Point>createPointBreakDownMockData(){
-        User tempUser = null;
 
+    private List<Point> createPointBreakDownMockData() {
+        User tempUser = User.builder()
+                .id(1L)
+                .email("rddd@naver.com")
+                .password("11111111")
+                .nicknameModifiedDate(LocalDateTime.now())
+                .nickname("ryu")
+                .phone("01011111111")
+                .userLevel(UserLevel.UNAUTH)
+                .userStatus(UserStatus.NORMAL)
+                .addressBooks(new AddressBook())
+                .point(50000L)
+                .build();
         List<Point> pointBreakDownMockDataList = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
@@ -109,10 +119,11 @@ class PointServiceTest {
 
         return pointBreakDownMockDataList;
     }
+
     @Test
     @DisplayName("포인트 충전")
-    public void charging(){
-        User user  = user0();
+    public void charging() {
+        User user = user0();
         Long nowPoint = user.getPoint();
         String email = "rddd@naver.com";
         PointDto.ChargeRequest request = PointDto.ChargeRequest.builder()
@@ -121,14 +132,15 @@ class PointServiceTest {
         System.out.println(user.getPassword());
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        pointService.charging(email,request);
+        pointService.charging(email, request);
 
-        assertThat(user.getPoint()).isEqualTo(nowPoint+request.getChargeAmount());
+        assertThat(user.getPoint()).isEqualTo(nowPoint + request.getChargeAmount());
 
     }
+
     @Test
     @DisplayName("포인트 출금  - 패스위드 불일치로 포인트 출금에 실패한다")
-    void pointWithdrawal()throws Exception{
+    void pointWithdrawal() throws Exception {
         //given
         User user = user0();
         String email = "rddd@naver.com";
@@ -139,18 +151,18 @@ class PointServiceTest {
 
         //when
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        when(userRepository.existsByEmailAndPassword(any(),any())).thenReturn(false);
+        when(userRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
 
         //then
         assertThrows(UserNotFoundException.class,
-                () -> pointService.withdrawal(email,request));
+                () -> pointService.withdrawal(email, request));
 
     }
 
     @Test
     @DisplayName("포인트 출금 성공")
-    void pointWithdrawal_success()throws Exception{
+    void pointWithdrawal_success() throws Exception {
         //given
         User user = user0();
         Long nowPoint = user.getPoint();
@@ -162,9 +174,9 @@ class PointServiceTest {
 
         //when
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        when(userRepository.existsByEmailAndPassword(any(),any())).thenReturn(true);
+        when(userRepository.existsByEmailAndPassword(any(), any())).thenReturn(true);
 
-        pointService.withdrawal(email,request);
+        pointService.withdrawal(email, request);
         //then
         assertThat(user.getPoint()).isEqualTo(nowPoint - request.getWithdrawalAmount());
 
@@ -172,7 +184,7 @@ class PointServiceTest {
 
     @Test
     @DisplayName("사용자 포인트 조회")
-    void getPoint()throws Exception{
+    void getPoint() throws Exception {
         //given
         User user = user0();
         String email = "rddd@naver.com";
@@ -186,7 +198,7 @@ class PointServiceTest {
 
     @Test
     @DisplayName("포인트 차감내역 조회")
-    void getDeductionHistory()throws Exception{
+    void getDeductionHistory() throws Exception {
         //given
         User user = user0();
         String email = "rddd@naver.com";
@@ -194,10 +206,10 @@ class PointServiceTest {
         //when
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
-        List<PointHistoryDto> deductionHistory =  pointService.getDeductionHistory(email);
+        List<PointHistoryDto> deductionHistory = pointService.getDeductionHistory(email);
 
         long count = createPointBreakDownMockData().stream()
-                .filter(p -> p.getDivision().equals(PointDivision.WITHDRAW)||
+                .filter(p -> p.getDivision().equals(PointDivision.WITHDRAW) ||
                         p.getDivision().equals(PointDivision.PURCHASE_DEDUCTION))
                 .count();
         //then
@@ -207,20 +219,62 @@ class PointServiceTest {
 
     @Test
     @DisplayName("충전 내역조회")
-    void getChargingHistory ()throws Exception{
+    void getChargingHistory() throws Exception {
         //given
         User user = user0();
         String email = "rddd@naver.com";
 
         //when
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        List<PointHistoryDto>history = pointService.getChargingHistory(email);
+        List<PointHistoryDto> history = pointService.getChargingHistory(email);
         long count = createPointBreakDownMockData().stream()
-                .filter(p -> p.getDivision().equals(PointDivision.CHARGE)||
+                .filter(p -> p.getDivision().equals(PointDivision.CHARGE) ||
                         p.getDivision().equals(PointDivision.SALES_REVENUE))
                 .count();
         //then
         assertThat(history.size()).isEqualTo(count);
+
+    }
+
+    @Test
+    @DisplayName("구매자의 포인트 지출 기록이 생성된다.")
+    void purchasePointPayment() throws Exception {
+        //given
+        User buyer = user0();
+        Long price = 198000L;
+        //when
+        pointService.purchasePointPayment(buyer, price);
+        //then
+        verify(pointRepository, times(1)).save(any());
+
+    }
+
+    @Test
+    @DisplayName("구매자의 지출되었던 포인트 반환 기록이 생성된다.")
+    void purchasePointReturn() throws Exception {
+        //given
+        User buyer = user0();
+        Long price = 198000L;
+
+        //when
+        pointService.purchasePointPayment(buyer, price);
+        //then
+        verify(pointRepository, times(1)).save(any());
+
+    }
+
+    @Test
+    @DisplayName("판매자에게 포인트 지급 기록이 생성된다.")
+    void salesPointReceive()throws Exception{
+        //given
+        User seller = user0();
+        Long price = 198000L;
+
+        //when
+        pointService.purchasePointPayment(seller,price);
+
+        //then
+        verify(pointRepository,times(1)).save(any());
 
     }
 

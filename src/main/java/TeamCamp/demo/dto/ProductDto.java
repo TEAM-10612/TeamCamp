@@ -28,7 +28,7 @@ public class ProductDto {
         @Size(max = 200,message = "200자 이내로 입력해주세요.")
         private String productDescription;
 
-        private UserDto.UserInfo user;
+        private UserDto.UserInfo userInfo;
 
 
         @NotNull(message = "제품의 상태를 선택해주세요.")
@@ -51,7 +51,7 @@ public class ProductDto {
         public Product toEntity(){
             return TeamCamp.demo.domain.model.product.Product.builder()
                     .name(this.name)
-                    .user(this.user.toEntity())
+                    .user(this.userInfo.toEntity())
                     .productDescription(this.productDescription)
                     .productState(this.productState)
                     .originImagePath(this.originImagePath)
@@ -68,7 +68,7 @@ public class ProductDto {
     public static class ProductInfoResponse{
         private Long id;
         private String name;
-        private User user;
+        private UserDto.UserInfo user;
         private String productDescription;
         private ProductState productState;
         private String originImagePath;
@@ -83,7 +83,7 @@ public class ProductDto {
     public static class ProductInfoByTrade{
         private Long id;
         private String name;
-        private User user;
+        private UserDto.UserInfo user;
         private Long buyPrice;
         private Long sellPrice;
         private String productDescription;
@@ -102,19 +102,19 @@ public class ProductDto {
     }
 
     @Getter
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class WishProductResponse{
         private Long id;
         private Long productId;
         private String name;
-        private Product product;
+        private User user;
 
         @Builder
-        public WishProductResponse(Long id, Long productId, String name,Product product) {
+        public WishProductResponse(Long id, Long productId, String name, User user) {
             this.id = id;
             this.productId = productId;
-            this.product = product;
             this.name = name;
+            this.user = user;
         }
     }
 
