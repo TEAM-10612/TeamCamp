@@ -111,7 +111,7 @@ class ProductServiceTest {
     private SaveRequest createProductRequest(){
         return SaveRequest .builder()
                 .name("텐트")
-                .user(userInfo)
+                .userInfo(userInfo)
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)
@@ -123,7 +123,7 @@ class ProductServiceTest {
     private SaveRequest createProductWithOutImageRequest(){
         return SaveRequest.builder()
                 .name("텐트")
-                .user(userInfo)
+                .userInfo(userInfo)
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .build();
@@ -132,7 +132,7 @@ class ProductServiceTest {
     private SaveRequest updateProductWithOutImageRequest(){
         return SaveRequest.builder()
                 .name("화구")
-                .user(userInfo)
+                .userInfo(userInfo)
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .build();

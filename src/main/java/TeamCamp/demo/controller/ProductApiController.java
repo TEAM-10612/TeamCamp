@@ -1,5 +1,6 @@
 package TeamCamp.demo.controller;
 
+import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.dto.ProductDto.ProductInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,12 +23,12 @@ public class ProductApiController {
 
     private final ProductService productService;
 
-    @LoginCheck
+    @LoginCheck(authority = UserLevel.AUTH)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@Valid@RequestBody SaveRequest request ,
-                              @RequestBody MultipartFile productImage) throws IOException {
-        productService.saveProduct(request,productImage);
+    public void createProduct(@Valid@RequestBody SaveRequest requestDto ,
+                              @RequestBody(required = false) MultipartFile productImage){
+        productService.saveProduct(requestDto,productImage);
 
     }
 

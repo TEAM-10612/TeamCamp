@@ -3,6 +3,7 @@ package TeamCamp.demo.service;
 import TeamCamp.demo.common.s3.AwsS3Service;
 import TeamCamp.demo.common.s3.FileService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.compress.utils.FileNameUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,13 +31,13 @@ public class ProductService {
     private final AwsS3Service awsS3Service;
 
     @Transactional
-    public void saveProduct(SaveRequest request, MultipartFile productImage) throws IOException {
+    public void saveProduct(SaveRequest requestDto,@Nullable MultipartFile productImage) {
         if (productImage != null){
             String originImagePath = awsS3Service.uploadProductImage(productImage);
             String thumbnailImagePath = FileService.toThumbnail(originImagePath);
-            request.setImagePath(originImagePath,thumbnailImagePath);
+            requestDto.setImagePath(originImagePath,thumbnailImagePath);
         }
-        productRepository.save(request.toEntity());
+        productRepository.save(requestDto.toEntity());
     }
 
     @Cacheable(value = "product",key = "#id")
