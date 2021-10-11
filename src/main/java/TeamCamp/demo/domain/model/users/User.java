@@ -69,7 +69,6 @@ public class User extends UserBase {
 
     public UserInfo toUserInfo() {
         return UserInfo.builder()
-                .id(this.getId())
                 .nicknameModifiedDate(this.getNicknameModifiedDate())
                 .email(this.getEmail())
                 .nickname(this.getNickname())

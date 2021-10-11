@@ -50,6 +50,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -93,7 +94,7 @@ class ProductControllerTest {
                 .build();
     }
 
-    public User toEntity() {
+    public User user() {
         return User.builder()
                 .id(33L)
                 .email("rddd@naver.com")
@@ -103,6 +104,7 @@ class ProductControllerTest {
                 .phone("01022334455")
                 .userLevel(UserLevel.UNAUTH)
                 .userStatus(UserStatus.NORMAL)
+                .point(1L)
                 .build();
     }
 
@@ -137,7 +139,7 @@ class ProductControllerTest {
         return ProductDto.ProductInfoResponse.builder()
                 .id(1L)
                 .name("화로")
-                .user(userInfo())
+                .user(user().toUserInfo())
                 .productState(ProductState.BEST)
                 .productDescription("good")
                 .thumbnailImagePath(productThumbnailImagePath)
@@ -248,8 +250,7 @@ class ProductControllerTest {
         given(productService.getProductInfo(id)).willReturn(response);
 
         //then
-        mockMvc.perform(
-                RestDocumentationRequestBuilders.get("/products/{id}",id)
+        mockMvc.perform(get("/products/{id}",id)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -273,7 +274,6 @@ class ProductControllerTest {
                                 fieldWithPath("user.nicknameModifiedDate").ignored(),
                                 fieldWithPath("user.userLevel").ignored(),
                                 fieldWithPath("user.point").ignored(),
-                                fieldWithPath("user.addressBook").ignored(),
                                 fieldWithPath("productDescription").type(JsonFieldType.STRING)
                                         .description("productDescription"),
                                 fieldWithPath("productState").type(JsonFieldType.STRING)
@@ -316,7 +316,7 @@ class ProductControllerTest {
 
         //when
         MockMultipartHttpServletRequestBuilder builder =
-                RestDocumentationRequestBuilders.fileUpload("/products/{id}",id);
+                fileUpload("/products/{id}",id);
         builder.with(request -> {
             request.setMethod("PATCH");
             return request;
@@ -370,7 +370,7 @@ class ProductControllerTest {
 
         //then
         mockMvc.perform(
-                        RestDocumentationRequestBuilders.delete("/products/{id}",id))
+                        delete("/products/{id}",id))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(

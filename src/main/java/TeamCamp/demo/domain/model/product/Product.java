@@ -57,7 +57,6 @@ public class Product extends BaseTimeEntity {
                 .productState(this.productState)
                 .originImagePath(this.originImagePath)
                 .thumbnailImagePath(this.thumbnailImagePath)
-                .tradeCompleteInfos(this.toProductInfoResponse().getTradeCompleteInfos())
                 .build();
     }
 

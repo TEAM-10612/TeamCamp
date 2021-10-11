@@ -100,7 +100,6 @@ public class UserDto {
 
         private String email;
         private String password;
-        private String token;
 
         public void passwordEncryption(EncryptionService encryptionService) {
             this.password = encryptionService.encrypt(password);

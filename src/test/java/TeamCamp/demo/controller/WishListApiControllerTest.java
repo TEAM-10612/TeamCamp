@@ -104,7 +104,7 @@ class WishListApiControllerTest {
                 .id(1L)
                 .productId(2L)
                 .name("텐트")
-                .user(user)
+                .userInfoDto(userInfoDto)
                 .build();
         set.add(wishProductResponse);
 

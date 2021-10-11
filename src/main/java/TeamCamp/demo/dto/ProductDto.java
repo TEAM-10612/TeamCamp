@@ -21,6 +21,8 @@ public class ProductDto {
     @Builder
     public static class SaveRequest{
 
+
+
         @NotBlank(message = "제품명을 입력해주세요.")
         private String name;
 
@@ -107,14 +109,14 @@ public class ProductDto {
         private Long id;
         private Long productId;
         private String name;
-        private User user;
+        private UserDto.UserInfoDto userInfoDto;
 
         @Builder
-        public WishProductResponse(Long id, Long productId, String name, User user) {
+        public WishProductResponse(Long id, Long productId, String name, UserDto.UserInfoDto userInfoDto) {
             this.id = id;
             this.productId = productId;
             this.name = name;
-            this.user = user;
+            this.userInfoDto = userInfoDto;
         }
     }
 

@@ -35,7 +35,8 @@ public class ProductApiController {
     @GetMapping("/{id}")
     @LoginCheck
     public ProductInfoResponse getProductInfo(@PathVariable Long id){
-        return productService.getProductInfo(id);
+        ProductInfoResponse productInfoResponse = productService.getProductInfo(id);
+        return productInfoResponse;
     }
 
     @DeleteMapping("/{id}")

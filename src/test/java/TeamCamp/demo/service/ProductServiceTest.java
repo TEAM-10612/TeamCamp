@@ -64,13 +64,15 @@ class ProductServiceTest {
                 .userStatus(UserStatus.NORMAL)
                 .build();
     }
-    private UserDto.UserInfo userInfo = UserDto.UserInfo.builder()
-            .id(1L)
-            .phone("01022334455")
-            .nickname("ryu")
-            .email("rddd@naver.com")
-            .userLevel(UserLevel.UNAUTH)
-            .build();
+    private UserDto.UserInfo userInfo(){
+        return UserDto.UserInfo.builder()
+                .id(1L)
+                .phone("01022334455")
+                .nickname("ryu")
+                .email("rddd@naver.com")
+                .userLevel(UserLevel.UNAUTH)
+                .build();
+    }
     User user = toEntity();
 
 
@@ -83,6 +85,18 @@ class ProductServiceTest {
         return Product.builder()
                 .name("텐트")
                 .user(user)
+                .productDescription("good")
+                .productState(ProductState.BEST)
+                .originImagePath(ProductOriginImagePath)
+                .thumbnailImagePath(ProductThumbnailImagePath)
+                .build();
+    }
+
+
+    private ProductDto.SaveRequest  createProduct2(){
+        return ProductDto.SaveRequest.builder()
+                .name("텐트")
+                .userInfo(user.toUserInfo())
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)
@@ -111,7 +125,7 @@ class ProductServiceTest {
     private SaveRequest createProductRequest(){
         return SaveRequest .builder()
                 .name("텐트")
-                .userInfo(userInfo)
+                .userInfo(userInfo())
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .originImagePath(ProductOriginImagePath)
@@ -123,7 +137,7 @@ class ProductServiceTest {
     private SaveRequest createProductWithOutImageRequest(){
         return SaveRequest.builder()
                 .name("텐트")
-                .userInfo(userInfo)
+                .userInfo(userInfo())
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .build();
@@ -132,7 +146,7 @@ class ProductServiceTest {
     private SaveRequest updateProductWithOutImageRequest(){
         return SaveRequest.builder()
                 .name("화구")
-                .userInfo(userInfo)
+                .userInfo(userInfo())
                 .productDescription("good")
                 .productState(ProductState.BEST)
                 .build();
@@ -147,7 +161,7 @@ class ProductServiceTest {
     @DisplayName("특정 id를 가진 제품 조회 성공 ")
     void getProductInfo_O ()throws Exception{
         //given
-        Product product = createProduct();
+        Product product =createProduct();
         Long id = product.getId();
 
         //when
@@ -157,13 +171,16 @@ class ProductServiceTest {
 
         assertThat(productInfoResponse.getId()).isEqualTo(id);
         assertThat(productInfoResponse.getName()).isEqualTo(product.getName());
-        assertThat(productInfoResponse.getUser()).isEqualTo(product.getUser());
+        //assertThat(productInfoResponse.getUser().toEntity()).isEqualTo(product.getUser());
         assertThat(productInfoResponse.getProductDescription()).isEqualTo(product.getProductDescription());
 
         assertThat(productInfoResponse.getProductState()).isEqualTo(product.getProductState());
         assertThat(productInfoResponse.getOriginImagePath()).isEqualTo(product.getOriginImagePath());
         assertThat(productInfoResponse.getThumbnailImagePath()).isEqualTo(product.getThumbnailImagePath());
         Mockito.verify(productRepository,Mockito.times(1)).findById(id);
+
+        System.out.println(productInfoResponse.getUser().getEmail());
+        System.out.println(product.getUser().getEmail());
     }
 
     @Test

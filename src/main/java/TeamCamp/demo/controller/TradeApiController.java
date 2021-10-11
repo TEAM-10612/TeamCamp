@@ -23,7 +23,6 @@ import javax.ws.rs.Path;
 public class TradeApiController {
 
     private final TradeService tradeService;
-    private final TradeRepository tradeRepository;
     @LoginCheck(authority = UserLevel.AUTH)
     @GetMapping("/{productId}")
     public TradeResource returnTradeResource(@CurrentUser String email, @PathVariable Long productId){
