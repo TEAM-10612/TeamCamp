@@ -748,45 +748,45 @@ include::{snippets}/products/create/http-response.adoc[]
 
 ---
 
-//=== 3. 상품 정보 수정
-//
-//**curl**
-//
-//include::{snippets}/products/update/curl-request.adoc[]
-//
-//**request-fields**
-//
-//include::{snippets}/products/update/request-part-requestDto-fields.adoc[]
-//
-//**Example request**
-//
-//include::{snippets}/products/update/http-request.adoc[]
-//
-//**Example response**
-//
-//include::{snippets}/products/update/http-response.adoc[]
-//
-//---
-//
-//=== 4. 상품 삭제
-//
-//**curl**
-//
-//include::{snippets}/products/delete/curl-request.adoc[]
-//
-//**path-parameters**
-//
-//include::{snippets}/products/delete/path-parameters.adoc[]
-//
-//**Example request**
-//
-//include::{snippets}/products/delete/http-request.adoc[]
-//
-//**Example response**
-//
-//include::{snippets}/products/delete/http-response.adoc[]
-//
-//
+=== 3. 상품 정보 수정
+
+**curl**
+
+include::{snippets}/products/update/curl-request.adoc[]
+
+**request-fields**
+
+include::{snippets}/products/update/request-part-requestDto-fields.adoc[]
+
+**Example request**
+
+include::{snippets}/products/update/http-request.adoc[]
+
+**Example response**
+
+include::{snippets}/products/update/http-response.adoc[]
+
+---
+
+=== 4. 상품 삭제
+
+**curl**
+
+include::{snippets}/products/delete/curl-request.adoc[]
+
+**path-parameters**
+
+include::{snippets}/products/delete/path-parameters.adoc[]
+
+**Example request**
+
+include::{snippets}/products/delete/http-request.adoc[]
+
+**Example response**
+
+include::{snippets}/products/delete/http-response.adoc[]
+
+
 ==== 즉시 판매
 
 **curl**

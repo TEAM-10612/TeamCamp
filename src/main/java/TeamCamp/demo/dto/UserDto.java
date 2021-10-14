@@ -29,7 +29,7 @@ public class UserDto {
         private String email;
 
         @NotBlank
-        @Length(min = 8, max = 50)
+        @Length(min = 8, max = 20)
         private String password;
 
         @NotBlank
