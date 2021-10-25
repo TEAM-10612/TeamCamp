@@ -4,6 +4,7 @@ import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.users.BaseTimeEntity;
 import TeamCamp.demo.domain.model.users.User;
 import TeamCamp.demo.domain.model.users.user.address.Address;
+import TeamCamp.demo.dto.TradeDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -81,7 +82,6 @@ public class Trade extends BaseTimeEntity {
         this.buyer = buyer;
         this.tradeStatus = TradeStatus.PROGRESS;
     }
-
     public void makeSale(User seller,Address shippingAddress){
         this.shippingAddress = shippingAddress;
         this.seller = seller;

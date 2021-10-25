@@ -60,14 +60,6 @@ public class Product extends BaseTimeEntity {
                 .build();
     }
 
-
-//    private List<TradeDto.TradeCompleteInfo> getTradeCompletes() {
-//        return trades.stream()
-//                .filter(t->t.getTradeStatus().equals(TradeStatus.END))
-//                .map(Trade::toTradeCompleteInfo)
-//                .sorted(Comparator.comparing(TradeDto.TradeCompleteInfo::getCompleteTime).reversed())
-//                .collect(toList());
-//    }
    public ProductDto.ProductInfoByTrade toProductInfoByTrade(User currentUser){
         return ProductDto.ProductInfoByTrade.builder()
                 .id(this.id)

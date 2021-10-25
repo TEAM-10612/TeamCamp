@@ -122,8 +122,7 @@ public class TradeDto {
     }
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class
-    TradeCompleteInfo{
+    public static class TradeCompleteInfo{
 
         private Long price;
         private LocalDateTime completeTime;
