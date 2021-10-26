@@ -420,7 +420,7 @@ class UserServiceTest {
 
 
    }
-   
+
    @Test
    @DisplayName("비밀번호가 일치하지 않아 회원탈퇴에 실패한다.")
    void failDeleteMissMatchPassword()throws Exception{
@@ -437,7 +437,7 @@ class UserServiceTest {
        assertThrows(WrongPasswordException.class,
                () -> userService.delete(email,password));
        verify(userRepository,never()).deleteByEmail(email);
-   
+
    }
 
    @Test

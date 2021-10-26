@@ -284,7 +284,7 @@ class UserApiControllerTest {
                 )));
 
     }
-    
+
     @Test
     @DisplayName(value = "휴대폰 인증 - 인증번호가 일치하면 휴대폰 인증에 성공한다.")
     void smsCertification_successful()throws Exception{
@@ -624,7 +624,7 @@ class UserApiControllerTest {
                         fieldWithPath("certificationNumber").type(JsonFieldType.STRING)
                                 .description("사용자가 입력한 인증번호")
                 )));
-    
+
     }
     @Test
     @DisplayName("비밀번호 찾기 - 인증이 완료되면 비밀번호를 변경한다.")
@@ -655,7 +655,7 @@ class UserApiControllerTest {
                 )))
                 ;
     }
-    
+
     @Test
     @DisplayName("회원 탈퇴 - 비밀번호가 일치하면 회원 탈퇴가 성공한다.")
     void UserWithdrawal_successful()throws Exception{
@@ -679,7 +679,7 @@ class UserApiControllerTest {
                 .andDo(document("users/withdrawal/successful",requestFields(
                         fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호")
                 )));
-    
+
     }
 
     @Test
@@ -689,7 +689,7 @@ class UserApiControllerTest {
         UserDto.PasswordRequest request = UserDto.PasswordRequest.builder()
                 .password("test121213")
                 .build();
-        
+
         //when
         doThrow(new WrongPasswordException()).when(userService).delete(any(),any());
         doNothing().when(sessionLoginService).logout();
@@ -703,7 +703,7 @@ class UserApiControllerTest {
                 .andDo(document("users/withdrawal/failure",requestFields(
                         fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호")
                 )));
-    
+
     }
     @Test
     @DisplayName("비밀번호 변경 - 이전 비밀번호가 일치하면 비밀번호 변경에 성공한다.")
@@ -757,7 +757,7 @@ class UserApiControllerTest {
                         fieldWithPath("passwordAfter").type(JsonFieldType.STRING).description("변경할 비밀번호"),
                         fieldWithPath("passwordBefore").type(JsonFieldType.STRING).description("이전 비밀번호")
                 )));
-    
+
     }
 
     @Test

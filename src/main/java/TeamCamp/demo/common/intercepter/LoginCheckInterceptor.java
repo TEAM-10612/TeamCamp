@@ -33,7 +33,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             throws Exception {
 
         String [] activeProfiles = environment.getActiveProfiles();
-        if(activeProfiles[0].equals("test")){
+        if("test".equals(activeProfiles[0])){
             return true;
         }
         if (handler instanceof HandlerMethod) {

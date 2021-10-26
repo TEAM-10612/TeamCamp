@@ -1,6 +1,7 @@
 package TeamCamp.demo.dto;
 
 import TeamCamp.demo.domain.model.trade.OrderStandard;
+import TeamCamp.demo.dto.TradeDto.TradeCompleteInfo;
 import lombok.*;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
@@ -75,7 +76,7 @@ public class ProductDto {
         private ProductState productState;
         private String originImagePath;
         private String thumbnailImagePath;
-        private List<TradeDto.TradeCompleteInfo> tradeCompleteInfos = new ArrayList<>();
+        private List<TradeCompleteInfo> tradeCompleteInfos = new ArrayList<>();
     }
 
     @Getter

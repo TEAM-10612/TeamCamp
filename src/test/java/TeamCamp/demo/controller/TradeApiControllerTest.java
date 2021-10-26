@@ -320,8 +320,8 @@ class TradeApiControllerTest {
                         )));
 
     }
-    
-    
+
+
     @Test
     @DisplayName("특정 거래의 출고 운송장 번호 입력")
     void updateForwardingTrackingNumber()throws Exception{
@@ -330,7 +330,7 @@ class TradeApiControllerTest {
         TradeDto.TrackingNumberRequest request = TradeDto.TrackingNumberRequest.builder()
                 .trackingNumber("12345678")
                 .build();
-        
+
         //when
         doNothing().when(tradeService)
                 .updateTrackingNumber(id,request.getTrackingNumber());
@@ -350,7 +350,7 @@ class TradeApiControllerTest {
                                                 .type(JsonFieldType.STRING)
                                                 .description("등록할 운송장 번호")
                                 )));
-    
+
     }
     @Test
     @DisplayName("특정 거래의 출고 운송장 번호 입력")

@@ -12,7 +12,7 @@ plugins {
 }
 
 group = 'demo'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
@@ -54,19 +54,21 @@ dependencies {
 	implementation group: 'org.apache.tika', name: 'tika-parsers', version: '1.25'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+
+
 }
 ext{
 	snippetsDir = set('snippetDir',file("build/generated-snippets"))
 }
 
-test {
+test{
 	outputs.dir snippetsDir
 	useJUnitPlatform()
 }
 
 asciidoctor {
 	inputs.dir snippetsDir
-	dependsOn Test
+	dependsOn test
 }
 def querydslDir = "$buildDir/generated/querydsl"
 querydsl {
@@ -83,9 +85,5 @@ compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
 }
 
-compileQuerydsl.doFirst {
-	if(file(querydslDir).exists() )
-		delete(file(querydslDir))
-}
 
 
