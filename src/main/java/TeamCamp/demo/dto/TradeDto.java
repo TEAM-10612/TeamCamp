@@ -109,7 +109,7 @@ public class TradeDto {
     }
 
     @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor
     public static class TradeInfoResponse{
         private Long id;
         private TradeStatus tradeStatus;
@@ -121,7 +121,7 @@ public class TradeDto {
         }
     }
     @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor
     public static class TradeCompleteInfo{
 
         private Long price;
