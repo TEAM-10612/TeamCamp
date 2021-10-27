@@ -1,0 +1,61 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/campshare?serverTimezone=Asia/Seoul
+    username: root
+    password: 0070
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database: mysql
+    hibernate:
+      ddl-auto: create
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: true
+
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: rdj10149@gmail.com
+    password: ehdwo991014!
+
+  redis:
+    cache:
+      port: 6379
+      host: 127.0.0.1
+
+    session:
+      port: 6380
+      host: 127.0.0.1
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA2ECZK6PHSU3YMMU5
+      secretKey: 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
+
+    s3:
+      bucket: cusproduct
+
+
+    region:
+      statics: ap-northeast-2
+
+    stack:
+      auto: false
+
+
+external-certification:
+  cool-sms-from-phone-number: 01079422492
+  cool-sms-key: NCS6ZIOLCULQXVIT
+  cool-sms-secret: GDWQZCFZYLXYPIMEEFVPPZIFCUPEQN5T

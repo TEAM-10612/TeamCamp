@@ -13,4 +13,6 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-application.properties
+src/main/resources/application-dev.yml
+src/main/resources/application-local.yml
+src/main/resources/application-prod.yml
