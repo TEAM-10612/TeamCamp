@@ -13,4 +13,4 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-application-oauth.properties
+application.properties
