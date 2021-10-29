@@ -1,0 +1,27 @@
+language: java
+jdk:
+  -openjdk11
+
+# Travis CI 를 어느 branch 가 push 될 때 수행할지 설정
+branches:
+  only:
+    -master
+
+# gradle 통해 의존서을 받게 되면 해당 디렉토리에 cache 하여,
+# 같은 의존성은 다음 배포 때부터 받지 않도록 설정
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+
+before_install:
+  - chmod +x gradlew
+
+# branch 에 push 되었을 때 수행하는 명령어
+script: "./gradlew clean build"
+
+# Travis CI 실행 완료 후 자동 알림 설정
+notifications:
+  email:
+    recipients:
+      - rdj10149@gmail.com
