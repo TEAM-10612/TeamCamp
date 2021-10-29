@@ -45,10 +45,10 @@ public class CacheConfig {
 
     private final CacheProperties cacheProperties;
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.redis.cache.host}")
     private String redisHost;
 
-    @Value("${spring.redis.port}")
+    @Value("${spring.redis.cache.port}")
     private int redisPort;
 
 
