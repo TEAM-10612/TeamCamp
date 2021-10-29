@@ -14,8 +14,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableConfigurationProperties(value = {AppProperties.class, CacheProperties.class, AwsProperties.class})
 public class Application {
 
+    public static final String APPLICATION_LOCATIONS = "spring.config.locations="
+            + "classpath:application.yml"
+            + "/app/config/real-application.yml";
+
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        new SpringApplicationBuilder(Application.class)
+                .properties(APPLICATION_LOCATIONS)
+                .run();
     }
 
 }
