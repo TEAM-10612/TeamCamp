@@ -23,3 +23,17 @@ notifications:
   email:
     recipients:
       - rdj10149@gmail.com
+
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY  #Travis repo setting value
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: campshop  #S3 bucket
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: public_read
+    wait-until-deployed: true
+    on:
+      repo: Campshare/TeamCamp #깃헙 주소
+      branch: master  #허용 브랜치
