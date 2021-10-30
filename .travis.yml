@@ -24,6 +24,10 @@ notifications:
     recipients:
       - rdj10149@gmail.com
 
+before_deploy:
+  - zip -r campshop-deploy
+  - mkdir -p deploy
+  - mv TeamCamp.zip deploy/TeamCamp.zip
 
 deploy:
   - provider: s3
@@ -33,6 +37,7 @@ deploy:
     region: ap-northeast-2
     skip_cleanup: true
     acl: public_read
+    local_dir: deploy
     wait-until-deployed: true
     on:
       repo: CampShare/TeamCamp #깃헙 주소
