@@ -44,3 +44,17 @@ deploy:
       branch: master  #허용 브랜치
 
 
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: campshop-deploy # S3 버킷
+    key: TeamCamp.zip # 빌드 파일을 압축해서 전달
+    bundle_type: zip
+    application: campshop # 웹 콘솔에서 등록한 CodeDeploy 어플리케이션
+    deployment_group: campshop-group # 웹 콘솔에서 등록한 CodeDeploy 배포 그룹
+    region: ap-northeast-2
+    wait-until-deployed: true
+    on:
+      repo: CampShare/TeamCamp
+      branch: master
+
