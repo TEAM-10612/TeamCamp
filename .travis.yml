@@ -35,5 +35,5 @@ deploy:
     acl: public_read
     wait-until-deployed: true
     on:
-      repo: Campshare/TeamCamp #깃헙 주소
+      repo: CampShare/TeamCamp #깃헙 주소
       branch: master  #허용 브랜치
