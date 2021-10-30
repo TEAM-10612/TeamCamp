@@ -29,7 +29,7 @@ deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY  #Travis repo setting value
     secret_access_key: $AWS_SECRET_KEY
-    bucket: campshop  #S3 bucket
+    bucket: campshop-deploy  #S3 bucket
     region: ap-northeast-2
     skip_cleanup: true
     acl: public_read
@@ -37,3 +37,5 @@ deploy:
     on:
       repo: CampShare/TeamCamp #깃헙 주소
       branch: master  #허용 브랜치
+
+
