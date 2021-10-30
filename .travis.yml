@@ -25,7 +25,7 @@ notifications:
       - rdj10149@gmail.com
 
 before_deploy:
-  - zip -r campshop-deploy *
+  - zip -r TeamCamp *
   - mkdir -p deploy
   - mv TeamCamp.zip deploy/TeamCamp.zip
 
