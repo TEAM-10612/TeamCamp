@@ -16,7 +16,10 @@ public class Application {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.locations="
             + "classpath:application.properties"
-            + "/app/config/application-prod.properties";
+            + "/app/config/application-prod.properties"
+           // + "/app/config/application-real.properties"
+            + "/app/config/application-real1.properties";
+
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(Application.class)
