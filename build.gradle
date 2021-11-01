@@ -49,6 +49,7 @@ dependencies {
 	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.964'
 	implementation group: 'org.apache.tika', name: 'tika-parsers', version: '1.25'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 
 
