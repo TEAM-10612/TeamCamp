@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class Application {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.locations="
-            + "classpath:application.properties"
+            + "optional:application.properties"
             + "/app/config/application-prod.properties";
 
 
