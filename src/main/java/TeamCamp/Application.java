@@ -16,7 +16,6 @@ public class Application {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.locations="
             + "classpath:application.properties"
-            + "/app/config/application-real-db.properties"
             + "/app/config/application-real1.properties"
             + "/app/config/application-real2.properties";
 
