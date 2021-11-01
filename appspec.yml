@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source:  /
-    destination: /home/ec2-user/travis/build/
+    destination: /home/ec2-user/app/travis/build/
     overwrite: yes
 
 
