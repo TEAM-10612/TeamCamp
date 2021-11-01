@@ -16,7 +16,8 @@ public class Application {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.locations="
             + "optional:application.properties"
-            + "/app/config/application-prod.properties";
+            + "/app/config/application-prod.properties"
+            + "/app/config/application-prod1-properties";
 
 
     public static void main(String[] args) {
