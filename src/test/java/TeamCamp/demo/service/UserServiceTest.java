@@ -93,18 +93,6 @@ class UserServiceTest {
                 .build();
     }
 
-    @Test
-    @DisplayName("이메일과 닉네임이 중복되지 않으면 회원가입에 성공한다.")
-    void SignUp_success() throws Exception{
-        UserDto.SaveRequest saveRequest = createUserDto();
-
-        when(userRepository.existsByNickname("123123123")).thenReturn(false);
-        when(userRepository.existsByEmail("test123@test.com")).thenReturn(false);
-
-         userService.saveUser(saveRequest);
-
-        verify(userRepository, atLeastOnce()).save(any());
-    }
 
     @Test
     void saveUser() {
