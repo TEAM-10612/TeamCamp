@@ -1,8 +1,9 @@
-package TeamCamp.demo.common.s3;
+package TeamCamp.demo.service.storage;
 
+import TeamCamp.demo.common.s3.AwsProperties;
 import TeamCamp.demo.common.s3.FileService;
 import TeamCamp.demo.exception.product.ImageRoadFailedException;
-import TeamCamp.demo.service.StorageService;
+import TeamCamp.demo.service.storage.StorageService;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -11,12 +12,9 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.Region;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.compress.utils.FileNameUtils;
 import org.apache.tika.Tika;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,16 +29,6 @@ public class AwsS3Service implements StorageService {
     private final AwsProperties awsProperties;
 
     private AmazonS3 s3Client;
-
-
-
-//
-//    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
-//        File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
-//                .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
-//
-//        return upload(uploadFile, dirName);
-//    }
 
 
     @PostConstruct

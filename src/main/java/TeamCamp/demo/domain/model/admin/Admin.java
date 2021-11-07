@@ -1,4 +1,4 @@
-package TeamCamp.demo.domain.model.users.admin;
+package TeamCamp.demo.domain.model.admin;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

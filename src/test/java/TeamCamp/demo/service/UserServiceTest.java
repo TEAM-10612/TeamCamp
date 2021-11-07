@@ -1,24 +1,24 @@
 package TeamCamp.demo.service;
 
+import TeamCamp.demo.domain.model.address.repository.AddressRepository;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
+import TeamCamp.demo.domain.model.product.repository.ProductRepository;
+import TeamCamp.demo.domain.model.users.repository.UserRepository;
 import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.users.User;
-import TeamCamp.demo.domain.model.users.user.address.Address;
-import TeamCamp.demo.domain.model.users.user.address.AddressBook;
-import TeamCamp.demo.domain.repository.*;
+import TeamCamp.demo.domain.model.address.Address;
+import TeamCamp.demo.domain.model.address.AddressBook;
+import TeamCamp.demo.domain.model.wishlist.repository.WishListRepository;
 import TeamCamp.demo.dto.AddressDto;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.encrypt.EncryptionService;
 import TeamCamp.demo.exception.user.*;
-import org.junit.After;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.thymeleaf.standard.expression.Each;
 
 import java.time.LocalDateTime;
 import java.util.List;

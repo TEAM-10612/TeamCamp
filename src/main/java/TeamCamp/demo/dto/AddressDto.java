@@ -1,6 +1,6 @@
 package TeamCamp.demo.dto;
 
-import TeamCamp.demo.domain.model.users.user.address.Address;
+import TeamCamp.demo.domain.model.address.Address;
 import lombok.*;
 
 

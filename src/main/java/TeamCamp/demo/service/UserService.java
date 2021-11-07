@@ -1,6 +1,11 @@
 package TeamCamp.demo.service;
 
-import TeamCamp.demo.domain.repository.*;
+import TeamCamp.demo.domain.model.address.repository.AddressRepository;
+import TeamCamp.demo.domain.model.product.repository.ProductRepository;
+import TeamCamp.demo.domain.model.users.repository.UserRepository;
+import TeamCamp.demo.domain.model.wishlist.Wishlist;
+import TeamCamp.demo.domain.model.wishlist.repository.ProductWishListRepository;
+import TeamCamp.demo.domain.model.wishlist.repository.WishListRepository;
 import TeamCamp.demo.exception.user.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import TeamCamp.demo.domain.model.users.user.Account;
 import TeamCamp.demo.domain.model.users.User;
-import TeamCamp.demo.domain.model.users.user.address.Address;
-import TeamCamp.demo.domain.model.users.user.address.AddressBook;
-import TeamCamp.demo.domain.repository.AddressBookRepository;
+import TeamCamp.demo.domain.model.address.Address;
+import TeamCamp.demo.domain.model.address.AddressBook;
+import TeamCamp.demo.domain.model.address.repository.AddressBookRepository;
 import TeamCamp.demo.service.email.EmailCertificationService;
 import TeamCamp.demo.dto.AddressDto;
 import TeamCamp.demo.encrypt.EncryptionService;
@@ -53,7 +58,12 @@ public class UserService {
         userDto.passwordEncryption(encryptionService);
 
         User user = userRepository.save(userDto.toEntity());
+        createRequiredInformation(user);
+    }
 
+    private void createRequiredInformation(User user){
+        user.createWishList(wishListRepository.save(new Wishlist()));
+        user.createAddressBook(addressBookRepository.save(new AddressBook()));
     }
 
     /**

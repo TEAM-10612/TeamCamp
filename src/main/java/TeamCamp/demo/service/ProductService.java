@@ -1,9 +1,8 @@
 package TeamCamp.demo.service;
 
-import TeamCamp.demo.common.s3.AwsS3Service;
+import TeamCamp.demo.service.storage.AwsS3Service;
 import TeamCamp.demo.common.s3.FileService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.compress.utils.FileNameUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,13 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import TeamCamp.demo.domain.model.product.Product;
-import TeamCamp.demo.domain.repository.ProductRepository;
-import TeamCamp.demo.dto.ProductDto;
+import TeamCamp.demo.domain.model.product.repository.ProductRepository;
 import TeamCamp.demo.dto.ProductDto.ProductInfoResponse;
 import TeamCamp.demo.exception.product.ProductNotFoundException;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 

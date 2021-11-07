@@ -1,4 +1,4 @@
-package TeamCamp.demo.domain.repository;
+package TeamCamp.demo.domain.model.wishlist.repository;
 
 import TeamCamp.demo.domain.model.wishlist.ProductWishList;
 import org.springframework.data.jpa.repository.JpaRepository;

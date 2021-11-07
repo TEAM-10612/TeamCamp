@@ -1,7 +1,7 @@
 package TeamCamp.demo.dto;
 
 import TeamCamp.demo.domain.model.users.UserStatus;
-import TeamCamp.demo.domain.model.users.user.address.AddressBook;
+import TeamCamp.demo.domain.model.address.AddressBook;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import TeamCamp.demo.domain.model.users.user.Account;
@@ -15,8 +15,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Builder

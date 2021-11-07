@@ -1,6 +1,6 @@
-package TeamCamp.demo.domain.repository.impl;
+package TeamCamp.demo.domain.model.admin.repository;
 
-import TeamCamp.demo.domain.repository.AdminRepository;
+import TeamCamp.demo.domain.model.admin.repository.AdminRepository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.dto.UserDto;
 import TeamCamp.demo.dto.UserDto.UserListResponse;

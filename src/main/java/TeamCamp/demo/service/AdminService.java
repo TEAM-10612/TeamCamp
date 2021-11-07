@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import TeamCamp.demo.domain.repository.UserRepository;
+import TeamCamp.demo.domain.model.users.repository.UserRepository;
 import TeamCamp.demo.dto.UserDto;
 import org.springframework.transaction.annotation.Transactional;
 

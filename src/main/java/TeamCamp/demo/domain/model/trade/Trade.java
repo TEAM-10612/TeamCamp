@@ -3,14 +3,11 @@ package TeamCamp.demo.domain.model.trade;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.users.BaseTimeEntity;
 import TeamCamp.demo.domain.model.users.User;
-import TeamCamp.demo.domain.model.users.user.address.Address;
-import TeamCamp.demo.dto.TradeDto;
+import TeamCamp.demo.domain.model.address.Address;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.math3.analysis.function.Add;
-import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 

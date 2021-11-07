@@ -1,14 +1,14 @@
 package TeamCamp.demo.service;
 
-import TeamCamp.demo.common.s3.AwsS3Service;
+import TeamCamp.demo.service.storage.AwsS3Service;
 import TeamCamp.demo.common.s3.FileService;
 import TeamCamp.demo.domain.model.product.Product;
 import TeamCamp.demo.domain.model.product.ProductState;
 import TeamCamp.demo.domain.model.users.UserLevel;
 import TeamCamp.demo.domain.model.users.UserStatus;
 import TeamCamp.demo.domain.model.users.User;
-import TeamCamp.demo.domain.repository.ProductRepository;
-import TeamCamp.demo.domain.repository.UserRepository;
+import TeamCamp.demo.domain.model.product.repository.ProductRepository;
+import TeamCamp.demo.domain.model.users.repository.UserRepository;
 import TeamCamp.demo.dto.ProductDto;
 import TeamCamp.demo.dto.ProductDto.SaveRequest;
 import TeamCamp.demo.dto.UserDto;

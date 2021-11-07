@@ -1,4 +1,4 @@
-package TeamCamp.demo.domain.repository;
+package TeamCamp.demo.domain.model.product.repository;
 
 import TeamCamp.demo.domain.model.product.repository.SearchProductRepository;
 import org.springframework.data.jpa.repository.EntityGraph;

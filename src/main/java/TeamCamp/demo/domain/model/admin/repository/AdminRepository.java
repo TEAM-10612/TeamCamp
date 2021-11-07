@@ -1,4 +1,4 @@
-package TeamCamp.demo.domain.repository;
+package TeamCamp.demo.domain.model.admin.repository;
 
 import TeamCamp.demo.dto.UserDto.UserListResponse;
 import TeamCamp.demo.dto.UserDto.UserSearchCondition;

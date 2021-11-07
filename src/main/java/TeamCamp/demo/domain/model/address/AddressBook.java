@@ -1,4 +1,4 @@
-package TeamCamp.demo.domain.model.users.user.address;
+package TeamCamp.demo.domain.model.address;
 
 import lombok.*;
 

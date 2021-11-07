@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import TeamCamp.demo.domain.model.users.UserLevel;
-import TeamCamp.demo.service.loginservice.SessionLoginService;
+import TeamCamp.demo.service.login.SessionLoginService;
 import TeamCamp.demo.common.annotation.LoginCheck;
 import TeamCamp.demo.exception.user.NotAuthorizedException;
 import TeamCamp.demo.exception.user.UnauthenticatedUserException;

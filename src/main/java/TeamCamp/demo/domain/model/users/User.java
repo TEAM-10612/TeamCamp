@@ -8,10 +8,10 @@ import TeamCamp.demo.domain.model.wishlist.ProductWishList;
 import TeamCamp.demo.domain.model.wishlist.Wishlist;
 import TeamCamp.demo.dto.PointDto;
 import TeamCamp.demo.dto.ProductDto.WishProductResponse;
-import TeamCamp.demo.exception.LowPointException;
+import TeamCamp.demo.exception.user.LowPointException;
 import lombok.*;
-import TeamCamp.demo.domain.model.users.user.address.Address;
-import TeamCamp.demo.domain.model.users.user.address.AddressBook;
+import TeamCamp.demo.domain.model.address.Address;
+import TeamCamp.demo.domain.model.address.AddressBook;
 import TeamCamp.demo.exception.user.UnableToChangeNicknameException;
 
 import javax.persistence.*;

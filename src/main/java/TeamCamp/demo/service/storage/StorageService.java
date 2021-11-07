@@ -1,4 +1,4 @@
-package TeamCamp.demo.service;
+package TeamCamp.demo.service.storage;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,4 +1,4 @@
-package TeamCamp.demo.domain.repository;
+package TeamCamp.demo.domain.model.point.repository;
 
 import TeamCamp.demo.domain.model.point.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
