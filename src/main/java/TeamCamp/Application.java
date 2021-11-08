@@ -1,5 +1,6 @@
 package TeamCamp;
 
+import TeamCamp.demo.common.database.DbProperties;
 import TeamCamp.demo.common.properties.AppProperties;
 import TeamCamp.demo.common.properties.CacheProperties;
 import TeamCamp.demo.common.s3.AwsProperties;
@@ -9,9 +10,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //데이터 소스 직접 설정을 위해 DataSourceAutoConfiguration 클래스를 제외한다.
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @EnableConfigurationProperties(value = {AppProperties.class, CacheProperties.class, AwsProperties.class})
 public class Application {
 
