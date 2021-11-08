@@ -27,6 +27,7 @@ import java.util.Map;
 public class DbConfig {
     private final DbProperties dbProperties;
 
+    //routingDataSource 에서 사용할 메서드
     public DataSource createDataSource(String url){
         HikariDataSource hikariDataSource = new HikariDataSource();
         hikariDataSource.setJdbcUrl(url);
@@ -37,24 +38,30 @@ public class DbConfig {
         return hikariDataSource;
     }
 
+
     @Bean
     public DataSource routingDataSource(){
+        //AbstractRoutingDataSource를 상송받아 재정의한 ReplicationRoutingDataSource 생성
         ReplicationRoutingDataSource replicationRoutingDataSource = new ReplicationRoutingDataSource();
 
+        //master와 slave 정보를 key(name) , value(datasource) 형식으로 맵에 저장
         Map<Object,Object>dataSourceMap = new LinkedHashMap<>();
         DataSource masterDataSource  = createDataSource(dbProperties.getUrl());
         dataSourceMap.put("master",masterDataSource);
+
+
         dbProperties.getSlaveList().forEach(slave -> {
             dataSourceMap.put(slave.getName(),createDataSource(slave.getUrl()));
         });
 
+        //ReplicationROutingDataSource의 replicationRoutingDataSourceNameList 세팅 -> slave 키 이름 리스트 세팅
         replicationRoutingDataSource.setTargetDataSources(dataSourceMap);
 
+        //default 값은 master
         replicationRoutingDataSource.setDefaultTargetDataSource(masterDataSource);
 
         return replicationRoutingDataSource;
     }
-
     @Bean
     public DataSource dataSource(){
         return new LazyConnectionDataSourceProxy(routingDataSource());
@@ -71,7 +78,7 @@ public class DbConfig {
         return entityManagerFactoryBean;
     }
 
-
+    //JPA에서 사용할 TransactionManager 설정
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
         JpaTransactionManager tm = new JpaTransactionManager();
@@ -79,7 +86,7 @@ public class DbConfig {
         return tm;
     }
 
-
+    //JDBC Template 빈 등록
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource){
         return new JdbcTemplate(dataSource);

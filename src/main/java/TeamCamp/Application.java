@@ -10,7 +10,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-
+//데이터 소스 직접 설정을 위해 DataSourceAutoConfiguration 클래스를 제외한다.
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableConfigurationProperties(value = {AppProperties.class, CacheProperties.class, AwsProperties.class})
 public class Application {
