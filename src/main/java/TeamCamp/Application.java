@@ -1,6 +1,5 @@
 package TeamCamp;
 
-import TeamCamp.demo.common.database.DbProperties;
 import TeamCamp.demo.common.properties.AppProperties;
 import TeamCamp.demo.common.properties.CacheProperties;
 import TeamCamp.demo.common.s3.AwsProperties;
