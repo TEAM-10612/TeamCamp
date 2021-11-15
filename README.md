@@ -19,9 +19,9 @@
     
 프로젝트  
 ---
-📁[Project Information](https://github.com/CampShare/TeamCamp/wiki/Project-Information) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
-📁[ERD](https://github.com/CampShare/TeamCamp/wiki/ERD) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
-📁[Front](https://github.com/CampShare/TeamCamp/wiki/Prototype) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
-📁[구현기능](https://github.com/CampShare/TeamCamp/wiki/Feat.구현기능) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
-📁[사용 기술](https://github.com/CampShare/TeamCamp/wiki/UseTechnology) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
+📁[Project Information](https://github.com/TEAM-124/TeamCamp/wiki/Project-Information) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
+📁[ERD](https://github.com/TEAM-124/TeamCamp/wiki/ERD) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
+📁[Front](https://github.com/TEAM-124/TeamCamp/wiki/Prototype) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
+📁[구현기능](https://github.com/TEAM-124/TeamCamp/wiki/Feat.구현기능) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
+📁[사용 기술](https://github.com/TEAM-124/TeamCamp/wiki/UseTechnology) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
 📁[이슈 블로그 정리](https://github.com/CampShare/TeamCamp/wiki/Issue) 에서 프로젝트 정보를 확인 하실 수 있습니다.  
