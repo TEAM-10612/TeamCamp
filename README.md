@@ -1,4 +1,4 @@
-# TeamCamp [![Build Status](https://app.travis-ci.com/CampShare/TeamCamp.svg?branch=master)](https://app.travis-ci.com/CampShare/TeamCamp)
+# TeamCamp [![Build Status](https://app.travis-ci.com/ryudongjae/CampShare.svg?branch=master)](https://app.travis-ci.com/CampShare/TeamCamp)
 🏖캠핑용품 중고거래 서비스(캠핑창고)🏝  
 ---
 💻프로젝트 상세 정보는 [WIKI](https://github.com/TEAM-124/TeamCamp/wiki)에서 확인 하실수 있습니다.
